@@ -1,13 +1,11 @@
-# No arquivo futdata.py
-
 import sqlite3
 
-class Datafut:
+class Model:
     def __init__(self, db_name):
         self.conn = sqlite3.connect(db_name)
-        self.create_table()
+        self.__create_table()
 
-    def create_table(self):
+    def __create_table(self):
         cursor = self.conn.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS users 
                           (id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,6 +30,7 @@ class Datafut:
             return True
         except sqlite3.IntegrityError:
             # Usuário com mesmo nome já existe
+            #tratar usuário como chave primaria é uma boa ideia? --Evaldo
             return False
 
     def close(self):
