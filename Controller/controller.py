@@ -1,10 +1,10 @@
-from View import view
+from View import tela_login
 from Model import model
 
 class Controller:
     def __init__(self):
         self.model = model.Model("TabeDi")
-        self.view = view.View(self)
+        self.view = tela_login.Tela_Login(self)
 
     def main_controller(self):
         #self.model.main_model() #preciso colocar um metodo main no model...como?

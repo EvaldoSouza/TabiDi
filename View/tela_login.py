@@ -2,13 +2,13 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
 
-class View(tk.Tk):
+class Tela_Login(tk.Tk):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
         #Geometria básica
         self.geometry("900x600")
-        self.resizable(width="TRUE", height="TRUE")
+        self.resizable(width="FALSE", height="FALSE")
         # Adicionando uma imagem de fundo
         self.background_image = PhotoImage(file="View/football_background.png")
         self.background_label = tk.Label(self, image=self.background_image)
