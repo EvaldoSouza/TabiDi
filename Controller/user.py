@@ -11,27 +11,30 @@ class UserPrivilege(enumerate):
 
 
 #quando o controller inicializar, ele cria um user, com o privilégio básico
+#Se a classe herda de abc, e possui um método abstrato, ela já não pode mais ser instanciada
 class User(abc.ABC):
     @abc.abstractclassmethod
-    def alterar_senha(): pass
+    def __init__(self) -> None:
+        pass
     
-    @abc.abstractclassmethod
-    def pesquisar_campeonato(): pass
+    def pesquisar_campeonato(self): pass
 
-    @abc.abstractclassmethod
-    def selecionar_campeonato(): pass
+    def selecionar_campeonato(self): pass
 
-    @abc.abstractclassmethod
-    def mostrar_tabela_campeonato(): pass
+    def mostrar_tabela_campeonato(self): pass
 
-    @abc.abstractclassmethod
-    def buscar_info_campeonato(): pass
+    def buscar_info_campeonato(self): pass
+
+    def salvar_paramentros_busca(self): pass
+
+    def alterar_senha(self): pass
 
 
 class LeitorNC(User):
     def __init__(self) -> None:
         self.privilegio = UserPrivilege.LNC
     
+    #Metodos particulares
     def login(self):
         pass
 
@@ -41,15 +44,7 @@ class LeitorNC(User):
     def registrar(self):
         pass
 
-    def pesquisar_campeonato(self):
-        pass
-
-    def selecionar_campeonato(self):
-        pass
-
-    def mostrar_tabela_campeonato(self):
-        pass
-
+    #sobrescrevendo, para não fazer nada
     def buscar_info_campeonato():
         #mostrar a tela de login, se for implementar
         pass
@@ -61,44 +56,12 @@ class LeitorNC(User):
 class Leitor(User):
     def __init__(self) -> None:
         self.privilegio = UserPrivilege.LER
-
-    def pesquisar_campeonato(self):
-        pass
-
-    def selecionar_campeonato(self):
-        pass
-
-    def mostrar_tabela_campeonato(self):
-        pass
-
-    def buscar_info_campeonato():
-        pass
-
-    def alterar_senha():
-        pass
-
-    
-    #implementar os métodos da interface
+   
 
 class Editor(User):
     def __init__(self) -> None:
         self.privilegio = UserPrivilege.EDI
 
-    #interface
-    def pesquisar_campeonato(self):
-        pass
-
-    def selecionar_campeonato(self):
-        pass
-
-    def mostrar_tabela_campeonato(self):
-        pass
-
-    def buscar_info_campeonato():
-        pass
-
-    def alterar_senha():
-        pass
     
     #proprios
     def cadastrar_campeonato():
@@ -112,29 +75,12 @@ class Editor(User):
 
     def inserir_info_campeonato():
         pass
-
-    
     #nenhum método precisa ser implementado por enquanto, eu acho
 
 class Administrador(Editor, User):
     def __init__(self) -> None:
         self.privilegio = UserPrivilege.ADM
     
-    #interface
-    def pesquisar_campeonato(self):
-        pass
-
-    def selecionar_campeonato(self):
-        pass
-
-    def mostrar_tabela_campeonato(self):
-        pass
-
-    def buscar_info_campeonato():
-        pass
-
-    def alterar_senha():
-        pass
 
     #proprios
     def pesquisar_usuario():

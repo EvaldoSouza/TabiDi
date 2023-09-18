@@ -6,6 +6,9 @@ Controller/__pycache__/
 View/__pycache__/
 Model/__pycache__/
 
+#arquivo de teste do Evaldo
+teste.py
+
 # C extensions
 *.so
 
