@@ -11,7 +11,7 @@ class Tela_Login(tk.Tk):
         self.resizable(width="FALSE", height="FALSE")
         # Adicionando uma imagem de fundo
         self.background_image = PhotoImage(file="View/football_background.png")
-        self.background_label = tk.Label(self, image=self.background_image)
+        self.background_label = tk.Label(self, image=self.background_image) #se usar self, dá um erro com outras imagens, e se usar Toplevel(), não aparece
         self.background_label.place(relwidth=1, relheight=1)
 
         # Adicionando um logotipo
@@ -67,6 +67,7 @@ class Tela_Login(tk.Tk):
             if self.controller.checar_credenciais(username, password):
                 #CHAMAR OUTRA JANELA
                 self.resultado_label.config(text="Login deu Certo!", fg="green")
+
             else:
                 self.resultado_label.config(text="Usuario ou Senha Incorretos", fg="red")
         else:
@@ -85,6 +86,8 @@ class Tela_Login(tk.Tk):
             else:
                 self.resultado_label.config(text="Usuário já existe", fg="red")
 
+    def fechar_tela_login(self):
+        self.destroy()
 
     def main_view(self):
         self.title("TaBedi")

@@ -33,5 +33,11 @@ class Model:
             #tratar usuário como chave primaria é uma boa ideia? --Evaldo
             return False
 
+    def get_all_users(self):
+        cursor = self.conn.cursor()
+
+        cursor.execute("SELECT username FROM users")
+        return cursor.fetchall()
+    
     def close(self):
         self.conn.close()
