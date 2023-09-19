@@ -10,7 +10,9 @@ class Model:
         cursor.execute('''CREATE TABLE IF NOT EXISTS users 
                           (id INTEGER PRIMARY KEY AUTOINCREMENT,
                            username TEXT UNIQUE NOT NULL,
-                           password TEXT NOT NULL)''')
+                        email TEXT UNIQUE NOT NULL,
+                        password TEXT NOT NULL, 
+                        privilege TEXT)''')
         self.conn.commit()
 
     def check_credentials(self, username, password):
@@ -22,22 +24,41 @@ class Model:
         else:
             return False
 
-    def register_user(self, username, password):
+    def register_user(self, username, email, password):
         cursor = self.conn.cursor()
-        try:
-            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
-            self.conn.commit()
-            return True
-        except sqlite3.IntegrityError:
-            # Usuário com mesmo nome já existe
-            #tratar usuário como chave primaria é uma boa ideia? --Evaldo
-            return False
+        #checando se a tabela está vazia, se estiver, o primeiro usuário registrado é ADM
+        cursor.execute("SELECT EXISTS (SELECT 1 FROM users)")
+        primeira_linha = cursor.fetchone()
+        if primeira_linha[0] == 0:
+            print("banco vazio, primeiro usuário adm")
+            try:
+                cursor.execute("INSERT INTO users (username, email, password, privilege) VALUES (?, ?, ?, ?)", (username, email, password, "ADM"))
+                self.conn.commit()
+                return True
+            except sqlite3.IntegrityError:
+                # Usuário com mesmo nome já existe
+                #tratar usuário como chave primaria é uma boa ideia? --Evaldo
+                return False
+        else:
+            try:
+                cursor.execute("INSERT INTO users (username, email, password, privilege) VALUES (?, ?, ?, ?)", (username, email, password, "LER"))
+                self.conn.commit()
+                return True
+            except sqlite3.IntegrityError:
+                # Usuário com mesmo nome já existe
+                #tratar usuário como chave primaria é uma boa ideia? --Evaldo
+                return False
 
     def get_all_users(self):
         cursor = self.conn.cursor()
 
-        cursor.execute("SELECT username FROM users")
+        cursor.execute("SELECT username, email, privilege FROM users")
         return cursor.fetchall()
     
     def close(self):
         self.conn.close()
+    
+    def delete_table(self, table_name):
+        cursor = self.conn.cursor()
+        cursor.execute("DROP TABLE (?)", table_name)
+        print("Tabela ", table_name, " deletada")

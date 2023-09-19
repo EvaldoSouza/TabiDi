@@ -23,25 +23,30 @@ class Tela_Cadastro(tk.Toplevel):
         
         # Configuração de estilo para os elementos da interface
         self.label_username = tk.Label(self, text="Usuário:", bg="#F0F0F0", font=("Arial", 12))
+        self.label_email = tk.Label(self, text="Email:", bg="#F0F0F0", font=("Arial", 12))
         self.label_password = tk.Label(self, text="Senha:", bg="#F0F0F0", font=("Arial", 12))
 
         #Usar stringvar é uma forma mais gerenciavel e clara de se lidar com inputs e objetos desse tipo
         self.username_var = tk.StringVar()
+        self.email_var = tk.StringVar()
         self.password_var = tk.StringVar()
         self.entry_username = tk.Entry(self, font=("Arial", 14), textvariable=self.username_var)
+        self.entry_email = tk.Entry(self, font=("Arial", 14), textvariable=self.email_var )
         self.entry_password = tk.Entry(self, show="*", font=("Arial", 14), textvariable=self.password_var)
         
         # Centralizando as labels
-        self.label_username.place(relx=0.3, rely=0.4, anchor="center")
+        self.label_username.place(relx=0.3, rely=0.3, anchor="center")
+        self.label_email.place(relx=0.3, rely=0.4, anchor="center")
         self.label_password.place(relx=0.3, rely=0.5, anchor="center")
         
         # Posicionamento dos campos de entrada
-        self.entry_username.place(relx=0.5, rely=0.4, anchor="center")
+        self.entry_username.place(relx=0.5, rely=0.3, anchor="center")
+        self.entry_email.place(relx=0.5, rely=0.4, anchor="center")
         self.entry_password.place(relx=0.5, rely=0.5, anchor="center")
         
         # Botão de login
-        self.login_button = tk.Button(self, text="Quero fazer login", command=self.fecha_aba, bg="green", fg="white", font=("Arial", 14))
-        self.login_button.place(relx=0.40, rely=0.6, anchor="center")
+        self.back_button = tk.Button(self, text="Voltar", command=self.fechar_tela_cadastro, bg="yellow", fg="white", font=("Arial", 14))
+        self.back_button.place(relx=0.40, rely=0.6, anchor="center")
         
         # Botão de registro
         self.register_button = tk.Button(self, text="Registrar", command=self.registrar, bg="blue", fg="white", font=("Arial", 14))
@@ -51,46 +56,24 @@ class Tela_Cadastro(tk.Toplevel):
         self.resultado_label = tk.Label(self, text="", font=("Arial", 14))
         self.resultado_label.place(relx=0.5, rely=0.7, anchor="center") #Conferir se está no lugar certo --Evaldo
     
-    #exemplo de lógica a ser seguida. Não passar objetos StringVar para o controller, pois são mais apropriados para a interface
-    def enter_button_clicked(self):
-        if self.controller:
-            self.controller.enter_login(self.email_var.get(), self.senha_var())
-    
-    def login(self):
-        #deve chamar o método login do controller, e passar os dados para ele
-        #já fazer algum tratamento de dados aqui, principalmente a respeito de campos vazios
-        username = self.username_var.get()
-        password = self.password_var.get()
-
-        #conferindo se algum campo está vazio
-        if password == '' or username == '':
-            self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-        elif self.controller:
-            if self.controller.checar_credenciais(username, password):
-                #CHAMAR OUTRA JANELA
-                self.resultado_label.config(text="Login deu Certo!", fg="green")
-            else:
-                self.resultado_label.config(text="Usuario ou Senha Incorretos", fg="red")
-        else:
-            #FAZER TRATAMENTO DE ERRO, QUANDO CONTROLLER NÃO ESTIVER INICIALIZADO
-            self.resultado_label.config(text="Controller Não Inicializado", fg="red")
 
     def registrar(self):
         username = self.username_var.get()
+        email = self.email_var.get()
         password = self.password_var.get()
 
-        if password == '' or username == '':
+        if password == '' or email == '' or username == '':
             self.resultado_label.config(text="Um dos campos está vazio", fg="red")
         elif self.controller:
-            if self.controller.registrar_novo_usuario(username, password):
+            if self.controller.registrar_novo_usuario(username,email, password):
                 self.resultado_label.config(text="Registro bem-sucedido", fg="green")
             else:
                 self.resultado_label.config(text="Usuário já existe", fg="red")
 
 
-    def main_view(self):
+    def cadastro_view(self):
         self.title("TaBedi")
         self.mainloop()
 
-    def fecha_aba(self):
+    def fechar_tela_cadastro(self):
         self.destroy()

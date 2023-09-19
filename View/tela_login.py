@@ -86,20 +86,8 @@ class Tela_Login(tk.Tk):
             #FAZER TRATAMENTO DE ERRO, QUANDO CONTROLLER NÃO ESTIVER INICIALIZADO
             self.resultado_label.config(text="Controller Não Inicializado", fg="red")
 
-    def registrar(self):
-        username = self.username_var.get()
-        password = self.password_var.get()
 
-        if password == '' or username == '':
-            self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-        elif self.controller:
-            if self.controller.registrar_novo_usuario(username, password):
-                self.resultado_label.config(text="Registro bem-sucedido", fg="green")
-            else:
-                self.resultado_label.config(text="Usuário já existe", fg="red")
-
-
-    def main_view(self):
+    def login_view(self):
         self.title("TaBedi")
         self.mainloop()
 
@@ -107,3 +95,6 @@ class Tela_Login(tk.Tk):
         segunda_janela = Tela_Cadastro(self.controller)
         segunda_janela.title("Segunda Janela")
         #self.withdraw()
+
+    def fechar_tela_login(self):
+        self.destroy()

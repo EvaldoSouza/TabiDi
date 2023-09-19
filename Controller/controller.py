@@ -9,7 +9,7 @@ class Controller:
 
     def main_controller(self):
         #self.model.main_model() #preciso colocar um metodo main no model...como?
-        self.tela_login.main_view()
+        self.tela_login.login_view()
     
     def checar_credenciais(self, usuario, senha):
         #FAZER UM TRATAMENTO DA VALIDADE DOS DADOS, COMO TAMANHO E CARACTERES ESPECIAIS --Evaldo
@@ -21,9 +21,9 @@ class Controller:
             self.display_users.main_display_users()
 
 
-    def registrar_novo_usuario(self,username, password):
+    def registrar_novo_usuario(self,username, email, password):
         #FAZER UM TRATAMENTO DA VALIDADE DOS DADOS, COMO TAMANHO E CARACTERES ESPECIAIS --Evaldo
-        return self.model.register_user(username, password)
+        return self.model.register_user(username, email, password)
     
     def fechar_database(self):
         #DESCOBRIR ONDE PRECISA FECHAR O BANCO DE DADOS --Evaldo
