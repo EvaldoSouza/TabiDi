@@ -1,4 +1,5 @@
 import sqlite3
+from Controller.user import UserPrivilege
 
 class Model:
     def __init__(self, db_name):
@@ -32,7 +33,7 @@ class Model:
         if primeira_linha[0] == 0:
             print("banco vazio, primeiro usuário adm")
             try:
-                cursor.execute("INSERT INTO users (username, email, password, privilege) VALUES (?, ?, ?, ?)", (username, email, password, "ADM"))
+                cursor.execute("INSERT INTO users (username, email, password, privilege) VALUES (?, ?, ?, ?)", (username, email, password, UserPrivilege.ADM))
                 self.conn.commit()
                 return True
             except sqlite3.IntegrityError:
@@ -41,7 +42,7 @@ class Model:
                 return False
         else:
             try:
-                cursor.execute("INSERT INTO users (username, email, password, privilege) VALUES (?, ?, ?, ?)", (username, email, password, "LER"))
+                cursor.execute("INSERT INTO users (username, email, password, privilege) VALUES (?, ?, ?, ?)", (username, email, password, UserPrivilege.LER))
                 self.conn.commit()
                 return True
             except sqlite3.IntegrityError:
