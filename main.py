@@ -1,5 +1,6 @@
 from Controller import controller
 
+
 class Main:
     @staticmethod
     def run():
