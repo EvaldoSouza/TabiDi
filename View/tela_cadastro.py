@@ -1,14 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
-from .tela_cadastro import Tela_Cadastro
+from tkinter import Toplevel
 
-class Tela_Login(tk.Tk):
+class Tela_Cadastro(tk.Toplevel):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
         #Geometria básica
         self.geometry("900x600")
+        self.title("Tela Cadastro")
         self.resizable(width="FALSE", height="FALSE")
         # Adicionando uma imagem de fundo
         self.background_image = PhotoImage(file="View/football_background.png")
@@ -16,7 +17,7 @@ class Tela_Login(tk.Tk):
         self.background_label.place(relwidth=1, relheight=1)
 
         # Adicionando um logotipo
-        self.logo_image = PhotoImage(file="View/sigma.png")
+        self.logo_image = PhotoImage(file="View/happy.png")
         self.logo_label = tk.Label(self, image=self.logo_image)
         self.logo_label.place(relx=0.5, rely=0.2, anchor="center")
         
@@ -39,33 +40,22 @@ class Tela_Login(tk.Tk):
         self.entry_password.place(relx=0.5, rely=0.5, anchor="center")
         
         # Botão de login
-        self.login_button = tk.Button(self, text="Login", command=self.login, bg="green", fg="white", font=("Arial", 14))
+        self.login_button = tk.Button(self, text="Quero fazer login", command=self.fecha_aba, bg="green", fg="white", font=("Arial", 14))
         self.login_button.place(relx=0.40, rely=0.6, anchor="center")
         
         # Botão de registro
-        self.register_button = tk.Button(self, text="Quero registrar", command=self.nova_aba, bg="blue", fg="white", font=("Arial", 14))
+        self.register_button = tk.Button(self, text="Registrar", command=self.registrar, bg="blue", fg="white", font=("Arial", 14))
         self.register_button.place(relx=0.55, rely=0.6, anchor="center")
-
+        
         #Mostrar resultado de Login
         self.resultado_label = tk.Label(self, text="", font=("Arial", 14))
         self.resultado_label.place(relx=0.5, rely=0.7, anchor="center") #Conferir se está no lugar certo --Evaldo
-
+    
     #exemplo de lógica a ser seguida. Não passar objetos StringVar para o controller, pois são mais apropriados para a interface
     def enter_button_clicked(self):
         if self.controller:
             self.controller.enter_login(self.email_var.get(), self.senha_var())
-    def registrar(self):
-        username = self.username_var.get()
-        password = self.password_var.get()
-
-        if password == '' or username == '':
-            self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-        elif self.controller:
-            if self.controller.registrar_novo_usuario(username, password):
-                self.resultado_label.config(text="Registro bem-sucedido", fg="green")
-            else:
-                self.resultado_label.config(text="Usuário já existe", fg="red")
-
+    
     def login(self):
         #deve chamar o método login do controller, e passar os dados para ele
         #já fazer algum tratamento de dados aqui, principalmente a respeito de campos vazios
@@ -85,11 +75,22 @@ class Tela_Login(tk.Tk):
             #FAZER TRATAMENTO DE ERRO, QUANDO CONTROLLER NÃO ESTIVER INICIALIZADO
             self.resultado_label.config(text="Controller Não Inicializado", fg="red")
 
+    def registrar(self):
+        username = self.username_var.get()
+        password = self.password_var.get()
+
+        if password == '' or username == '':
+            self.resultado_label.config(text="Um dos campos está vazio", fg="red")
+        elif self.controller:
+            if self.controller.registrar_novo_usuario(username, password):
+                self.resultado_label.config(text="Registro bem-sucedido", fg="green")
+            else:
+                self.resultado_label.config(text="Usuário já existe", fg="red")
+
+
     def main_view(self):
         self.title("TaBedi")
         self.mainloop()
 
-    def nova_aba(self):
-        segunda_janela = Tela_Cadastro(self.controller)
-        segunda_janela.title("Segunda Janela")
-        #self.withdraw()
+    def fecha_aba(self):
+        self.destroy()
