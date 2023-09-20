@@ -1,6 +1,7 @@
 from View import tela_login, display_users
 from Model import model
 from Controller import user
+#teste
 
 class Controller:
     def __init__(self):
