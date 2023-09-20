@@ -4,11 +4,18 @@ from Model import model
 #Esquecer um pouco do state patter por enquanto!
 
 #definindo os privilégios como um enum
-class UserPrivilege(enumerate):
+#tentando fazer algo maneiro...não deu certo
+class ExtendedEnum(Enum):
+    @classmethod
+    def list(cls):
+        return list(map(lambda c: c.value, cls))
+class UserPrivilege(ExtendedEnum):
     LNC = "Leitor Não Cadastrado"
     LER = "Leitor"
     EDI = "Editor"
     ADM = "Administrador"
+
+
 
 
 #quando o controller inicializar, ele cria um user, com o privilégio básico
@@ -100,7 +107,8 @@ class Administrador(Editor, User):
         #trazer o método do controller para cá
         pass
 
-    def alterar_privilegio():
+    def alterar_privilegio(self, novo_privilegio):
+        print("Class ADM, privilegio recebido: ", novo_privilegio)
         #atualizar o banco
         pass
 
