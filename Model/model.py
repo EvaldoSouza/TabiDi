@@ -21,8 +21,12 @@ class Model:
         cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
         user = cursor.fetchone()
         if user:
-            return True
+            #mandar o user inteiro ou apenas os métodos necessários?
+            #mandando usuário, email, privilégio
+            user_data = (user[1], user[2], user[4])
+            return user_data
         else:
+            #se não existe, cursor.fetchone() retorna None
             return False
 
     def register_user(self, username, email, password):
@@ -52,7 +56,7 @@ class Model:
 
     def get_all_users(self):
         cursor = self.conn.cursor()
-
+        #selecionando sem mandar a senha ou indice
         cursor.execute("SELECT username, email, privilege FROM users")
         return cursor.fetchall()
     
@@ -63,3 +67,8 @@ class Model:
         cursor = self.conn.cursor()
         cursor.execute("DROP TABLE (?)", table_name)
         print("Tabela ", table_name, " deletada")
+    
+    def search_user(self, username):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT username, email, privilege FROM users WHERE username LIKE ?", ("%"+ username + "%",))
+        return cursor.fetchall()
