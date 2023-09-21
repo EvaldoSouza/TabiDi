@@ -84,7 +84,7 @@ class Controller:
         return valor
     
     def show_tela_login(self):
-        self.tela_main.show_frame(tela_login.Tela_Login)
+        self.tela_login.login_view()
 
     def show_tela_cadastro(self):
         self.tela_main.show_frame(tela_cadastro.Tela_Cadastro)

@@ -65,8 +65,8 @@ class Tela_Cadastro(tk.Toplevel):
 
         if password == '' or email == '' or username == '':
             self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-        elif self.tela_main.controller:
-            if self.tela_main.controller.registrar_novo_usuario(username,email, password):
+        elif self.controller:
+            if self.controller.registrar_novo_usuario(username,email, password):
                 self.resultado_label.config(text="Registro bem-sucedido", fg="green")
             else:
                 self.resultado_label.config(text="Usuário já existe", fg="red")
@@ -77,5 +77,5 @@ class Tela_Cadastro(tk.Toplevel):
         self.mainloop()
 
     def fechar_tela_cadastro(self):
-        #self.destroy()
-        self.tela_main.controller.show_tela_login()
+        self.destroy()
+        self.controller.show_tela_login()
