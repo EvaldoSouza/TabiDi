@@ -86,11 +86,12 @@ class Display_Users(tk.Tk):
         window.mainloop()
 
     def _alterar_privilegio(self):
-        self.controller.adm_alterar_privilegio()
+        #self.controller.adm_alterar_privilegio()
+        print("Work in progress")
 
 
     def _deletar_usuario(self):
-        pass
+        print("Work in progress")
         
     def inserir_item(self,tabela, item):
         #está apenas inserindo, não checa se é um usuário válido
@@ -143,11 +144,12 @@ class Display_Users(tk.Tk):
         for radiobutton in radiobuttons:
             radiobutton.config(variable=selected_option)
            
-        select_button = tk.Button(window, text="Seleciona", command=lambda: self._close_return_button(window, selected_option))
+        select_button = tk.Button(window, text="Selecionar", command=lambda: self._close_return_button(window, selected_option))
         select_button.pack()
     
     def _close_return_button(self, window, value):
-        print("valor selecionado: ", value.get())
+        #print("valor selecionado: ", value.get())
+        self.controller.recebe_valor_de_janela(value.get())
         window.destroy()
         return value.get()
     

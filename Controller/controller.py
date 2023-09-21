@@ -69,9 +69,17 @@ class Controller:
     def adm_alterar_privilegio(self):
         if hasattr(self.usuario_principal, 'alterar_privilegio'):
             privilegios = user.UserPrivilege.list()
-            resposta_janela = self.display_users.mostrar_categorias_usuarios(privilegios) #BUG --Não espera a proxima função!
-            print("Controller Resposta janela: ", resposta_janela)
-            novo_privilegio = resposta_janela
-            self.usuario_principal.alterar_privilegio(novo_privilegio)
+            self.display_users.mostrar_categorias_usuarios(privilegios) #eu queria que a função parasse aqui
+            print("Teste depois da janela")
+            print("Controller Resposta janela: ", self.valor_recebido_de_janela)
+            self.usuario_principal.alterar_privilegio(self.valor_recebido_de_janela)
         else:
             print("Usuário não pode alterar privilégios!")
+        
+        print("SAINDO DO ESCOPO!")
+
+    def recebe_valor_de_janela(self, valor):
+        #está sendo alterada em outra janela
+        #super gambiarra, mudar depois
+        self.valor_recebido_de_janela = valor
+        return valor
