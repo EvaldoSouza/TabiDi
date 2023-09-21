@@ -3,11 +3,13 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from .tela_cadastro import Tela_Cadastro
 
-class Tela_Login(tk.Frame):
-    def __init__(self, parent, tela_main):
-        tk.Frame.__init__(self, parent)
-        self.tela_main = tela_main
-        
+class Tela_Login(tk.Tk):
+    def __init__(self, controller):
+        super().__init__()
+        self.controller = controller
+        #Geometria básica
+        self.geometry("900x600")
+        self.resizable(width="FALSE", height="FALSE")
         # Adicionando uma imagem de fundo
         self.background_image = PhotoImage(file="View/football_background.png")
         self.background_label = tk.Label(self, image=self.background_image) #se usar self, dá um erro com outras imagens, e se usar Toplevel(), não aparece
@@ -41,7 +43,7 @@ class Tela_Login(tk.Frame):
         self.login_button.place(relx=0.40, rely=0.6, anchor="center")
         
         # Botão de registro
-        self.register_button = tk.Button(self, text="Quero registrar", command=self.tela_main.controller.show_tela_cadastro, bg="blue", fg="white", font=("Arial", 14))
+        self.register_button = tk.Button(self, text="Quero registrar", command=self.nova_aba, bg="blue", fg="white", font=("Arial", 14))
         self.register_button.place(relx=0.55, rely=0.6, anchor="center")
 
         #Mostrar resultado de Login
@@ -74,8 +76,8 @@ class Tela_Login(tk.Frame):
         #conferindo se algum campo está vazio
         if password == '' or username == '':
             self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-        elif self.tela_main.controller:
-            if self.tela_main.controller.checar_credenciais(username, password):
+        elif self.controller:
+            if self.controller.checar_credenciais(username, password):
                 #TODO Chamar tela do Usuário --Evaldo
                 self.resultado_label.config(text="Login deu Certo!", fg="green")
 
@@ -85,6 +87,10 @@ class Tela_Login(tk.Frame):
             #FAZER TRATAMENTO DE ERRO, QUANDO CONTROLLER NÃO ESTIVER INICIALIZADO
             self.resultado_label.config(text="Controller Não Inicializado", fg="red")
 
+    def nova_aba(self):
+        segunda_janela = Tela_Cadastro(self.controller)
+        segunda_janela.title("Segunda Janela")
+        #self.withdraw()
 
     def login_view(self):
         self.title("TaBedi")

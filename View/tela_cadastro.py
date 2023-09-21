@@ -3,10 +3,14 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter import Toplevel
 
-class Tela_Cadastro(tk.Frame):
-    def __init__(self, parent, tela_main):
-        tk.Frame.__init__(self, parent)
-        self.tela_main = tela_main
+class Tela_Cadastro(tk.Toplevel):
+    def __init__(self, controller):
+        super().__init__()
+        self.controller = controller
+        #Geometria básica
+        self.geometry("900x600")
+        self.title("Tela Cadastro")
+        self.resizable(width="FALSE", height="FALSE")
         
         # Adicionando uma imagem de fundo
         self.background_image = PhotoImage(file="View/football_background.png")

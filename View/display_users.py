@@ -6,10 +6,13 @@ from tkinter.messagebox import showinfo
 
 
 #TODO criar uma classe  Dislpay_Table e fazer herança, para padronizar a visualização
-class Display_Users(tk.Frame):
-    def __init__(self, parent, controller, lista_users):
-        tk.Frame.__init__(self, parent)
+class Display_Users(tk.Tk):
+    def __init__(self, controller, lista_users):
+        super().__init__()
         self.controller = controller
+        #Geometria básica
+        self.geometry("900x600")
+        self.resizable(width="TRUE", height="TRUE")
         #barra de pesquisar usuário
         self.pesquisa_label = tk.Label(self, text="Pesquisar Usuário:", bg="#F0F0F0", font=("Arial", 12))
         self.usuario_pesquisado_var = tk.StringVar()
