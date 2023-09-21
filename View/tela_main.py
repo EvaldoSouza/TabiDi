@@ -19,6 +19,9 @@ class Tela_Main(tk.Tk):
         self.resizable(width="FALSE", height="FALSE")
         self.controller = controller
 
+        #só pra testar
+        
+
         for F in (tela_login.Tela_Login, tela_cadastro.Tela_Cadastro):
             frame = F(container, self)
             self.frames[F] = frame
