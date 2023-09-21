@@ -1,4 +1,4 @@
-from View import tela_login,tela_cadastro, display_users
+from View import tela_login,tela_cadastro, display_users, tela_user
 from Model import model
 from Controller import user
 #teste
@@ -8,7 +8,6 @@ class Controller:
         self.model = model.Model("TabeDi")
         self.usuario_principal = user.LeitorNC()
         self.tela_login = tela_login.Tela_Login(self)
-
     def main_controller(self):
         #self.model.main_model() #preciso colocar um metodo main no model...como?
         self.tela_login.login_view()
@@ -32,7 +31,7 @@ class Controller:
                     print("LeitorNC Uma janela linda que ainda não existe!")
                 
                 case user.UserPrivilege.LER.value:
-                    print("Leitor Uma janela linda que ainda não existe!")
+                    tela_user.Tela_User(self.usuario_principal)
                 
                 case user.UserPrivilege.EDI.value:
                     print("Editor Uma janela linda que ainda não existe!")

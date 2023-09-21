@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
 from .tela_cadastro import Tela_Cadastro
+from .tela_user import Tela_User
+
 
 class Tela_Login(tk.Tk):
     def __init__(self, controller):
@@ -64,6 +66,9 @@ class Tela_Login(tk.Tk):
         elif self.tela_main.controller:
             if self.tela_main.controller.registrar_novo_usuario(username, password):
                 self.resultado_label.config(text="Registro bem-sucedido", fg="green")
+
+                self.abrir_janela_usuario()
+                #self.withdraw()
             else:
                 self.resultado_label.config(text="Usuário já existe", fg="red")
 
@@ -80,7 +85,6 @@ class Tela_Login(tk.Tk):
             if self.controller.checar_credenciais(username, password):
                 #TODO Chamar tela do Usuário --Evaldo
                 self.resultado_label.config(text="Login deu Certo!", fg="green")
-
             else:
                 self.resultado_label.config(text="Usuario ou Senha Incorretos", fg="red")
         else:
@@ -89,8 +93,12 @@ class Tela_Login(tk.Tk):
 
     def nova_aba(self):
         segunda_janela = Tela_Cadastro(self.controller)
-        segunda_janela.title("Segunda Janela")
+        segunda_janela.title("Janela de Registro")
         #self.withdraw()
+    
+    def abrir_janela_usuario(self):
+            tela_usuario = Tela_User(self.tela_main.controller)  # Crie uma instância da classe Tela_User
+            tela_usuario.mainloop()
 
     def login_view(self):
         self.title("TaBedi")
