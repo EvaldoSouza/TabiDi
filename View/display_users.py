@@ -118,7 +118,7 @@ class Display_Users(tk.Tk):
         for user in lista_users:
             self.inserir_item(self.tabela, user)
         
-        self.tabela.bind("<ButtonPress>", self.usuario_selecionado_evento) #BUG Um click retorna erro tuplex index oor. Fazer que seja dois clicks
+        self.tabela.bind('<<TreeviewSelect>>', self.usuario_selecionado_evento)
         #self.tabela.bind("<ButtonPress>", self.exemplo_item_selecionado_evento)
         
         self.tabela.pack()
