@@ -3,13 +3,11 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from .tela_cadastro import Tela_Cadastro
 
-class Tela_Login(tk.Tk):
-    def __init__(self, controller):
-        super().__init__()
-        self.controller = controller
-        #Geometria básica
-        self.geometry("900x600")
-        self.resizable(width="FALSE", height="FALSE")
+class Tela_Login(tk.Frame):
+    def __init__(self, parent, tela_main):
+        tk.Frame.__init__(self, parent)
+        self.tela_main = tela_main
+        
         # Adicionando uma imagem de fundo
         self.background_image = PhotoImage(file="View/football_background.png")
         self.background_label = tk.Label(self, image=self.background_image) #se usar self, dá um erro com outras imagens, e se usar Toplevel(), não aparece
@@ -43,7 +41,7 @@ class Tela_Login(tk.Tk):
         self.login_button.place(relx=0.40, rely=0.6, anchor="center")
         
         # Botão de registro
-        self.register_button = tk.Button(self, text="Quero registrar", command=self.nova_aba, bg="blue", fg="white", font=("Arial", 14))
+        self.register_button = tk.Button(self, text="Quero registrar", command=self.tela_main.controller.show_tela_cadastro, bg="blue", fg="white", font=("Arial", 14))
         self.register_button.place(relx=0.55, rely=0.6, anchor="center")
 
         #Mostrar resultado de Login
@@ -52,16 +50,17 @@ class Tela_Login(tk.Tk):
 
     #exemplo de lógica a ser seguida. Não passar objetos StringVar para o controller, pois são mais apropriados para a interface
     def enter_button_clicked(self):
-        if self.controller:
-            self.controller.enter_login(self.email_var.get(), self.senha_var())
+        if self.tela_main.controller:
+            self.tela_main.controller.enter_login(self.email_var.get(), self.senha_var())
+    
     def registrar(self):
         username = self.username_var.get()
         password = self.password_var.get()
 
         if password == '' or username == '':
             self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-        elif self.controller:
-            if self.controller.registrar_novo_usuario(username, password):
+        elif self.tela_main.controller:
+            if self.tela_main.controller.registrar_novo_usuario(username, password):
                 self.resultado_label.config(text="Registro bem-sucedido", fg="green")
             else:
                 self.resultado_label.config(text="Usuário já existe", fg="red")
@@ -75,9 +74,9 @@ class Tela_Login(tk.Tk):
         #conferindo se algum campo está vazio
         if password == '' or username == '':
             self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-        elif self.controller:
-            if self.controller.checar_credenciais(username, password):
-                #CHAMAR OUTRA JANELA
+        elif self.tela_main.controller:
+            if self.tela_main.controller.checar_credenciais(username, password):
+                #TODO Chamar tela do Usuário --Evaldo
                 self.resultado_label.config(text="Login deu Certo!", fg="green")
 
             else:
@@ -90,11 +89,6 @@ class Tela_Login(tk.Tk):
     def login_view(self):
         self.title("TaBedi")
         self.mainloop()
-
-    def nova_aba(self):
-        segunda_janela = Tela_Cadastro(self.controller)
-        segunda_janela.title("Segunda Janela")
-        #self.withdraw()
 
     def fechar_tela_login(self):
         self.destroy()

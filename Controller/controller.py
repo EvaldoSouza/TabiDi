@@ -1,4 +1,4 @@
-from View import tela_login, display_users
+from View import tela_login,tela_cadastro, display_users, tela_main
 from Model import model
 from Controller import user
 #teste
@@ -6,13 +6,12 @@ from Controller import user
 class Controller:
     def __init__(self):
         self.model = model.Model("TabeDi")
-        self.tela_login = tela_login.Tela_Login(self)
-        #self.display_users = display_users.Display_Users(self, users)
         self.usuario_principal = user.LeitorNC()
+        self.tela_main = tela_main.Tela_Main(self)
 
     def main_controller(self):
         #self.model.main_model() #preciso colocar um metodo main no model...como?
-        self.tela_login.login_view()
+        self.tela_main.main_view()
     
     def checar_credenciais(self, usuario, senha):
         #TODO FAZER UM TRATAMENTO DA VALIDADE DOS DADOS, COMO TAMANHO E CARACTERES ESPECIAIS --Evaldo
@@ -83,3 +82,9 @@ class Controller:
         #super gambiarra, mudar depois
         self.valor_recebido_de_janela = valor
         return valor
+    
+    def show_tela_login(self):
+        self.tela_main.show_frame(tela_login.Tela_Login)
+
+    def show_tela_cadastro(self):
+        self.tela_main.show_frame(tela_cadastro.Tela_Cadastro)

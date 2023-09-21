@@ -6,18 +6,10 @@ from tkinter.messagebox import showinfo
 
 
 #TODO criar uma classe  Dislpay_Table e fazer herança, para padronizar a visualização
-class Display_Users(tk.Tk):
-    def __init__(self, controller, lista_users):
-        super().__init__()
+class Display_Users(tk.Frame):
+    def __init__(self, parent, controller, lista_users):
+        tk.Frame.__init__(self, parent)
         self.controller = controller
-        #Geometria básica
-        self.geometry("900x600")
-        self.resizable(width="TRUE", height="TRUE")
-         #TODO Adicionando uma imagem de fundo...como fazer isso? Se colocar self, da erro --Evaldo
-        #self.background_image = PhotoImage(file="View/football_background.png")
-        #self.background_label = tk.Label(tk.Toplevel(), image=self.background_image)
-        #self.background_label.place(relwidth=1, relheight=1)
-
         #barra de pesquisar usuário
         self.pesquisa_label = tk.Label(self, text="Pesquisar Usuário:", bg="#F0F0F0", font=("Arial", 12))
         self.usuario_pesquisado_var = tk.StringVar()
