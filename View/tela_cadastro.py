@@ -45,7 +45,7 @@ class Tela_Cadastro(tk.Toplevel):
         self.entry_email.place(relx=0.5, rely=0.4, anchor="center")
         self.entry_password.place(relx=0.5, rely=0.5, anchor="center")
         
-        # Botão de login
+        # Botão de voltar
         self.back_button = tk.Button(self, text="Voltar", command=self.fechar_tela_cadastro, bg="yellow", fg="white", font=("Arial", 14))
         self.back_button.place(relx=0.40, rely=0.6, anchor="center")
         
