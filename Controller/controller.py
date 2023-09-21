@@ -38,9 +38,14 @@ class Controller:
                     print("Editor Uma janela linda que ainda não existe!")
                 case _:
                     print("Algo deu errado")
+            
+            return True
 
         else:
             print("Usuário não existe")
+            return False
+        
+        
 
 
     def registrar_novo_usuario(self,username, email, password):
