@@ -13,14 +13,14 @@ class Tela_Cadastro(tk.Toplevel):
         self.resizable(width="FALSE", height="FALSE")
         
         # Adicionando uma imagem de fundo
-        self.background_image = PhotoImage(file="View/football_background.png")
+        self.background_image = PhotoImage(file="View/img/football_background.png")
         self.background_label = tk.Label(self, image=self.background_image)
         self.background_label.place(relwidth=1, relheight=1)
 
         # Adicionando um logotipo
-        self.logo_image = PhotoImage(file="View/happy.png")
+        self.logo_image = PhotoImage(file="View/img/logo.png")
         self.logo_label = tk.Label(self, image=self.logo_image)
-        self.logo_label.place(relx=0.5, rely=0.2, anchor="center")
+        self.logo_label.place(relx=0.5, rely=0.15, anchor="center")
         
         # Configuração de estilo para os elementos da interface
         self.label_username = tk.Label(self, text="Usuário:", bg="#F0F0F0", font=("Arial", 12))
@@ -46,7 +46,7 @@ class Tela_Cadastro(tk.Toplevel):
         self.entry_password.place(relx=0.5, rely=0.5, anchor="center")
         
         # Botão de voltar
-        self.back_button = tk.Button(self, text="Voltar", command=self.fechar_tela_cadastro, bg="yellow", fg="white", font=("Arial", 14))
+        self.back_button = tk.Button(self, text="Fazer Login", command=self.fechar_tela_cadastro, bg="green", fg="white", font=("Arial", 14))
         self.back_button.place(relx=0.40, rely=0.6, anchor="center")
         
         # Botão de registro

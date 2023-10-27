@@ -138,7 +138,7 @@ class Display_Users(tk.Tk):
 
         for radiobutton in radiobuttons:
             radiobutton.config(variable=selected_option)
-           
+
         select_button = tk.Button(window, text="Selecionar", command=lambda: self._close_return_button(window, selected_option))
         select_button.pack()
     
