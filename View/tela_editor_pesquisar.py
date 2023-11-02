@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import PhotoImage
 
 from View.tela_editcamp import Tela_EditCamp
+from .tela_editor_novocamp import Tela_Editor_NovoCamp
 
 lista_campeonatos = [
     #TODO Puxar do banco de dados
@@ -45,10 +46,8 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         self.voltar_button.place(relx=0.9, rely=0.3, anchor="se")
 
     def cadastrar_campeonato(self):
-        # Implemente a lógica para abrir a tela de cadastro de campeonato
-        # Você pode criar uma nova janela ou usar uma Toplevel para isso
-        pass
-
+        tela_editor_novocamp = Tela_Editor_NovoCamp()
+        tela_editor_novocamp.mainloop()
 
     def voltar(self):
         self.destroy()
