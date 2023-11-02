@@ -35,11 +35,19 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         # Lista de campeonatos
         self.construir_lista_campeonatos(lista_campeonatos)
 
+        self.cadastrar_button = tk.Button(self, text="Cadastrar Campeonato", command=self.cadastrar_campeonato, bg="black", fg="white", font=("Arial", 14))
+        self.cadastrar_button.place(relx=0.1, rely=0.6, anchor="w")
+
         self.selecionar_button = tk.Button(self, text="Selecionar", command=self.ranking, bg="green", fg="white", font=("Arial", 14))
         self.selecionar_button.place(relx=0.9, rely=0.2, anchor="se")
 
         self.voltar_button = tk.Button(self, text="Voltar", command=self.voltar, bg="yellow", fg="black", font=("Arial", 14))
         self.voltar_button.place(relx=0.9, rely=0.3, anchor="se")
+
+    def cadastrar_campeonato(self):
+        # Implemente a lógica para abrir a tela de cadastro de campeonato
+        # Você pode criar uma nova janela ou usar uma Toplevel para isso
+        pass
 
 
     def voltar(self):

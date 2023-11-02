@@ -85,11 +85,14 @@ class Tela_Campeonatos(tk.Toplevel):
     def inserir_item_campeonatos(self, tabela, campeonato):
         tabela.insert('', 'end', values=(campeonato["nome"], campeonato["descricao"]))
         
-
     def tabela_selection_campeonato(self):
-        selected_item = self.tabela_campeonatos.selection()
-        campeonato = self.tabela_campeonatos.item(selected_item, 'values')
-        return campeonato
+        if self.tabela_campeonatos:
+            selected_item = self.tabela_campeonatos.selection()
+            if selected_item:
+                campeonato = self.tabela_campeonatos.item(selected_item, 'values')
+                return campeonato
+        return None
+
 
     def selecionar_campeonato_evento(self):
         # Implemente a lógica para selecionar um campeonato
@@ -103,3 +106,9 @@ class Tela_Campeonatos(tk.Toplevel):
         if campeonato_selecionado:
             tela_classificacao = Tela_Classificacao(self.controller, classificacao_campeonato)
             tela_classificacao.mainloop()
+
+    # def ranking(self):
+    #     campeonato_selecionado = self.tabela_selection_campeonato()
+    #     if campeonato_selecionado:
+    #         tela_classificacao = Tela_Classificacao(self.controller, classificacao_campeonato)
+    #         tela_classificacao.mainloop()
