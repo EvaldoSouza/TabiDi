@@ -81,7 +81,7 @@ class Display_Users(tk.Tk):
         window.mainloop()
 
     def _alterar_privilegio(self):
-        #self.controller.adm_alterar_privilegio()
+        self.controller.adm_alterar_privilegio()
         print("Work in progress")
 
 
