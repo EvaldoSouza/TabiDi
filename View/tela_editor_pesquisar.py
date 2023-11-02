@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
-from .tela_camp import Tela_Classificacao
+
+from View.tela_editcamp import Tela_EditCamp
 
 lista_campeonatos = [
     #TODO Puxar do banco de dados
@@ -9,6 +10,7 @@ lista_campeonatos = [
     {"nome": "Campeonato 2", "descricao": "Descrição do Campeonato 2"},
 ]
 classificacao_campeonato = [
+    #TODO Puxar do banco de dados
     {"nome": "Time A", "pontos": 12, "vitorias": 4, "derrotas": 2, "empates": 0},
     {"nome": "Time B", "pontos": 10, "vitorias": 3, "derrotas": 1, "empates": 1},
     {"nome": "Time C", "pontos": 8, "vitorias": 2, "derrotas": 2, "empates": 2},
@@ -16,13 +18,13 @@ classificacao_campeonato = [
     {"nome": "Time E", "pontos": 4, "vitorias": 0, "derrotas": 4, "empates": 4},
 ]
 
-class Tela_Campeonatos(tk.Toplevel):
+class Tela_Editor_Pesquisar(tk.Toplevel):
     def __init__(self, controller, lista_campeonatos):
         super().__init__()
         self.controller = controller
         self.geometry("900x600")
         self.resizable(width="TRUE", height="TRUE")
-        self.title("User - Lista de Campeonatos")
+        self.title("Editor - Lista de Campeonatos")
 
         self.tabela_campeonatos = None
 
@@ -77,8 +79,8 @@ class Tela_Campeonatos(tk.Toplevel):
         for time in classificacao_campeonato:
             self.tabela_campeonatos.insert('', 'end', values=(time["nome"], time["pontos"], time["vitorias"], time["derrotas"], time["empates"]))
 
-        tela_classificacao = Tela_Classificacao(classificacao_campeonato)
-        tela_classificacao.mainloop()
+        tela_editorcamp = Tela_EditCamp(classificacao_campeonato)
+        tela_editorcamp.mainloop()
 
 
 
@@ -101,5 +103,5 @@ class Tela_Campeonatos(tk.Toplevel):
         self.construir_tabela_campeonatos(classificacao_campeonato)
         campeonato_selecionado = self.tabela_selection_campeonato()
         if campeonato_selecionado:
-            tela_classificacao = Tela_Classificacao(self.controller, classificacao_campeonato)
-            tela_classificacao.mainloop()
+            tela_editorcamp = Tela_EditCamp(self.controller, classificacao_campeonato)
+            tela_editorcamp.mainloop()

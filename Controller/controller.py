@@ -1,4 +1,4 @@
-from View import tela_lista_camps,tela_camp, tela_login,tela_cadastro, display_users, tela_user
+from View import tela_login,tela_cadastro, display_users, tela_user, tela_editor
 from Model import model
 from Controller import user
 
@@ -40,7 +40,7 @@ class Controller:
                     tela_user.Tela_User(self.usuario_principal)
                 
                 case user.UserPrivilege.EDI.value:
-                    print("Editor Uma janela linda que ainda não existe!")
+                    tela_editor.Tela_Editor(self.usuario_principal)
                 case _:
                     print("Algo deu errado")
             

@@ -6,12 +6,12 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter import ttk
 
-class Tela_Classificacao(tk.Toplevel):
+class Tela_EditCamp(tk.Toplevel):
     def __init__(self, classificacao_campeonato):
         super().__init__()
         self.geometry("900x600")
         self.resizable(width="TRUE", height="TRUE")
-        self.title("User - Classificação do Campeonato")
+        self.title("Editor - Classificação do Campeonato")
 
         # Cria a tabela
         self.construir_tabela_campeonatos(classificacao_campeonato)

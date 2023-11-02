@@ -10,6 +10,7 @@ class Tela_Login(tk.Tk):
         super().__init__()
         self.controller = controller
         #Geometria básica
+        self.title('Tabedi')
         self.geometry("900x600")
         self.resizable(width="FALSE", height="FALSE")
         # Adicionando uma imagem de fundo
