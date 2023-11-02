@@ -6,6 +6,9 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter import ttk
 
+from .modal_adicionar import Modal_Adicionar
+from .modal_alterar import Modal_Alterar
+
 class Tela_EditCamp(tk.Toplevel):
     def __init__(self, classificacao_campeonato):
         super().__init__()
@@ -16,9 +19,21 @@ class Tela_EditCamp(tk.Toplevel):
         # Cria a tabela
         self.construir_tabela_campeonatos(classificacao_campeonato)
 
+        # Botão de adicionar
+        self.adicionar_button = tk.Button(self, text="Adicionar", command=self.adicionar, bg="green", fg="black", font=("Arial", 14))
+        self.adicionar_button.place(relx=0.9, rely=0.1, anchor="se")
+
+        # Botão de alterar
+        self.alterar_button = tk.Button(self, text="Alterar", command=self.alterar, bg="yellow", fg="black", font=("Arial", 14))
+        self.alterar_button.place(relx=0.9, rely=0.2, anchor="se")
+
+        # Botão de adicionar
+        self.excluir_button = tk.Button(self, text="Excluir", command=self.excluir, bg="red", fg="black", font=("Arial", 14))
+        self.excluir_button.place(relx=0.9, rely=0.3, anchor="se")
+
         # Botão de voltar
-        self.voltar_button = tk.Button(self, text="Voltar", command=self.voltar, bg="yellow", fg="black", font=("Arial", 14))
-        self.voltar_button.place(relx=0.9, rely=0.1, anchor="se")
+        self.voltar_button = tk.Button(self, text="Voltar", command=self.voltar, bg="blue", fg="black", font=("Arial", 14))
+        self.voltar_button.place(relx=0.9, rely=0.4, anchor="se")
 
     def construir_tabela_campeonatos(self, classificacao_campeonato):
         colunas_campeonatos = ("Nome", "Pontos", "Vitórias", "Derrotas", "Empates")
@@ -38,5 +53,16 @@ class Tela_EditCamp(tk.Toplevel):
 
         self.tabela_campeonatos.pack()
 
+    def adicionar(self):
+        modal_adicionar = Modal_Adicionar()  # Crie uma instância da classe Tela_User
+        modal_adicionar.mainloop()
+    
+    def alterar(self):
+        modal_alterar = Modal_Alterar()  # Crie uma instância da classe Tela_User
+        modal_alterar.mainloop()
+    
+    def excluir(self):
+        pass
+    
     def voltar(self):
         self.destroy()
