@@ -46,7 +46,7 @@ class Model:
                 return False
         else:
             try:
-                cursor.execute("INSERT INTO users (username, email, password, privilege) VALUES (?, ?, ?, ?)", (username, email, password, UserPrivilege.EDI.value))
+                cursor.execute("INSERT INTO users (username, email, password, privilege) VALUES (?, ?, ?, ?)", (username, email, password, UserPrivilege.LER.value))
                 self.conn.commit()
                 return True
             except sqlite3.IntegrityError:
