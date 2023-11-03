@@ -22,13 +22,17 @@ class Display_Users(tk.Tk):
 
         self.entry_usuario_pesquisado.bind('<Return>', self.pesquisar)
 
+         # Botões
+        self.button1 = tk.Button(self, text="Voltar", command=self.voltar, bg="blue", fg="white", font=("Arial", 14))
+        self.button1.place(relx=0.45, rely=0.6, anchor="center")
 
         #preciso mostrar uma tabela dinâmica
         #construindo a tabela
         self.contruir_tabela(lista_users)
         
-        
-
+    def voltar(self):
+        self.destroy()
+    
     def exemplo_item_selecionado_evento(self, event):
         #fazendo igual ao exemplo por enquanto, para pegar a ideia
         for selected_item in self.tabela.selection(): #retorna um objeto tabela_entry
