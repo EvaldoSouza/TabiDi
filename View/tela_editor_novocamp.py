@@ -27,7 +27,7 @@ class Tela_Editor_NovoCamp(tk.Toplevel):
         self.times_var = tk.StringVar()
         self.entry_nome = tk.Entry(self, font=("Arial", 14), textvariable=self.nome_var)
         self.entry_ano = tk.Entry(self, font=("Arial", 14), textvariable=self.ano_var )
-        self.entry_times = tk.Entry(self, show="*", font=("Arial", 14), textvariable=self.times_var)
+        self.entry_times = tk.Entry(self, font=("Arial", 14), textvariable=self.times_var)
         
         # Centralizando as labels
         self.label_nome.place(relx=0.3, rely=0.3, anchor="center")
