@@ -4,6 +4,7 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter.messagebox import showinfo
 
+
 #TODO criar uma classe  Dislpay_Table e fazer herança, para padronizar a visualização
 class Display_Users(tk.Tk):
     def __init__(self, controller, lista_users):
@@ -12,39 +13,142 @@ class Display_Users(tk.Tk):
         #Geometria básica
         self.geometry("900x600")
         self.resizable(width="TRUE", height="TRUE")
-         # Adicionando uma imagem de fundo...como fazer isso? Se colocar self, da erro
-        #self.background_image = PhotoImage(file="View/football_background.png")
-        #self.background_label = tk.Label(tk.Toplevel(), image=self.background_image)
-        #self.background_label.place(relwidth=1, relheight=1)
+        #barra de pesquisar usuário
+        self.pesquisa_label = tk.Label(self, text="Pesquisar Usuário:", bg="#F0F0F0", font=("Arial", 12))
+        self.usuario_pesquisado_var = tk.StringVar()
+        self.entry_usuario_pesquisado = tk.Entry(self, font=("Arial", 14), textvariable=self.usuario_pesquisado_var)
+        self.pesquisa_label.place(relx=0.1, rely=0.4, anchor="center")
+        self.entry_usuario_pesquisado.place(relx=0.4, rely=0.4, anchor="center")
+
+        self.entry_usuario_pesquisado.bind('<Return>', self.pesquisar)
+
+         # Botões
+        self.button1 = tk.Button(self, text="Voltar", command=self.voltar, bg="blue", fg="white", font=("Arial", 14))
+        self.button1.place(relx=0.45, rely=0.6, anchor="center")
 
         #preciso mostrar uma tabela dinâmica
         #construindo a tabela
+        self.contruir_tabela(lista_users)
+        
+    def voltar(self):
+        self.destroy()
+    
+    def exemplo_item_selecionado_evento(self, event):
+        #fazendo igual ao exemplo por enquanto, para pegar a ideia
+        for selected_item in self.tabela.selection(): #retorna um objeto tabela_entry
+            item = self.tabela.item(selected_item) #retorna um dicionário com várias info
+            record = item['values']
+            showinfo(title='Informação', message=','.join(record))
+
+    
+    def tabela_selection(self):
+        seletc_item = self.tabela.selection()[0]
+        usuario = self.tabela.item(seletc_item, 'values')
+        return usuario
+            
+
+
+    def usuario_selecionado_evento(self, event):
+        #preciso abrir uma nova janela, dentro ou fora da main. Fora por enquanto
+        #preciso que as informações mostradas nessa janela seja editavel pelo usuário
+        #conferir se o usuário é ADM
+        #salvar os dados editados
+        
+        record = self.tabela_selection()
+            
+        window = tk.Toplevel(self)
+        window.geometry("200x100")
+        
+
+        user_label = tk.Label(window, text="Usuário: ", anchor="center")
+        user_label.grid(row=0, column=0)
+        user_info = tk.Label(window, text=record[0], anchor="center")
+        user_info.grid(row=0, column=1)
+        email_label = tk.Label(window, text="Email: ", anchor="center")
+        email_label.grid(row=1, column=0)
+        email_info = tk.Label(window, text=record[1], anchor="center")
+        email_info.grid(row=1, column=1)
+
+        #TODO fazer um dropdown com os tipos de informação
+        privilege_label = tk.Label(window, text="Privilégio: ", anchor="center")
+        privilege_label.grid(row=2, column=0)
+        #privilege_var = tk.StringVar()
+        privilege_info = tk.Label(window, text = record[2], anchor="center")
+        privilege_info.grid(row=2, column=1)
+
+        alterar_button = tk.Button(window, text="Alterar Privilegio", command=self._alterar_privilegio)
+        alterar_button.grid(row=4, column=0)
+
+        deletar_buttor = tk.Button(window, text="Deletar Usuário", command=self._deletar_usuario, bg="red", fg="white")
+        deletar_buttor.grid(row=4, column=2)
+
+        window.mainloop()
+
+    def _alterar_privilegio(self):
+        self.controller.adm_alterar_privilegio()
+        print("Work in progress")
+
+
+    def _deletar_usuario(self):
+        print("Work in progress")
+        
+    def inserir_item(self,tabela, item):
+        #está apenas inserindo, não checa se é um usuário válido
+        #seria bom se tratasse dos casos de uso corrompidos e talz
+        tabela.insert('', 'end', text='1', values=item)
+    
+    def main_display_users(self):
+        #preciso ler do banco de dados e mostrar aqui
+        self.title("TaBedi")
+        self.update()
+    
+    def pesquisar(self, event):
+        parametro = self.entry_usuario_pesquisado.get()
+        self.controller.adm_pesquisa_usuario(parametro)
+
+    def contruir_tabela(self, lista_users):
+        try:
+            self.tabela.destroy()
+        except AttributeError:
+            print("Criando nova tabela?")
+        
         self.colunas = ("usuario", "email", "privilegio")
         self.tabela = ttk.Treeview(self, columns=self.colunas, show='headings')
         self.tabela.heading("usuario", text="Usuário")
         self.tabela.heading("email", text="Email")
         self.tabela.heading("privilegio", text="Privilégio")
+        #TODO fazer que seja uma tabela com scroll --Evaldo
 
         for user in lista_users:
-            self.inserir_item(user)
+            self.inserir_item(self.tabela, user)
         
-        self.tabela.bind("<ButtonPress>", self.exemplo_item_selecionado_evento)
+        self.tabela.bind('<<TreeviewSelect>>', self.usuario_selecionado_evento)
+        #self.tabela.bind("<ButtonPress>", self.exemplo_item_selecionado_evento)
+        
         self.tabela.pack()
 
-    def exemplo_item_selecionado_evento(self, event):
-        #fazendo igual ao exemplo por enquanto, para pegar a ideia
-        for selected_item in self.tabela.selection():
-            item = self.tabela.item(selected_item)
-            record = item['values']
-            showinfo(title='Informação', message=','.join(record))
+    def mostrar_categorias_usuarios(self, enum_categorias):
+        window = tk.Toplevel(self)
+        window.title("Categorias de Usuário")
 
-    def inserir_item(self, item):
-        #está apenas inserindo, não checa se é um usuário válido
-        #seria bom se tratasse dos casos de uso corrompidos e talz
-        self.tabela.insert('', 'end', text='1', values=item)
+        
+        radiobuttons = []
+        for categoria in enum_categorias:
+            radiobutton = tk.Radiobutton(window, text=f"Privilegio de {categoria}", value=categoria)
+            radiobutton.pack()
+            radiobuttons.append(radiobutton)
+            
+        selected_option = tk.StringVar(window)
+
+        for radiobutton in radiobuttons:
+            radiobutton.config(variable=selected_option)
+
+        select_button = tk.Button(window, text="Selecionar", command=lambda: self._close_return_button(window, selected_option))
+        select_button.pack()
     
-    def main_display_users(self):
-        #preciso ler do banco de dados e mostrar aqui
-        self.title("TaBedi")
-        self.mainloop()
+    def _close_return_button(self, window, value):
+        #print("valor selecionado: ", value.get())
+        self.controller.recebe_valor_de_janela(value.get())
+        window.destroy()
+        return value.get()
     

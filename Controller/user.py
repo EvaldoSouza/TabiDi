@@ -1,13 +1,21 @@
 from enum import Enum
 import abc
+from Model import model
 #Esquecer um pouco do state patter por enquanto!
 
 #definindo os privilégios como um enum
-class UserPrivilege(enumerate):
+#tentando fazer algo maneiro...não deu certo
+class ExtendedEnum(Enum):
+    @classmethod
+    def list(cls):
+        return list(map(lambda c: c.value, cls))
+class UserPrivilege(ExtendedEnum):
     LNC = "Leitor Não Cadastrado"
     LER = "Leitor"
     EDI = "Editor"
     ADM = "Administrador"
+
+
 
 
 #quando o controller inicializar, ele cria um user, com o privilégio básico
@@ -54,8 +62,10 @@ class LeitorNC(User):
         pass
 
 class Leitor(User):
-    def __init__(self) -> None:
+    def __init__(self, username, email) -> None:
         self.privilegio = UserPrivilege.LER
+        self.username = username
+        self.email = email
    
 
 class Editor(User):
@@ -78,19 +88,30 @@ class Editor(User):
     #nenhum método precisa ser implementado por enquanto, eu acho
 
 class Administrador(Editor, User):
-    def __init__(self) -> None:
+    def __init__(self, username, email, db_model) -> None:
         self.privilegio = UserPrivilege.ADM
+        self.username = username
+        self.email = email
+        self.database = db_model
     
 
     #proprios
-    def pesquisar_usuario():
-        pass
+    def pesquisar_usuario(self, username):
+
+        #recebe uma string
+        #chama uma querry do banco
+        resultados = self.database.search_user(username)
+        return resultados
     
     def selecionar_usuario():
+        #trazer o método do controller para cá
         pass
 
-    def alterar_privilegio():
+    def alterar_privilegio(self, novo_privilegio):
+        print("Class ADM, privilegio recebido: ", novo_privilegio)
+        #atualizar o banco
         pass
 
     def deletar_usuario():
+        #atualizar o banco
         pass
