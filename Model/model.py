@@ -1,6 +1,7 @@
 import sqlite3
 from Controller.user import UserPrivilege
 
+#Vai virar um monte de models!
 class Model:
     def __init__(self, db_name):
         self.conn = sqlite3.connect(db_name)
