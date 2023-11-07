@@ -4,7 +4,7 @@ class Leitor:
     def __init__(self, db_path, nome):
         self.db_path = db_path
         self.nome = nome
-        self.leitor_id = self.obter_leitor_id()
+        self.leitor_id = self.obter_leitor_id() #Isso provavelmente vai para a classe User
         if self.leitor_id is None:
             raise ValueError("Usuário não encontrado")
 
@@ -23,7 +23,7 @@ class Leitor:
         except Exception as e:
             print(f"Erro ao obter o leitor_id: {e}")
             return None
-
+#Pq criar uma tabela de parametros de busca? Consulta SQL, para fazer aquela parte de salvar buscas passadas
     def create_table(self):
         try:
             with sqlite3.connect(self.db_path) as conn:

@@ -5,11 +5,11 @@ import sqlite3
 #deve ser executada toda ver que se for tentar logar
 def check_credentials(username, password):
         # Connect to the SQLite database
-        conn = sqlite3.connect('db_usuario.sqlite')
+        conn = sqlite3.connect('Database/db_usuarios.sqlite')
 
         # Create a cursor object to execute SQL queries
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM usuario WHERE nome = ?", (username))
+        cursor.execute("SELECT * FROM usuario WHERE nome = ?", (username,))
         user = cursor.fetchone() #retorna uma lista de informações
         if user:
             #mandando usuário, email, privilégio

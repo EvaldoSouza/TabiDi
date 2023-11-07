@@ -65,11 +65,11 @@ class Tela_Cadastro(tk.Toplevel):
 
         if password == '' or email == '' or username == '':
             self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-        elif self.controller:
-            if self.controller.registrar_novo_usuario(username,email, password):
-                self.resultado_label.config(text="Registro bem-sucedido", fg="green")
+        elif self.controller: #checa o controller ativo
+            if self.controller.registrar_novo_usuario(username,email, password): #tenta registrar um usuario 
+                self.resultado_label.config(text="Registro bem-sucedido", fg="green") #se deu certo, mostra que funcionou
             else:
-                self.resultado_label.config(text="Usuário já existe", fg="red")
+                self.resultado_label.config(text="Usuário já existe", fg="red")#se nao deu, mostra que falhou
 
 
     def cadastro_view(self):

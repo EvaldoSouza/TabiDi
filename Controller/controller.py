@@ -1,5 +1,5 @@
 from View import tela_login,tela_cadastro, display_users, tela_user, tela_editor
-from Model import model
+from Model import model, registration_functions, login_functions
 from Controller import user
 
 class Controller:
@@ -19,8 +19,8 @@ class Controller:
         self.tela_camp.ranking()
     
     def checar_credenciais(self, usuario, senha):
-        #TODO FAZER UM TRATAMENTO DA VALIDADE DOS DADOS, COMO TAMANHO E CARACTERES ESPECIAIS --Evaldo
-        user_data = self.model.check_credentials(usuario,senha)
+        #user_data = self.model.check_credentials(usuario,senha)
+        user_data = login_functions.check_credentials(usuario, senha)
         if user_data:
             #gambs do momento, não deve abrir direto a janela de display users!
             #o user é a seguinte estrutura ('ee', 'ee@email', 'ADM')
@@ -29,7 +29,7 @@ class Controller:
                 case user.UserPrivilege.ADM.value:
                     self.usuario_principal = user.Administrador(user_data[0], user_data[1], self.model)            
                     users = self.buscar_todos_usuarios()
-                    self.display_users = display_users.Display_Users(self, users)
+                    self.display_users = display_users.Display_Users(self, users) #TODO mudar essa referencia para admin_display_users
                     self.tela_login.fechar_tela_login()
                     self.display_users.main_display_users()
 
@@ -55,7 +55,10 @@ class Controller:
 
     def registrar_novo_usuario(self,username, email, password):
         #TODO FAZER UM TRATAMENTO DA VALIDADE DOS DADOS, COMO TAMANHO E CARACTERES ESPECIAIS --Evaldo
-        return self.model.register_user(username, email, password)
+        #chama a função do model. Essa função no model já não funciona mais!
+        #return self.model.register_user(username, email, password)
+
+        return registration_functions.register_user(username, email, password)
     
     def fechar_database(self):
         #BUG DESCOBRIR ONDE PRECISA FECHAR O BANCO DE DADOS --Evaldo
