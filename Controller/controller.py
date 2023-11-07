@@ -5,7 +5,7 @@ from Controller import user
 class Controller:
     def __init__(self):
         self.model = model.Model("TabeDi")
-        self.usuario_principal = user.LeitorNC()
+        self.usuario_principal = user.Leitor()
         self.tela_login = tela_login.Tela_Login(self)
         
     def main_controller(self):
@@ -27,14 +27,12 @@ class Controller:
             print(user_data)
             match user_data[2]:
                 case user.UserPrivilege.ADM.value:
-                    self.usuario_principal = user.Administrador(user_data[0], user_data[1], self.model)            
+                    self.usuario_principal = user.Administrador()            
                     users = self.buscar_todos_usuarios()
                     self.display_users = display_users.Display_Users(self, users) #TODO mudar essa referencia para admin_display_users
                     self.tela_login.fechar_tela_login()
                     self.display_users.main_display_users()
 
-                case user.UserPrivilege.LNC.value:
-                    print("LeitorNC Uma janela linda que ainda não existe!")
                 
                 case user.UserPrivilege.LER.value:
                     tela_user.Tela_User(self.usuario_principal)
