@@ -1,12 +1,12 @@
-from Controller import controller
+from Controller import controller_inicial
 
 
 class Main:
     @staticmethod
     def run():
-        controlador = controller.Controller()
+        controlador = controller_inicial.ControllerInicial()
 
-        controlador.main_controller()
+        controlador.chama_tela_login()
 
 if __name__ == '__main__':
     Main.run()

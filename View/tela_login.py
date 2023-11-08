@@ -1,11 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
-from .tela_cadastro import Tela_Cadastro
-from .tela_user import Tela_User
+from .tela_cadastro import TelaCadastro
+from View.leitor_tela_principal import TelaPrincipal
+from Controller import user_controller
 
 
-class Tela_Login(tk.Tk):
+class TelaLogin(tk.Tk):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
@@ -46,7 +47,7 @@ class Tela_Login(tk.Tk):
         self.login_button.place(relx=0.40, rely=0.6, anchor="center")
         
         # Botão de registro
-        self.register_button = tk.Button(self, text="Quero registrar", command=self.nova_aba, bg="blue", fg="white", font=("Arial", 14))
+        self.register_button = tk.Button(self, text="Quero registrar", command=self.tela_registro, bg="blue", fg="white", font=("Arial", 14))
         self.register_button.place(relx=0.55, rely=0.6, anchor="center")
 
         #Mostrar resultado de Login
@@ -54,24 +55,9 @@ class Tela_Login(tk.Tk):
         self.resultado_label.place(relx=0.5, rely=0.7, anchor="center") #Conferir se está no lugar certo --Evaldo
 
     #exemplo de lógica a ser seguida. Não passar objetos StringVar para o controller, pois são mais apropriados para a interface
-    def enter_button_clicked(self):
-        if self.tela_main.controller:
-            self.tela_main.controller.enter_login(self.email_var.get(), self.senha_var())
-    
-    def registrar(self):
-        username = self.username_var.get()
-        password = self.password_var.get()
-
-        if password == '' or username == '':
-            self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-        elif self.tela_main.controller:
-            if self.tela_main.controller.registrar_novo_usuario(username, password):
-                self.resultado_label.config(text="Registro bem-sucedido", fg="green")
-
-                self.abrir_janela_usuario()
-                #self.withdraw()
-            else:
-                self.resultado_label.config(text="Usuário já existe", fg="red")
+    # def enter_button_clicked(self):
+    #     if self.tela_main.controller:
+    #         self.tela_main.controller.enter_login(self.email_var.get(), self.senha_var())
 
     def login(self):
         #deve chamar o método login do controller, e passar os dados para ele
@@ -84,23 +70,32 @@ class Tela_Login(tk.Tk):
             self.resultado_label.config(text="Um dos campos está vazio", fg="red")
         elif self.controller:
             if self.controller.checar_credenciais(username, password):
-                #TODO Chamar tela do Usuário --Evaldo
-                #self.resultado_label.config(text="Login deu Certo!", fg="green")
-                pass
+                #se pode tela chamar tela, que eu acho que pode, chamar a tela principal aqui
+                self.abrir_janela_usuario(username)
             else:
                 self.resultado_label.config(text="Usuario ou Senha Incorretos", fg="red")
         else:
-            #FAZER TRATAMENTO DE ERRO, QUANDO CONTROLLER NÃO ESTIVER INICIALIZADO
+            #TODO FAZER TRATAMENTO DE ERRO, QUANDO CONTROLLER NÃO ESTIVER INICIALIZADO
             self.resultado_label.config(text="Controller Não Inicializado", fg="red")
 
-    def nova_aba(self):
-        segunda_janela = Tela_Cadastro(self.controller)
+    def tela_registro(self):
+        segunda_janela = TelaCadastro(self.controller)
         segunda_janela.title("Janela de Registro")
         #self.withdraw()
     
-    def abrir_janela_usuario(self):
-            tela_usuario = Tela_User(self.tela_main.controller)  # Crie uma instância da classe Tela_User
-            tela_usuario.mainloop()
+    def abrir_janela_usuario(self, nome):
+            #temos um problema de design!
+            #há botões diferentes para cada tipo de usuário na janela principal
+            #fazer três janelas diferentes para resolver isso
+            #O user_controller que vai fazer essa lógica
+            #e fechar tmb essa janela
+            #então essa função não chama outra tela, mas sim um controller
+            controller = user_controller.UserController()
+            controller.set_infos_usuario(nome)
+            controller.chamar_janela_correspondente()
+            # tela_usuario = TelaPrincipal(self.tela_main.controller)  # Crie uma instância da classe TelaPrincipal
+            # tela_usuario.mainloop()
+            self.fechar_tela_login()
 
     def login_view(self):
         self.title("TaBedi")

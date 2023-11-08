@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from .tela_editor_pesquisar import Tela_Editor_Pesquisar
-from Model import editor_model, leitor_model
+from Model import leitor_model
 
-class Tela_Editor(tk.Toplevel):
+class TelaPrincipal(tk.Toplevel):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
@@ -42,5 +42,5 @@ class Tela_Editor(tk.Toplevel):
     def vercamp(self):
         leitor = leitor_model.Leitor()
         leitor.set_db_path("Database/lista_campeonatos.db")
-        tela_pesquisar = Tela_Editor_Pesquisar(self.controller, leitor.retorna_campeonatos() ) #TODO tá certo o retorno da função retorna_campeonatos?
+        tela_pesquisar = Tela_Editor_Pesquisar(self.controller, leitor.retorna_campeonatos() ) #TODO mudar o nome dessa tela
         tela_pesquisar.mainloop()

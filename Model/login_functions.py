@@ -21,7 +21,7 @@ def check_credentials(username, password):
             else:
                  #não fechar a coneção se estiver
                  conn.close()
-                 return user[0] # retornando apenas o nome em caso de senha incorreta
+                 return 0 # retornando 0 em caso de senha incorreta
         else:
             #se não existe, cursor.fetchone() retorna None
             conn.close()

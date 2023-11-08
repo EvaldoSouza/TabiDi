@@ -1,5 +1,5 @@
 import sqlite3
-from Controller.user import UserPrivilege
+from Usuarios.user import UserPrivilege
 
 #TODO tratar os dados aqui...se for uma boa ideia
 #por ser uma função, não precisa criar um objeto! Bem legal

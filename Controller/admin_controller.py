@@ -1,4 +1,4 @@
-from user import UserPrivilege
+from Usuarios.user import UserPrivilege
 from Model.admin_model import Admin_Model as model
 #essa oo ta me matando, não sei se devo importar editor e user no admin
 #vou pelo mais seguro e mais burro, e não importar nada

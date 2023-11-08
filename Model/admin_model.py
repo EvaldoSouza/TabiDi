@@ -1,4 +1,4 @@
-from Controller import user
+from Usuarios import user
 import sqlite3  # If you're using SQLite
 
 class Admin_Model:

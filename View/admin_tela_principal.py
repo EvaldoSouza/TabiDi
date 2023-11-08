@@ -1,0 +1,1 @@
+#TODO fazer essa tela com os botões próprios do admin para manipular campeonatos e usuários

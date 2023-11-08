@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter import Toplevel
 
-class Tela_Cadastro(tk.Toplevel):
+class TelaCadastro(tk.Toplevel):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
@@ -46,7 +46,7 @@ class Tela_Cadastro(tk.Toplevel):
         self.entry_password.place(relx=0.5, rely=0.5, anchor="center")
         
         # Botão de voltar
-        self.back_button = tk.Button(self, text="Fazer Login", command=self.fechar_tela_cadastro, bg="green", fg="white", font=("Arial", 14))
+        self.back_button = tk.Button(self, text="Fazer Login", command=self.fechar_tela_cadastro, bg="yellow", fg="white", font=("Arial", 14))
         self.back_button.place(relx=0.40, rely=0.6, anchor="center")
         
         # Botão de registro
@@ -78,4 +78,4 @@ class Tela_Cadastro(tk.Toplevel):
 
     def fechar_tela_cadastro(self):
         self.destroy()
-        self.controller.show_tela_login()
+        self.controller.chama_tela_login()

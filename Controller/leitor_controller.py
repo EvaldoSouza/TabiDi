@@ -1,4 +1,4 @@
-from user import UserPrivilege
+from Usuarios.user import UserPrivilege
 from Model.leitor_model import Leitor as model 
 
 class LeitorController:
