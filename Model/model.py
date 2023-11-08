@@ -5,7 +5,7 @@ from Controller.user import UserPrivilege
 class Model:
     def __init__(self, db_name):
         self.conn = sqlite3.connect(db_name)
-        self.__create_table()
+        #self.__create_table()
 
     def __create_table(self):
         cursor = self.conn.cursor()

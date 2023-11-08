@@ -4,7 +4,7 @@ from Controller import user
 
 class Controller:
     def __init__(self):
-        self.model = model.Model("TabeDi")
+        self.model = model.Model("Database/db_usuarios.sqlite")
         self.usuario_principal = user.Leitor()
         self.tela_login = tela_login.Tela_Login(self)
         
@@ -32,7 +32,6 @@ class Controller:
                     self.display_users = display_users.Display_Users(self, users) #TODO mudar essa referencia para admin_display_users
                     self.tela_login.fechar_tela_login()
                     self.display_users.main_display_users()
-
                 
                 case user.UserPrivilege.LER.value:
                     tela_user.Tela_User(self.usuario_principal)
@@ -40,7 +39,7 @@ class Controller:
                 case user.UserPrivilege.EDI.value:
                     tela_editor.Tela_Editor(self.usuario_principal)
                 case _:
-                    print("Algo deu errado")
+                    print("Algo deu errado --controller")
             
             return True
 

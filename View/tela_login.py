@@ -85,7 +85,8 @@ class Tela_Login(tk.Tk):
         elif self.controller:
             if self.controller.checar_credenciais(username, password):
                 #TODO Chamar tela do Usuário --Evaldo
-                self.resultado_label.config(text="Login deu Certo!", fg="green")
+                #self.resultado_label.config(text="Login deu Certo!", fg="green")
+                pass
             else:
                 self.resultado_label.config(text="Usuario ou Senha Incorretos", fg="red")
         else:
