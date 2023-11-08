@@ -1,23 +1,22 @@
-from Usuarios import user
 import sqlite3  # If you're using SQLite
 
-class Admin_Model:
+class AdminModel:
     def __init__(self, db_path):
         self.db_path = db_path
         self.conn = sqlite3.connect(db_path)  # Connect to the database
         self.cursor = self.conn.cursor()
 
-    def get_all_users(self):
+    def consultar_todos_usuario(self):
         self.cursor.execute("SELECT nome, email, privilegio FROM usuarios")
         self.all_users = self.cursor.fetchall()
         return self.all_users #retorna uma lista de dicionarios
 
-    def get_user_by_id(self, user_id):
+    def pesquisar_usuario(self, user_id):
         self.cursor.execute("SELECT nome, email, privilegio FROM usuarios WHERE nome = ?", (user_id))
         self.one_user = self.cursor.fetchall()
         return self.one_user
 
-    def delete_user(self, user_id):
+    def deletar_usuario(self, user_id):
         try:
             self.cursor.execute("DELETE FROM usuarios WHERE nome = ?", (user_id))
             self.conn.commit()

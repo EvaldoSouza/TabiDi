@@ -7,8 +7,9 @@
 # - Chamar a tela principal quando o login for bem sucedido
 #   -Para isso, chamar a função login 
 
+from Persistencia import login_functions
 from View import tela_login
-from Model import login_functions, registration_functions
+from Persistencia import registration_functions
 
 class ControllerInicial:
 

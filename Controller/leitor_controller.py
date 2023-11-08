@@ -1,32 +1,35 @@
 from Usuarios.user import UserPrivilege
-from Model.leitor_model import Leitor as model 
+from Persistencia import leitor_queries
 
 class LeitorController:
-    def __init__(self, username, email) -> None:
-        self.privilegio = UserPrivilege.LEITOR
-        self.username = username
-        self.email = email
+    def __init__(self, db_path):
+        #TODO tá feio, melhorar isso
+        self.leitor = leitor_queries.LeitorQueries(db_path)
 
-    def salvar_parametros_busca(self, leitor_id, parametros):
-        check = model.save_search_params(leitor_id, parametros)
-        if check:
-            print("Parâmetros de busca salvos com sucesso")
+    def buscar_informacoes_campeonato(self):
+        campeonato = self.leitor.search_league_info()
+        if campeonato:
+            # Lógica para processar os dados do campeonato, se necessário
+            return campeonato
         else:
-            print("Erro ao salvar parâmetros de busca")
-        return check
+            return "Campeonato não encontrado."
 
-    def buscar_informacoes_campeonato(self, leitor_id):
-        resultado = model.search_league_info(leitor_id)
-        if resultado:
-            return resultado
+    def alterar_senha(self, user_id, new_password):
+        if self.leitor.change_password(user_id, new_password):
+            return "Senha alterada com sucesso."
         else:
-            print("Erro ao buscar informações do campeonato")
-            return None
+            return "Erro ao alterar a senha."
 
-    def alterar_senha(self, user_id, nova_senha):
-        check = model.change_password(user_id, nova_senha)
-        if check:
-            print("Senha alterada com sucesso")
+    def listar_campeonatos(self):
+        campeonatos = self.leitor.retorna_campeonatos()
+        if campeonatos:
+            return campeonatos
         else:
-            print("Erro ao alterar a senha")
-        return check
+            return "Nenhum campeonato encontrado."
+
+    def listar_times(self):
+        times = self.leitor.retorna_times()
+        if times:
+            return times
+        else:
+            return "Nenhum time encontrado."

@@ -1,27 +1,10 @@
 import sqlite3
 
-class Leitor:
-    
-    def obter_leitor_id(self):
-        try:
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                cursor.execute("SELECT nome FROM USUARIO WHERE nome = ?", (self.nome,))
-                usuario = cursor.fetchone()
-                if usuario:
-                    return self.nome
-                else:
-                    return None
-        except Exception as e:
-            print(f"Erro ao obter o leitor_id: {e}")
-            return None
-        
-    def set_infos(self, nome, id):
-        self.nome = nome
-        self.id = id
-
-    def set_db_path(self, path):
-        self.db_path = path
+class LeitorQueries:
+    #TODO consertar as consultas SQL
+    def __init__(self, db_path) -> None:
+        self.db_path = db_path
+        pass
 
     def search_league_info(self):
         try:

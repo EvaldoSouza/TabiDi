@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from .tela_editor_pesquisar import Tela_Editor_Pesquisar
-from Model import leitor_model
+from Persistencia import leitor_queries
 
-class TelaPrincipal(tk.Toplevel):
-    def __init__(self, controller):
+class LeitorTelaPrincipal(tk.Toplevel):
+    def __init__(self, controller, usuario):
         super().__init__()
         self.controller = controller
         # Geometria básica
@@ -40,7 +40,7 @@ class TelaPrincipal(tk.Toplevel):
         self.destroy()
 
     def vercamp(self):
-        leitor = leitor_model.Leitor()
-        leitor.set_db_path("Database/lista_campeonatos.db")
+        db_path = "Database/lista_campeonatos.db"
+        leitor = leitor_queries.LeitorQueries(db_path)
         tela_pesquisar = Tela_Editor_Pesquisar(self.controller, leitor.retorna_campeonatos() ) #TODO mudar o nome dessa tela
         tela_pesquisar.mainloop()

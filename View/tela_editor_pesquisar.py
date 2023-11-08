@@ -5,15 +5,13 @@ import os
 
 from View.tela_editcamp import Tela_EditCamp
 from .tela_editor_novocamp import Tela_Editor_NovoCamp
-from Model import leitor_model
+from Controller import leitor_controller
 
 
 
 class Tela_Editor_Pesquisar(tk.Toplevel):
     def __init__(self, controller, lista_campeonatos):
         super().__init__()
-        #isso tá certo? Provavelmente vai mudar mais pra frente, mais tentar assim por enquanto
-        self.leitor = leitor_model.Leitor()
         #para trabalhar com o campeonato selecionado
         self.selected_campeonato = None  # Variable to store the selected campeonato
 
@@ -119,8 +117,10 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
             print(f"Selected campeonato: {name} --tela_editor_pesquisar")
             campeonato_db = "Database/"+ name +".db"
             if os.path.exists(campeonato_db):
-                self.leitor.set_db_path(campeonato_db)
-                times= self.leitor.retorna_times()
+                #self.leitor.set_db_path(campeonato_db)
+                #times= self.leitor.retorna_times()
+                leitor = leitor_controller.LeitorController(campeonato_db)
+                times = leitor.listar_times()
                 
                 #vem uma lista de tuplas, preciso converter para uma lista de dicionários
                 lista_times = []

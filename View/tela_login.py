@@ -2,9 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
 from .tela_cadastro import TelaCadastro
-from View.leitor_tela_principal import TelaPrincipal
+from View.leitor_tela_principal import LeitorTelaPrincipal
 from Controller import user_controller
-
+from Model import model
+from View import admin_tela_principal, editor_tela_principal, leitor_tela_principal
+from Controller import admin_controller, editor_controller, leitor_controller
+from Usuarios import user
 
 class TelaLogin(tk.Tk):
     def __init__(self, controller):
@@ -91,10 +94,22 @@ class TelaLogin(tk.Tk):
             #e fechar tmb essa janela
             #então essa função não chama outra tela, mas sim um controller
             controller = user_controller.UserController()
-            controller.set_infos_usuario(nome)
-            controller.chamar_janela_correspondente()
-            # tela_usuario = TelaPrincipal(self.tela_main.controller)  # Crie uma instância da classe TelaPrincipal
-            # tela_usuario.mainloop()
+            email = controller.consultar_email(nome)
+            privilegio = controller.consultar_privilegio(nome)
+            usuario = model.User(nome, '*', email, privilegio)
+            
+            #inicializando a tela com um caso base
+            
+            tela_usario = leitor_tela_principal.LeitorTelaPrincipal(controller, usuario)
+                
+            if usuario.privilegio == user.UserPrivilege.EDI:
+                tela_usario = editor_tela_principal()
+
+            elif usuario.privilegio == user.UserPrivilege.ADM:
+                tela_usario = admin_tela_principal()
+
+            #fazer a logica de chamar telas aqui! Não pode ter nada de tela no controller
+            tela_usario.mainloop()
             self.fechar_tela_login()
 
     def login_view(self):
