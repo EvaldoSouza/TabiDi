@@ -1,27 +1,22 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
+import os
 
 from View.tela_editcamp import Tela_EditCamp
 from .tela_editor_novocamp import Tela_Editor_NovoCamp
+from Model import leitor_model
 
-lista_campeonatos = [
-    #TODO Puxar do banco de dados
-    {"nome": "Campeonato 1", "descricao": "Descrição do Campeonato 1"},
-    {"nome": "Campeonato 2", "descricao": "Descrição do Campeonato 2"},
-]
-classificacao_campeonato = [
-    #TODO Puxar do banco de dados
-    {"nome": "Time A", "pontos": 12, "vitorias": 4, "derrotas": 2, "empates": 0},
-    {"nome": "Time B", "pontos": 10, "vitorias": 3, "derrotas": 1, "empates": 1},
-    {"nome": "Time C", "pontos": 8, "vitorias": 2, "derrotas": 2, "empates": 2},
-    {"nome": "Time D", "pontos": 6, "vitorias": 1, "derrotas": 3, "empates": 3},
-    {"nome": "Time E", "pontos": 4, "vitorias": 0, "derrotas": 4, "empates": 4},
-]
+
 
 class Tela_Editor_Pesquisar(tk.Toplevel):
     def __init__(self, controller, lista_campeonatos):
         super().__init__()
+        #isso tá certo? Provavelmente vai mudar mais pra frente, mais tentar assim por enquanto
+        self.leitor = leitor_model.Leitor()
+        #para trabalhar com o campeonato selecionado
+        self.selected_campeonato = None  # Variable to store the selected campeonato
+
         self.controller = controller
         self.geometry("900x600")
         self.resizable(width="TRUE", height="TRUE")
@@ -60,15 +55,23 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         lista_scrollbar = tk.Scrollbar(lista_frame, orient="vertical")
         lista_scrollbar.pack(side="right", fill="y")
 
-        lista_campeonatos_listbox = tk.Listbox(lista_frame, yscrollcommand=lista_scrollbar.set, width=40, height=10, font=("Arial", 14))
-        lista_campeonatos_listbox.pack(side="left", fill="both", expand=True)
+        self.lista_campeonatos_listbox = tk.Listbox(lista_frame, yscrollcommand=lista_scrollbar.set, width=40, height=10, font=("Arial", 14))
+        self.lista_campeonatos_listbox.pack(side="left", fill="both", expand=True)
 
         for campeonato in lista_campeonatos:
-            nome = campeonato["nome"]
-            descricao = campeonato["descricao"]
-            lista_campeonatos_listbox.insert("end", f"{nome}: {descricao}")
+            nome = campeonato[0]
+            ano = campeonato[1]
+            self.lista_campeonatos_listbox.insert("end", f"{nome}: {ano}")
 
-        lista_scrollbar.config(command=lista_campeonatos_listbox.yview)
+        lista_scrollbar.config(command=self.lista_campeonatos_listbox.yview)
+        self.lista_campeonatos_listbox.bind("<<ListboxSelect>>", self.on_listbox_select)
+
+    def on_listbox_select(self, event):
+        # Get the selected item from the listbox
+        selected_index = self.lista_campeonatos_listbox.curselection()
+        if selected_index:
+            self.selected_campeonato = self.lista_campeonatos_listbox.get(selected_index)
+
 
 
     def construir_tabela_campeonatos(self, classificacao_campeonato):
@@ -76,15 +79,17 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
             self.tabela_campeonatos.destroy()
         except AttributeError:
             print("Criando nova tabela de campeonatos?")
+            print(classificacao_campeonato)
 
-        colunas_campeonatos = ("nome", "pontos", "vitorias", "derrotas", "empates")
+        #colunas_campeonatos = ("nome", "pontos", "vitorias", "derrotas", "empates") sem os pontos por enquanto
+        colunas_campeonatos = ("nome", "vitorias", "derrotas", "empates")
         self.tabela_campeonatos = ttk.Treeview(self, columns=colunas_campeonatos, show='headings')
         
         for coluna in colunas_campeonatos:
             self.tabela_campeonatos.heading(coluna, text=coluna.capitalize())  # Use o nome da coluna como título
 
         for time in classificacao_campeonato:
-            self.tabela_campeonatos.insert('', 'end', values=(time["nome"], time["pontos"], time["vitorias"], time["derrotas"], time["empates"]))
+            self.tabela_campeonatos.insert('', 'end', values=(time["nome"],  time["vitorias"], time["derrotas"], time["empates"]))
 
         tela_editorcamp = Tela_EditCamp(classificacao_campeonato)
         tela_editorcamp.mainloop()
@@ -107,8 +112,33 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
 
     def ranking(self):
         # Chame construir_tabela_campeonatos para criar a tabela antes de acessá-la
-        self.construir_tabela_campeonatos(classificacao_campeonato)
-        campeonato_selecionado = self.tabela_selection_campeonato()
-        if campeonato_selecionado:
-            tela_editorcamp = Tela_EditCamp(self.controller, classificacao_campeonato)
-            tela_editorcamp.mainloop()
+        
+        #seguindo a ideia de que o editor vai criar um campeonato,e que o nome dele sera o msm do arquivo
+        if self.selected_campeonato:
+            name = self.selected_campeonato.split(":")[0].strip()
+            print(f"Selected campeonato: {name} --tela_editor_pesquisar")
+            campeonato_db = "Database/"+ name +".db"
+            if os.path.exists(campeonato_db):
+                self.leitor.set_db_path(campeonato_db)
+                times= self.leitor.retorna_times()
+                
+                #vem uma lista de tuplas, preciso converter para uma lista de dicionários
+                lista_times = []
+                for tupla in times:
+                    dicionario = {
+                        "nome": tupla[0],
+                        "vitorias": tupla[1],
+                        "derrotas": tupla[2],
+                        "empates": tupla[3]
+                    }
+                    lista_times.append(dicionario)
+
+                #TODO fazer a lógica para calcular os pontos baseados nos resultados
+                self.construir_tabela_campeonatos(lista_times)
+                self.tabela_selection_campeonato()
+            else:
+                #TODO Tratar esse erro propriamente
+                print("Campeonato não existe em tela_editor_pesquisar")
+            # if campeonato_selecionado:
+            #     tela_editorcamp = Tela_EditCamp(self.controller, classificacao_campeonato)
+            #     tela_editorcamp.mainloop()

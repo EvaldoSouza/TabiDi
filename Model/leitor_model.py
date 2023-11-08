@@ -1,15 +1,7 @@
 import sqlite3
 
 class Leitor:
-    def __init__(self, db_path, nome):
-        self.db_path = db_path
-        self.nome = nome
-        self.leitor_id = self.obter_leitor_id() #Isso provavelmente vai para a classe User
-        if self.leitor_id is None:
-            raise ValueError("Usuário não encontrado")
-
-        self.create_table()
-
+    
     def obter_leitor_id(self):
         try:
             with sqlite3.connect(self.db_path) as conn:
@@ -23,30 +15,13 @@ class Leitor:
         except Exception as e:
             print(f"Erro ao obter o leitor_id: {e}")
             return None
-#Pq criar uma tabela de parametros de busca? Consulta SQL, para fazer aquela parte de salvar buscas passadas
-    def create_table(self):
-        try:
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                cursor.execute(f'''
-                    CREATE TABLE IF NOT EXISTS parametros_busca_{self.leitor_id} (
-                        parametros TEXT,
-                        PRIMARY KEY (parametros)
-                    )
-                ''')
-        except Exception as e:
-            print(f"Erro ao criar tabela de parâmetros de busca: {e}")
+        
+    def set_infos(self, nome, id):
+        self.nome = nome
+        self.id = id
 
-    def save_search_params(self, parametros):
-        try:
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                cursor.execute(f"INSERT OR REPLACE INTO parametros_busca_{self.leitor_id} (parametros) VALUES (?)", (parametros,))
-                conn.commit()
-                return True
-        except Exception as e:
-            print(f"Erro ao salvar os parâmetros de busca: {e}")
-            return False
+    def set_db_path(self, path):
+        self.db_path = path
 
     def search_league_info(self):
         try:
@@ -75,3 +50,26 @@ class Leitor:
         except Exception as e:
             print(f"Erro ao alterar a senha: {e}")
             return False
+
+    def retorna_campeonatos(self):
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute(f"SELECT * FROM campeonatos")
+                campeonatos = cursor.fetchall()
+                return campeonatos
+        except Exception as e:
+            print(f"Erro ao buscar informações do campeonato: {e}")
+            return None
+        
+    def retorna_times(self):
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute(f"SELECT nome_principal, vitorias, empates, derrotas FROM time")
+                times = cursor.fetchall()
+                return times
+        except Exception as e:
+            print(f"Erro ao buscar informações dos times: {e}")
+            return None
+        

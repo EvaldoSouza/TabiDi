@@ -1,12 +1,8 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from .tela_editor_pesquisar import Tela_Editor_Pesquisar
+from Model import editor_model, leitor_model
 
-lista_campeonatos = [
-    {"nome": "Campeonato 1", "descricao": "Descrição do Campeonato 1"},
-    {"nome": "Campeonato 2", "descricao": "Descrição do Campeonato 2"},
-    # Adicione mais campeonatos, se necessário
-]
 class Tela_Editor(tk.Toplevel):
     def __init__(self, controller):
         super().__init__()
@@ -44,5 +40,7 @@ class Tela_Editor(tk.Toplevel):
         self.destroy()
 
     def vercamp(self):
-        tela_pesquisar = Tela_Editor_Pesquisar(self.controller, lista_campeonatos)
+        leitor = leitor_model.Leitor()
+        leitor.set_db_path("Database/lista_campeonatos.db")
+        tela_pesquisar = Tela_Editor_Pesquisar(self.controller, leitor.retorna_campeonatos() ) #TODO tá certo o retorno da função retorna_campeonatos?
         tela_pesquisar.mainloop()

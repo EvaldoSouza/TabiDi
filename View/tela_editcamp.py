@@ -45,11 +45,11 @@ class Tela_EditCamp(tk.Toplevel):
 
         for time in classificacao_campeonato:
             nome = time["nome"]
-            pontos = time["pontos"]
+            #pontos = time["pontos"] sem pontos por enquanto
             vitorias = time["vitorias"]
             derrotas = time["derrotas"]
             empates = time["empates"]
-            self.tabela_campeonatos.insert("", "end", values=(nome, pontos, vitorias, derrotas, empates))
+            self.tabela_campeonatos.insert("", "end", values=(nome, vitorias, derrotas, empates))
 
         self.tabela_campeonatos.pack()
 
