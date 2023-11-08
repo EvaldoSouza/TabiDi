@@ -2,11 +2,12 @@ import tkinter as tk
 from tkinter import PhotoImage
 from .tela_editor_pesquisar import Tela_Editor_Pesquisar
 from Persistencia import leitor_queries
+from Controller import admin_controller, leitor_controller
 
 class LeitorTelaPrincipal(tk.Toplevel):
-    def __init__(self, controller, usuario):
+    def __init__(self, usuario):
         super().__init__()
-        self.controller = controller
+        self.usuario = usuario
         # Geometria básica
         self.title('Home - Editor')
         self.geometry("900x600")
@@ -40,7 +41,8 @@ class LeitorTelaPrincipal(tk.Toplevel):
         self.destroy()
 
     def vercamp(self):
+        #isso é uma função do leitor
         db_path = "Database/lista_campeonatos.db"
-        leitor = leitor_queries.LeitorQueries(db_path)
-        tela_pesquisar = Tela_Editor_Pesquisar(self.controller, leitor.retorna_campeonatos() ) #TODO mudar o nome dessa tela
+        leitor = leitor_controller.LeitorController(db_path)
+        tela_pesquisar = Tela_Editor_Pesquisar(leitor, leitor.listar_campeonatos() ) #TODO mudar o nome dessa tela
         tela_pesquisar.mainloop()

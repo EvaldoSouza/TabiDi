@@ -18,8 +18,8 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         self.controller = controller
         self.geometry("900x600")
         self.resizable(width="TRUE", height="TRUE")
-        self.title("Editor - Lista de Campeonatos")
-
+        #self.title("Editor - Lista de Campeonatos")
+        self.title("Lista de Campeonatos")
         self.tabela_campeonatos = None
 
         self.background_image = PhotoImage(file="View/img/football_background.png")
@@ -139,6 +139,4 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
             else:
                 #TODO Tratar esse erro propriamente
                 print("Campeonato não existe em tela_editor_pesquisar")
-            # if campeonato_selecionado:
-            #     tela_editorcamp = Tela_EditCamp(self.controller, classificacao_campeonato)
-            #     tela_editorcamp.mainloop()
+

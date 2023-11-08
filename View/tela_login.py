@@ -100,13 +100,13 @@ class TelaLogin(tk.Tk):
             
             #inicializando a tela com um caso base
             
-            tela_usario = leitor_tela_principal.LeitorTelaPrincipal(controller, usuario)
+            tela_usario = leitor_tela_principal.LeitorTelaPrincipal(usuario)
                 
             if usuario.privilegio == user.UserPrivilege.EDI:
-                tela_usario = editor_tela_principal()
+                tela_usario = editor_tela_principal.EditorTelaPrincipal(usuario)
 
             elif usuario.privilegio == user.UserPrivilege.ADM:
-                tela_usario = admin_tela_principal()
+                tela_usario = admin_tela_principal.AdminTelaPrincipal(usuario)
 
             #fazer a logica de chamar telas aqui! Não pode ter nada de tela no controller
             tela_usario.mainloop()

@@ -1,6 +1,6 @@
 from Persistencia import admin_queries
 
-class Admin_Controller:
+class AdminController:
     def __init__(self, db_path):
         self.admin_model = admin_queries.AdminModel(db_path)
 
