@@ -1,11 +1,21 @@
 from View import tela_login,tela_cadastro, display_users, tela_user, tela_editor
+<<<<<<< Updated upstream
 from Model import model
+=======
+from Model import model, registration_functions, login_functions, admin_model
+>>>>>>> Stashed changes
 from Controller import user
+from Controller.admin_control import Administrador
 
 class Controller:
     def __init__(self):
+<<<<<<< Updated upstream
         self.model = model.Model("TabeDi")
         self.usuario_principal = user.LeitorNC()
+=======
+        self.model = model.Model("Database/usuarios.sql")
+        self.usuario_principal = user.Leitor()
+>>>>>>> Stashed changes
         self.tela_login = tela_login.Tela_Login(self)
         
     def main_controller(self):
@@ -27,9 +37,15 @@ class Controller:
             print(user_data)
             match user_data[2]:
                 case user.UserPrivilege.ADM.value:
+<<<<<<< Updated upstream
                     self.usuario_principal = user.Administrador(user_data[0], user_data[1], self.model)            
                     users = self.buscar_todos_usuarios()
                     self.display_users = display_users.Display_Users(self, users)
+=======
+                    self.usuario_principal = user.Administrador()            
+                    users = self.model.get_all_users()
+                    self.display_users = display_users.Display_Users(self, users) #TODO mudar essa referencia para admin_display_users
+>>>>>>> Stashed changes
                     self.tela_login.fechar_tela_login()
                     self.display_users.main_display_users()
 
@@ -61,8 +77,8 @@ class Controller:
         #BUG DESCOBRIR ONDE PRECISA FECHAR O BANCO DE DADOS --Evaldo
         self.model.close()
     
-    def buscar_todos_usuarios(self):
-        return self.model.get_all_users()
+    #def buscar_todos_usuarios(self):
+    #    return self.model.get_all_users()
     
     def adm_pesquisa_usuario(self, username):
         
@@ -86,12 +102,6 @@ class Controller:
             print("Usuário não pode alterar privilégios!")
         
         print("SAINDO DO ESCOPO!")
-
-    def recebe_valor_de_janela(self, valor):
-        #está sendo alterada em outra janela
-        #super gambiarra, mudar depois
-        self.valor_recebido_de_janela = valor
-        return valor
     
     def show_tela_login(self):
         self.tela_login.login_view()

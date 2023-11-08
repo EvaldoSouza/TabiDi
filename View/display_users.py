@@ -3,12 +3,15 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter.messagebox import showinfo
+from Controller.admin_control import Administrador
+
 
 
 #TODO criar uma classe  Dislpay_Table e fazer herança, para padronizar a visualização
 class Display_Users(tk.Tk):
     def __init__(self, controller, lista_users):
         super().__init__()
+        self.admin = Administrador('admin','admin@email.com', db_path='Database/db_usuarios.sqlite')
         self.controller = controller
         #Geometria básica
         self.geometry("900x600")
@@ -22,6 +25,12 @@ class Display_Users(tk.Tk):
 
         self.entry_usuario_pesquisado.bind('<Return>', self.pesquisar)
 
+<<<<<<< Updated upstream
+=======
+        # Botões
+        self.button1 = tk.Button(self, text="Voltar", command=self.voltar, bg="blue", fg="white", font=("Arial", 14))
+        self.button1.place(relx=0.45, rely=0.6, anchor="center")
+>>>>>>> Stashed changes
 
         #preciso mostrar uma tabela dinâmica
         #construindo a tabela
@@ -81,7 +90,7 @@ class Display_Users(tk.Tk):
         window.mainloop()
 
     def _alterar_privilegio(self):
-        self.controller.adm_alterar_privilegio()
+        self.admin.alterar_privilegio()
         print("Work in progress")
 
 
@@ -98,9 +107,9 @@ class Display_Users(tk.Tk):
         self.title("TaBedi")
         self.update()
     
-    def pesquisar(self, event):
+    def pesquisar(self):
         parametro = self.entry_usuario_pesquisado.get()
-        self.controller.adm_pesquisa_usuario(parametro)
+        self.admin.pesquisar_usuario(parametro)
 
     def contruir_tabela(self, lista_users):
         try:
@@ -144,7 +153,7 @@ class Display_Users(tk.Tk):
     
     def _close_return_button(self, window, value):
         #print("valor selecionado: ", value.get())
-        self.controller.recebe_valor_de_janela(value.get())
+        self.admin.recebe_valor_de_janela(value.get())
         window.destroy()
         return value.get()
     

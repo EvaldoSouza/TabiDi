@@ -1,6 +1,5 @@
 from enum import Enum
 import abc
-from Model import model
 #Esquecer um pouco do state patter por enquanto!
 
 #definindo os privilégios como um enum
