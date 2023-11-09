@@ -10,8 +10,8 @@ class EditorController:
     def recuperar_times(self):
         return self.editor_queries.recuperar_times()
 
-    def atualizar_time(self, nome_principal, complemento, novo_tecnico, novo_estadio, nova_cidade, novas_vitorias, novos_empates, novas_derrotas):
-        return self.editor_queries.atualizar_time(nome_principal, complemento, novo_tecnico, novo_estadio, nova_cidade, novas_vitorias, novos_empates, novas_derrotas)
+    def atualizar_time(self, nome_principal, complemento, novas_vitorias, novos_empates, novas_derrotas):
+        return self.editor_queries.atualizar_time(nome_principal, complemento, novas_vitorias, novos_empates, novas_derrotas)
 
     def excluir_time(self, nome_principal, complemento):
         return self.editor_queries.excluir_time(nome_principal, complemento)
@@ -31,3 +31,17 @@ class EditorController:
 
     def fechar_conexao(self):
         self.editor_queries.fechar_conexao()
+
+    # CRUD para Campeonatos
+    def criar_campeonato(self, nome, ano):
+        return self.editor_queries.criar_campeonato(nome, ano)
+
+    def recuperar_campeonatos(self):
+        return self.editor_queries.recuperar_campeonatos()
+
+    def atualizar_campeonato(self, nome, novo_ano):
+        return self.editor_queries.atualizar_campeonato(nome, novo_ano)
+
+    def excluir_campeonato(self, nome):
+        return self.editor_queries.excluir_campeonato(nome)
+

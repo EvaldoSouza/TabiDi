@@ -46,6 +46,9 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         pass
     
     def construir_lista_campeonatos(self, lista_campeonatos):
+        if not lista_campeonatos:
+            print("Lista vazia")
+            return
         lista_frame = tk.Frame(self)
         lista_frame.place(relx=0.1, rely=0.3, anchor="w")
 
@@ -71,7 +74,7 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
 
 
 
-    def construir_tabela_campeonatos(self, classificacao_campeonato):
+    def construir_tabela_campeonatos(self, classificacao_campeonato, db_path):
         try:
             self.tabela_campeonatos.destroy()
         except AttributeError:
@@ -87,7 +90,7 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         for time in classificacao_campeonato:
             self.tabela_campeonatos.insert('', 'end', values=(time["nome"],  time["vitorias"], time["derrotas"], time["empates"]))
 
-        tela_editorcamp = Tela_EditCamp(classificacao_campeonato)
+        tela_editorcamp = Tela_EditCamp(classificacao_campeonato, db_path)
         tela_editorcamp.mainloop()
 
 
@@ -119,7 +122,7 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
                 #times= self.leitor.retorna_times()
                 leitor = leitor_controller.LeitorController(campeonato_db)
                 times = leitor.listar_times()
-                self.construir_tabela_campeonatos(times)
+                self.construir_tabela_campeonatos(times, campeonato_db)
                 self.tabela_selection_campeonato()
             else:
                 #TODO Tratar esse erro propriamente

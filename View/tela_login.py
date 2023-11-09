@@ -93,19 +93,27 @@ class TelaLogin(tk.Tk):
             #então essa função não chama outra tela, mas sim um controller
             controller = user_controller.UserController()
             email = controller.consultar_email(nome)
-            privilegio = controller.consultar_privilegio(nome)
+            privilegio = controller.consultar_privilegio(nome) #lembrar que vem como uma tupla
             usuario = model.User(nome, '*', email, privilegio)
             
             #inicializando a tela com um caso base
             
-            tela_usario = leitor_tela_principal.LeitorTelaPrincipal(usuario)
+            
+
+            match privilegio[0]:
+                case user.UserPrivilege.EDI.value:
+                    tela_usario = editor_tela_principal.EditorTelaPrincipal(usuario)
+                case user.UserPrivilege.ADM.value:
+                    tela_usario = admin_tela_principal.AdminTelaPrincipal(usuario)
+                case user.UserPrivilege.LER.value:
+                    tela_usario = leitor_tela_principal.LeitorTelaPrincipal(usuario)
+                case _:
+                    print("Algo deu errado --tela_login")
+                    self.fechar_tela_login()
+                    return
+
+
                 
-            if usuario.privilegio == user.UserPrivilege.EDI:
-                tela_usario = editor_tela_principal.EditorTelaPrincipal(usuario)
-
-            elif usuario.privilegio == user.UserPrivilege.ADM:
-                tela_usario = admin_tela_principal.AdminTelaPrincipal(usuario)
-
             #fazer a logica de chamar telas aqui! Não pode ter nada de tela no controller
             tela_usario.mainloop()
             self.fechar_tela_login()

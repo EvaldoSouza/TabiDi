@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import PhotoImage
 from .tela_editor_pesquisar import Tela_Editor_Pesquisar
 from Persistencia import leitor_queries
-from Controller import admin_controller, leitor_controller
+from Controller import admin_controller, editor_controller
 
 class EditorTelaPrincipal(tk.Toplevel):
     def __init__(self, usuario):
@@ -43,6 +43,6 @@ class EditorTelaPrincipal(tk.Toplevel):
     def vercamp(self):
         #isso é uma função do leitor
         db_path = "Database/lista_campeonatos.db"
-        leitor = leitor_controller.LeitorController(db_path)
-        tela_pesquisar = Tela_Editor_Pesquisar(leitor, leitor.listar_campeonatos() ) #TODO mudar o nome dessa tela
+        editor = editor_controller.EditorController(db_path)
+        tela_pesquisar = Tela_Editor_Pesquisar(editor, editor.recuperar_campeonatos() ) #TODO mudar o nome dessa tela
         tela_pesquisar.mainloop()

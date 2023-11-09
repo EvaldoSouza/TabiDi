@@ -46,9 +46,23 @@ class Tela_Editor_NovoCamp(tk.Toplevel): #TODO melhorar o nome da classe
         # Botão de registro
         self.voltar_button = tk.Button(self, text="Voltar", command=self.voltar, bg="blue", fg="white", font=("Arial", 14))
         self.voltar_button.place(relx=0.55, rely=0.6, anchor="center")
-        
+
+        #Mostrar resultado do cadastro do time
+        self.resultado_label = tk.Label(self, text="", font=("Arial", 14))
+        self.resultado_label.place(relx=0.5, rely=0.7, anchor="center") 
+
     def adicionar(self):
-      pass
+      #deve chamar o método login do controller, e passar os dados para ele
+        #já fazer algum tratamento de dados aqui, principalmente a respeito de campos vazios
+      nome = self.nome_var.get()
+      ano = self.ano_var.get()
+      times = self.times_var.get()
+
+      #conferindo se algum campo está vazio
+      if nome == '' or ano == '' or times == '':
+          self.resultado_label.config(text="Um dos campos está vazio", fg="red")
+      elif self.controller:
+          self.resultado_label.config(text="Campeonato Cadastrado com sucesso", fg="green")
 
     def voltar(self):
       self.destroy()

@@ -24,10 +24,10 @@ class EditorQueries:
         except sqlite3.Error as e:
             print(f"Erro ao recuperar times: {e}")
 
-    def atualizar_time(self, nome_principal, complemento, novo_tecnico, novo_estadio, nova_cidade, novas_vitorias, novos_empates, novas_derrotas):
+    def atualizar_time(self, nome_principal, complemento, novas_vitorias, novos_empates, novas_derrotas):
         try:
-            self.cursor.execute("UPDATE TIME SET tecnico=?, estadio=?, cidade=?, vitorias=?, empates=?, derrotas=? WHERE nome_principal=? AND complemento=?",
-                           (novo_tecnico, novo_estadio, nova_cidade, novas_vitorias, novos_empates, novas_derrotas, nome_principal, complemento))
+            self.cursor.execute("UPDATE TIME SET vitorias=?, empates=?, derrotas=? WHERE nome_principal=? AND complemento=?",
+                           ( novas_vitorias, novos_empates, novas_derrotas, nome_principal, complemento))
             self.conn.commit()
             print("Time atualizado com sucesso.")
             return True
@@ -83,7 +83,41 @@ class EditorQueries:
         except sqlite3.Error as e:
             print(f"Erro ao excluir partida: {e}")
 
-   
+   #CRUD Campeonato
+    def criar_campeonato(self, nome, ano):
+        try:
+            self.cursor.execute("INSERT INTO CAMPEONATOS (nome, ano) VALUES (?, ?)", (nome, ano))
+            self.conn.commit()
+            return True
+        except sqlite3.Error as e:
+            print(f"Erro ao criar campeonato: {e}")
+            return False
+
+    def recuperar_campeonatos(self):
+        try:
+            self.cursor.execute("SELECT nome, ano FROM CAMPEONATOS")
+            campeonatos = self.cursor.fetchall()
+            return campeonatos
+        except sqlite3.Error as e:
+            print(f"Erro ao recuperar campeonatos: {e}")
+
+    def atualizar_campeonato(self, nome, novo_ano):
+        try:
+            self.cursor.execute("UPDATE CAMPEONATOS SET ano=? WHERE nome=?", (novo_ano, nome))
+            self.conn.commit()
+            return True
+        except sqlite3.Error as e:
+            print(f"Erro ao atualizar campeonato: {e}")
+            return False
+
+    def excluir_campeonato(self, nome):
+        try:
+            self.cursor.execute("DELETE FROM CAMPEONATOS WHERE nome=?", (nome,))
+            self.conn.commit()
+            return True
+        except sqlite3.Error as e:
+            print(f"Erro ao excluir campeonato: {e}")
+            return False
 
     #Fechar banco
     def fechar_conexao(self):
