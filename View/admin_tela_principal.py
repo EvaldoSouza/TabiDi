@@ -3,13 +3,14 @@ from tkinter import PhotoImage
 from .tela_editor_pesquisar import Tela_Editor_Pesquisar
 from Persistencia import leitor_queries
 from Controller import admin_controller, leitor_controller
+from View import admin_display_users
 
 class AdminTelaPrincipal(tk.Toplevel):
     def __init__(self, usuario):
         super().__init__()
         self.usuario = usuario
         # Geometria básica
-        self.title('Home - Editor')
+        self.title('Home - Administrador')
         self.geometry("900x600")
         self.resizable(width=False, height=False)
         # Adicionando uma imagem de fundo
@@ -30,7 +31,7 @@ class AdminTelaPrincipal(tk.Toplevel):
         self.button1 = tk.Button(self, text="VER CAMPEONATO", command=self.vercamp, bg="blue", fg="white", font=("Arial", 14))
         self.button1.place(relx=0.3, rely=0.6, anchor="center")
 
-        self.button2 = tk.Button(self, text="DESLOGAR", command=self.fechar_Tela_Editor, bg="red", fg="white", font=("Arial", 14))
+        self.button2 = tk.Button(self, text="VER USUARIOS", command=self.ver_usuarios, bg="yellow", fg="black", font=("Arial", 14))
         self.button2.place(relx=0.7, rely=0.6, anchor="center")
 
         # # Botão de voltar
@@ -40,6 +41,14 @@ class AdminTelaPrincipal(tk.Toplevel):
     def fechar_Tela_Editor(self):
         self.destroy()
 
+    def ver_usuarios(self):
+        #funções de usuarios
+        db_path = "Database/db_usuarios.sqlite"
+        admin = admin_controller.AdminController(db_path)
+        lista_usuarios = admin.consultar_todos_usuario()
+        tela_admin = admin_display_users.Display_Users(admin, lista_usuarios)
+        tela_admin.mainloop()
+        
     def vercamp(self):
         #isso é uma função do leitor
         db_path = "Database/lista_campeonatos.db"

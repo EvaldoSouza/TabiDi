@@ -3,6 +3,9 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter import Toplevel
 
+from Controller import editor_controller
+
+
 class Tela_Editor_NovoCamp(tk.Toplevel): #TODO melhorar o nome da classe
     def __init__(self):
         super().__init__()
@@ -24,10 +27,10 @@ class Tela_Editor_NovoCamp(tk.Toplevel): #TODO melhorar o nome da classe
         #Usar stringvar é uma forma mais gerenciavel e clara de se lidar com inputs e objetos desse tipo
         self.nome_var = tk.StringVar()
         self.ano_var = tk.StringVar()
-        self.times_var = tk.StringVar()
+        #self.times_var = tk.StringVar()
         self.entry_nome = tk.Entry(self, font=("Arial", 14), textvariable=self.nome_var)
         self.entry_ano = tk.Entry(self, font=("Arial", 14), textvariable=self.ano_var )
-        self.entry_times = tk.Entry(self, font=("Arial", 14), textvariable=self.times_var)
+        #self.entry_times = tk.Entry(self, font=("Arial", 14), textvariable=self.times_var)
         
         # Centralizando as labels
         self.label_nome.place(relx=0.3, rely=0.3, anchor="center")
@@ -37,7 +40,7 @@ class Tela_Editor_NovoCamp(tk.Toplevel): #TODO melhorar o nome da classe
         # Posicionamento dos campos de entrada
         self.entry_nome.place(relx=0.5, rely=0.3, anchor="center")
         self.entry_ano.place(relx=0.5, rely=0.4, anchor="center")
-        self.entry_times.place(relx=0.5, rely=0.5, anchor="center")
+        #self.entry_times.place(relx=0.5, rely=0.5, anchor="center")
         
         # Botão de voltar
         self.adicionar_button = tk.Button(self, text="Adicionar", command=self.adicionar, bg="green", fg="white", font=("Arial", 14))
@@ -51,22 +54,24 @@ class Tela_Editor_NovoCamp(tk.Toplevel): #TODO melhorar o nome da classe
         self.resultado_label = tk.Label(self, text="", font=("Arial", 14))
         self.resultado_label.place(relx=0.5, rely=0.7, anchor="center") 
 
+        #protocolo de fechamento forçado
+        self.protocol("WM_DELETE_WINDOW", self.voltar)
+
     def adicionar(self):
-      #deve chamar o método login do controller, e passar os dados para ele
-        #já fazer algum tratamento de dados aqui, principalmente a respeito de campos vazios
+      #adicionar um novo campeonato a lista de campeonatos
       nome = self.nome_var.get()
       ano = self.ano_var.get()
-      times = self.times_var.get()
+      #times = self.times_var.get() #deixando sem times por enquanto
 
       #conferindo se algum campo está vazio
-      if nome == '' or ano == '' or times == '':
+      if nome == '' or ano == '':
           self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-      elif self.controller:
+      else:
+          db_path = "Database/lista_campeonatos.db"
+          controller = editor_controller.EditorController(db_path)
+          controller.criar_campeonato(nome, ano)
           self.resultado_label.config(text="Campeonato Cadastrado com sucesso", fg="green")
+
 
     def voltar(self):
       self.destroy()
-
-    #TODO falta os campos do que isso está alterando, ou pelo menos uma indicação de como isso funciona
-    #TODO pegar as informações da tela
-    #TODO mandar essas informações para o banco

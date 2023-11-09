@@ -5,7 +5,7 @@ import os
 
 from View.tela_editcamp import Tela_EditCamp
 from .tela_editor_novocamp import Tela_Editor_NovoCamp
-from Controller import leitor_controller
+from Controller import leitor_controller, editor_controller
 
 
 
@@ -34,12 +34,26 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         self.selecionar_button = tk.Button(self, text="Selecionar", command=self.ranking, bg="green", fg="white", font=("Arial", 14))
         self.selecionar_button.place(relx=0.9, rely=0.2, anchor="se")
 
+        self.selecionar_button = tk.Button(self, text="Deletar", command=self.deletar, bg="red", fg="white", font=("Arial", 14))
+        self.selecionar_button.place(relx=0.9, rely=0.3, anchor="se")
+
         self.voltar_button = tk.Button(self, text="Voltar", command=self.voltar, bg="yellow", fg="black", font=("Arial", 14))
-        self.voltar_button.place(relx=0.9, rely=0.3, anchor="se")
+        self.voltar_button.place(relx=0.9, rely=0.4, anchor="se")
+
+        self.voltar_button = tk.Button(self, text="Atualizar", command=self.atualizar, bg="gree", fg="white", font=("Arial", 14))
+        self.voltar_button.place(relx=0.1, rely=0.7, anchor="w")
 
     def cadastrar_campeonato(self):
         tela_editor_novocamp = Tela_Editor_NovoCamp()
         tela_editor_novocamp.mainloop()
+        
+
+    def atualizar(self):
+        self.lista_campeonatos_listbox.delete(0, tk.End)
+        db_path = "Database/lista_campeonatos.db"
+        editor = editor_controller.EditorController(db_path)
+        lista_campeonatos = editor.recuperar_campeonatos()
+        self.construir_lista_campeonatos(lista_campeonatos)
 
     def voltar(self):
         self.destroy()
@@ -71,6 +85,20 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         selected_index = self.lista_campeonatos_listbox.curselection()
         if selected_index:
             self.selected_campeonato = self.lista_campeonatos_listbox.get(selected_index)
+
+    def deletar(self):
+        if self.selected_campeonato:
+            name = self.selected_campeonato.split(":")[0].strip()
+            print(f"Selected campeonato: {name} --tela_editor_pesquisar")
+            db_path = "Database/lista_campeonatos.db"
+            editor = editor_controller.EditorController(db_path)
+            editor.excluir_campeonato(name)
+            #campeonato_db = "Database/"+ name +".db"
+            # if os.path.exists(campeonato_db):
+            #     #tem que deletar em lista_campeonatoss e o banco
+            #     editor = editor_controller.EditorController(campeonato_db)
+            #     leitor.
+
 
 
 

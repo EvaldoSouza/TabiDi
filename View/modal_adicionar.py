@@ -75,7 +75,6 @@ class Modal_Adicionar(tk.Toplevel):
              
             controller = editor_controller.EditorController(self.db_path)
             controller.criar_time(nome, nome, " ", " ", " ")
-            controller.atualizar_time()
             self.resultado_label.config(text="Time Cadastrado com sucesso", fg="green")
     
     def voltar(self):
