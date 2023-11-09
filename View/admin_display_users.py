@@ -78,8 +78,11 @@ class Display_Users(tk.Tk):
         privilege_info = tk.Label(window, text = record[2], anchor="center")
         privilege_info.grid(row=2, column=1)
 
-        alterar_button = tk.Button(window, text="Alterar Privilegio", command=lambda: self._alterar_privilegio(record[0], record[2]))
+        alterar_button = tk.Button(window, text="Incrementar Privilegio", command=lambda: self._alterar_privilegio(record[0], record[2]))
         alterar_button.grid(row=4, column=0)
+
+        alterar_button = tk.Button(window, text="Reduzir Privilegio", command=lambda: self._reduzir_privilegio(record[0], record[2]))
+        alterar_button.grid(row=4, column=1)
 
         deletar_buttor = tk.Button(window, text="Deletar Usuário", command=lambda: self._deletar_usuario(record[0]), bg="red", fg="white")
         deletar_buttor.grid(row=4, column=2)
@@ -95,7 +98,14 @@ class Display_Users(tk.Tk):
             self.controller.update_privilegio(user_id, 2)
             print("Privilegio incrementado")
     
-    
+    def _reduzir_privilegio(self, user_id, privilegio_atual):
+        privilegio_atual = int(privilegio_atual)
+        if privilegio_atual == 1:
+            self.controller.update_privilegio(user_id, 0)
+            print("Privilegio reduzido")
+        if privilegio_atual == 2:
+            self.controller.update_privilegio(user_id, 1)
+            print("Privilegio reduzido")
 
 
     def _deletar_usuario(self, user_id):
