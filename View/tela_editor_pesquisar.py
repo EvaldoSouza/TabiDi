@@ -18,8 +18,7 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         self.controller = controller
         self.geometry("900x600")
         self.resizable(width="TRUE", height="TRUE")
-        #self.title("Editor - Lista de Campeonatos")
-        self.title("Lista de Campeonatos")
+        self.title("Editor - Lista de Campeonatos")
         self.tabela_campeonatos = None
 
         self.background_image = PhotoImage(file="View/img/football_background.png")
@@ -79,8 +78,7 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
             print("Criando nova tabela de campeonatos?")
             print(classificacao_campeonato)
 
-        #colunas_campeonatos = ("nome", "pontos", "vitorias", "derrotas", "empates") sem os pontos por enquanto
-        colunas_campeonatos = ("nome", "vitorias", "derrotas", "empates")
+        colunas_campeonatos = ("nome", "pontos", "vitorias", "derrotas", "empates")
         self.tabela_campeonatos = ttk.Treeview(self, columns=colunas_campeonatos, show='headings')
         
         for coluna in colunas_campeonatos:
@@ -121,20 +119,7 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
                 #times= self.leitor.retorna_times()
                 leitor = leitor_controller.LeitorController(campeonato_db)
                 times = leitor.listar_times()
-                
-                #vem uma lista de tuplas, preciso converter para uma lista de dicionários
-                lista_times = []
-                for tupla in times:
-                    dicionario = {
-                        "nome": tupla[0],
-                        "vitorias": tupla[1],
-                        "derrotas": tupla[2],
-                        "empates": tupla[3]
-                    }
-                    lista_times.append(dicionario)
-
-                #TODO fazer a lógica para calcular os pontos baseados nos resultados
-                self.construir_tabela_campeonatos(lista_times)
+                self.construir_tabela_campeonatos(times)
                 self.tabela_selection_campeonato()
             else:
                 #TODO Tratar esse erro propriamente

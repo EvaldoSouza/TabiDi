@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import PhotoImage
-from .tela_editor_pesquisar import Tela_Editor_Pesquisar
-from Persistencia import leitor_queries
-from Controller import admin_controller, leitor_controller
+#from .tela_editor_pesquisar import Tela_Editor_Pesquisar
+from Controller import leitor_controller
+from View import tela_lista_camps
 
 class LeitorTelaPrincipal(tk.Toplevel):
     def __init__(self, usuario):
@@ -44,5 +44,5 @@ class LeitorTelaPrincipal(tk.Toplevel):
         #isso é uma função do leitor
         db_path = "Database/lista_campeonatos.db"
         leitor = leitor_controller.LeitorController(db_path)
-        tela_pesquisar = Tela_Editor_Pesquisar(leitor, leitor.listar_campeonatos() ) #TODO mudar o nome dessa tela
+        tela_pesquisar = tela_lista_camps.TelaListaCamps(leitor, leitor.listar_campeonatos() )
         tela_pesquisar.mainloop()

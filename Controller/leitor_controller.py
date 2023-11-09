@@ -1,5 +1,5 @@
-from Usuarios.user import UserPrivilege
 from Persistencia import leitor_queries
+from Model import model
 
 class LeitorController:
     def __init__(self, db_path):
@@ -28,7 +28,21 @@ class LeitorController:
 
     def listar_times(self):
         times = self.leitor.retorna_times()
+
+        #vem uma lista de tuplas, preciso converter para uma lista de dicionários
+        lista_times = []
+        for tupla in times:
+            dicionario = {
+                "nome": tupla[0],
+                "vitorias": tupla[1],
+                "derrotas": tupla[2],
+                "empates": tupla[3],
+                "pontos": tupla[1]*3 + tupla[3]
+            }
+            lista_times.append(dicionario)
+
         if times:
-            return times
+            return lista_times
         else:
-            return "Nenhum time encontrado."
+            print("Nenhum time encontrado.")
+            return False
