@@ -125,7 +125,8 @@ class Display_Users(tk.Tk):
     def pesquisar(self, event):
         parametro = self.entry_usuario_pesquisado.get()
         print(parametro)
-        self.controller.pesquisar_usuario(parametro)
+        resultado = self.controller.pesquisar_usuario(parametro)
+        self.contruir_tabela(resultado)
 
     def contruir_tabela(self, lista_users):
         try:
