@@ -6,7 +6,7 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter import ttk
 
-class Modal_Adicionar(tk.Toplevel):
+class Modal_Adicionar(tk.Toplevel): #TODO melhorar o nome dessa janela
     def __init__(self):
         super().__init__()
         self.geometry("600x300")
@@ -34,3 +34,7 @@ class Modal_Adicionar(tk.Toplevel):
     
     def voltar(self):
         self.destroy()
+    
+    #TODO falta os campos do que isso está alterando, ou pelo menos uma indicação de como isso funciona
+    #TODO pegar as informações da tela --Moderado
+    #TODO mandar essas informações para o banco

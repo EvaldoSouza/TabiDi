@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter import Toplevel
 
-class Tela_Editor_NovoCamp(tk.Toplevel):
+class Tela_Editor_NovoCamp(tk.Toplevel): #TODO melhorar o nome da classe
     def __init__(self):
         super().__init__()
         #Geometria básica
@@ -52,3 +52,7 @@ class Tela_Editor_NovoCamp(tk.Toplevel):
 
     def voltar(self):
       self.destroy()
+
+    #TODO falta os campos do que isso está alterando, ou pelo menos uma indicação de como isso funciona
+    #TODO pegar as informações da tela
+    #TODO mandar essas informações para o banco

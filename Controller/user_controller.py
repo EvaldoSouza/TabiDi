@@ -1,8 +1,5 @@
 #Classe para definir qual o tipo do usuário, e chamar os controllers corretos
 from Persistencia import user_queries
-
-
-#TODO Fazer três janelas diferentes para cada usuario
 #Ta inutil essa desgraça
 class UserController():
 

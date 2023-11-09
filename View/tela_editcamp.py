@@ -9,7 +9,7 @@ from tkinter import ttk
 from .modal_adicionar import Modal_Adicionar
 from .modal_alterar import Modal_Alterar
 
-class Tela_EditCamp(tk.Toplevel):
+class Tela_EditCamp(tk.Toplevel): #TODO melhorar o nome da classe
     def __init__(self, classificacao_campeonato):
         super().__init__()
         self.geometry("900x600")
@@ -62,6 +62,7 @@ class Tela_EditCamp(tk.Toplevel):
         modal_alterar.mainloop()
     
     def excluir(self):
+        #TODO ligar ao banco
         pass
     
     def voltar(self):

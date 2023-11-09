@@ -14,7 +14,7 @@ def check_credentials(username, password):
         if user:
             #mandando usuário, email, privilégio
             user_data = (user[0], user[1], user[3])
-            senha_armazenada = user[2] #TODO senha está na segunda posição da lista?
+            senha_armazenada = user[2] 
             if senha_armazenada == password:
                  conn.close()
                  return user_data # retorna todas as infos se a senha estiver correta

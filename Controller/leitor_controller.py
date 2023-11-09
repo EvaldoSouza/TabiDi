@@ -3,7 +3,6 @@ from Persistencia import leitor_queries
 
 class LeitorController:
     def __init__(self, db_path):
-        #TODO tá feio, melhorar isso
         self.leitor = leitor_queries.LeitorQueries(db_path)
 
     def buscar_informacoes_campeonato(self):

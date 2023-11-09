@@ -46,3 +46,4 @@ class AdminTelaPrincipal(tk.Toplevel):
         leitor = leitor_controller.LeitorController(db_path)
         tela_pesquisar = Tela_Editor_Pesquisar(leitor, leitor.listar_campeonatos() ) #TODO mudar o nome dessa tela
         tela_pesquisar.mainloop()
+#TODO falta um botão para chamar a janela que lida com info de usuário --fácil

@@ -4,8 +4,8 @@ class LeitorQueries:
     #TODO consertar as consultas SQL
     def __init__(self, db_path) -> None:
         self.db_path = db_path
-        pass
 
+        
     def search_league_info(self):
         try:
             with sqlite3.connect(self.db_path) as conn:

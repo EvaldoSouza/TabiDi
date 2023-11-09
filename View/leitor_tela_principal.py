@@ -9,7 +9,7 @@ class LeitorTelaPrincipal(tk.Toplevel):
         super().__init__()
         self.usuario = usuario
         # Geometria básica
-        self.title('Home - Editor')
+        self.title('Home - Leitor')
         self.geometry("900x600")
         self.resizable(width=False, height=False)
         # Adicionando uma imagem de fundo

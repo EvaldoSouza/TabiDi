@@ -69,7 +69,6 @@ class Display_Users(tk.Tk):
         email_info = tk.Label(window, text=record[1], anchor="center")
         email_info.grid(row=1, column=1)
 
-        #TODO fazer um dropdown com os tipos de informação
         privilege_label = tk.Label(window, text="Privilégio: ", anchor="center")
         privilege_label.grid(row=2, column=0)
         #privilege_var = tk.StringVar()

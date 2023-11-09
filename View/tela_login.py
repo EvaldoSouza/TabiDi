@@ -2,11 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
 from .tela_cadastro import TelaCadastro
-from View.leitor_tela_principal import LeitorTelaPrincipal
 from Controller import user_controller
 from Model import model
 from View import admin_tela_principal, editor_tela_principal, leitor_tela_principal
-from Controller import admin_controller, editor_controller, leitor_controller
 from Usuarios import user
 
 class TelaLogin(tk.Tk):
@@ -67,7 +65,7 @@ class TelaLogin(tk.Tk):
         #já fazer algum tratamento de dados aqui, principalmente a respeito de campos vazios
         username = self.username_var.get()
         password = self.password_var.get()
-
+        
         #conferindo se algum campo está vazio
         if password == '' or username == '':
             self.resultado_label.config(text="Um dos campos está vazio", fg="red")

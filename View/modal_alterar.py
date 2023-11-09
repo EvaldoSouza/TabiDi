@@ -34,3 +34,7 @@ class Modal_Alterar(tk.Toplevel):
     
     def voltar(self):
         self.destroy()
+
+            #TODO falta os campos do que isso está alterando, ou pelo menos uma indicação de como isso funciona
+    #TODO pegar as informações da tela --moderado
+    #TODO mandar essas informações para o banco
