@@ -3,20 +3,24 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter import Toplevel
 
-class Tela_Cadastro(tk.Frame):
-    def __init__(self, parent, tela_main):
-        tk.Frame.__init__(self, parent)
-        self.tela_main = tela_main
+class TelaCadastro(tk.Toplevel):
+    def __init__(self, controller):
+        super().__init__()
+        self.controller = controller
+        #Geometria básica
+        self.geometry("900x600")
+        self.title("Tela Cadastro")
+        self.resizable(width="FALSE", height="FALSE")
         
         # Adicionando uma imagem de fundo
-        self.background_image = PhotoImage(file="View/football_background.png")
+        self.background_image = PhotoImage(file="View/img/football_background.png")
         self.background_label = tk.Label(self, image=self.background_image)
         self.background_label.place(relwidth=1, relheight=1)
 
         # Adicionando um logotipo
-        self.logo_image = PhotoImage(file="View/happy.png")
+        self.logo_image = PhotoImage(file="View/img/logo.png")
         self.logo_label = tk.Label(self, image=self.logo_image)
-        self.logo_label.place(relx=0.5, rely=0.2, anchor="center")
+        self.logo_label.place(relx=0.5, rely=0.15, anchor="center")
         
         # Configuração de estilo para os elementos da interface
         self.label_username = tk.Label(self, text="Usuário:", bg="#F0F0F0", font=("Arial", 12))
@@ -41,8 +45,8 @@ class Tela_Cadastro(tk.Frame):
         self.entry_email.place(relx=0.5, rely=0.4, anchor="center")
         self.entry_password.place(relx=0.5, rely=0.5, anchor="center")
         
-        # Botão de login
-        self.back_button = tk.Button(self, text="Voltar", command=self.fechar_tela_cadastro, bg="yellow", fg="white", font=("Arial", 14))
+        # Botão de voltar
+        self.back_button = tk.Button(self, text="Fazer Login", command=self.fechar_tela_cadastro, bg="yellow", fg="white", font=("Arial", 14))
         self.back_button.place(relx=0.40, rely=0.6, anchor="center")
         
         # Botão de registro
@@ -61,11 +65,11 @@ class Tela_Cadastro(tk.Frame):
 
         if password == '' or email == '' or username == '':
             self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-        elif self.tela_main.controller:
-            if self.tela_main.controller.registrar_novo_usuario(username,email, password):
-                self.resultado_label.config(text="Registro bem-sucedido", fg="green")
+        elif self.controller: #checa o controller ativo
+            if self.controller.registrar_novo_usuario(username,email, password): #tenta registrar um usuario 
+                self.resultado_label.config(text="Registro bem-sucedido", fg="green") #se deu certo, mostra que funcionou
             else:
-                self.resultado_label.config(text="Usuário já existe", fg="red")
+                self.resultado_label.config(text="Usuário já existe", fg="red")#se nao deu, mostra que falhou
 
 
     def cadastro_view(self):
@@ -73,5 +77,5 @@ class Tela_Cadastro(tk.Frame):
         self.mainloop()
 
     def fechar_tela_cadastro(self):
-        #self.destroy()
-        self.tela_main.controller.show_tela_login()
+        self.destroy()
+        self.controller.chama_tela_login()

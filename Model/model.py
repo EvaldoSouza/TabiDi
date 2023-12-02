@@ -1,74 +1,91 @@
-import sqlite3
-from Controller.user import UserPrivilege
+class User():
+    def __init__(self, nome, senha, email, privilegio) -> None:
+        self.nome = nome
+        self.senha = senha
+        self.email = email
+        self.privilegio = privilegio
 
-class Model:
-    def __init__(self, db_name):
-        self.conn = sqlite3.connect(db_name)
-        self.__create_table()
+class Campeonato:
+    def __init__(self, nome, ano) -> None:
+        self.nome = nome
+        self.ano = ano
 
-    def __create_table(self):
-        cursor = self.conn.cursor()
-        cursor.execute('''CREATE TABLE IF NOT EXISTS users 
-                          (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                           username TEXT UNIQUE NOT NULL,
-                        email TEXT UNIQUE NOT NULL,
-                        password TEXT NOT NULL, 
-                        privilege TEXT)''')
-        self.conn.commit()
+class Time:
+    def __init__(self, nome_principal, complemento, tecnico, estadio, cidade, vitorias=0, empates=0, derrotas=0):
+        self.nome_principal = nome_principal
+        self.complemento = complemento
+        self.tecnico = tecnico
+        self.estadio = estadio
+        self.cidade = cidade
+        self.vitorias = vitorias
+        self.empates = empates
+        self.derrotas = derrotas
 
-    def check_credentials(self, username, password):
-        cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
-        user = cursor.fetchone()
-        if user:
-            #mandar o user inteiro ou apenas os métodos necessários?
-            #mandando usuário, email, privilégio
-            user_data = (user[1], user[2], user[4])
-            return user_data
-        else:
-            #se não existe, cursor.fetchone() retorna None
-            return False
+    def pontos(self):
+        self.pontos = self.vitorias*3 + self.empates
+        return self.pontos
 
-    def register_user(self, username, email, password):
-        cursor = self.conn.cursor()
-        #checando se a tabela está vazia, se estiver, o primeiro usuário registrado é ADM
-        cursor.execute("SELECT EXISTS (SELECT 1 FROM users)")
-        primeira_linha = cursor.fetchone()
-        if primeira_linha[0] == 0:
-            print("banco vazio, primeiro usuário adm")
-            try:
-                cursor.execute("INSERT INTO users (username, email, password, privilege) VALUES (?, ?, ?, ?)", (username, email, password, UserPrivilege.ADM.value))
-                self.conn.commit()
-                return True
-            except sqlite3.IntegrityError:
-                # Usuário com mesmo nome já existe
-                #tratar usuário como chave primaria é uma boa ideia? --Evaldo
-                return False
-        else:
-            try:
-                cursor.execute("INSERT INTO users (username, email, password, privilege) VALUES (?, ?, ?, ?)", (username, email, password, UserPrivilege.LER.value))
-                self.conn.commit()
-                return True
-            except sqlite3.IntegrityError:
-                # Usuário com mesmo nome já existe
-                #tratar usuário como chave primaria é uma boa ideia? --Evaldo
-                return False
+class Partida:
+    def __init__(self, mandante_nome, mandante_complemento, visitante_nome, visitante_complemento, rodada, data_hora, arbitros, local):
+        self.mandante_nome = mandante_nome
+        self.mandante_complemento = mandante_complemento
+        self.visitante_nome = visitante_nome
+        self.visitante_complemento = visitante_complemento
+        self.rodada = rodada
+        self.data_hora = data_hora
+        self.arbitros = arbitros
+        self.local = local
 
-    def get_all_users(self):
-        cursor = self.conn.cursor()
-        #selecionando sem mandar a senha ou indice
-        cursor.execute("SELECT username, email, privilege FROM users")
-        return cursor.fetchall()
-    
-    def close(self):
-        self.conn.close()
-    
-    def delete_table(self, table_name):
-        cursor = self.conn.cursor()
-        cursor.execute("DROP TABLE (?)", table_name)
-        print("Tabela ", table_name, " deletada")
-    
-    def search_user(self, username):
-        cursor = self.conn.cursor()
-        cursor.execute("SELECT username, email, privilege FROM users WHERE username LIKE ?", ("%"+ username + "%",))
-        return cursor.fetchall()
+class Jogador:
+    def __init__(self, nome, apelido, posicao, time_atual_nome, time_atual_complemento, times_pass, data_nasc, suspenso=False):
+        self.nome = nome
+        self.apelido = apelido
+        self.posicao = posicao
+        self.time_atual_nome = time_atual_nome
+        self.time_atual_complemento = time_atual_complemento
+        self.times_pass = times_pass
+        self.data_nasc = data_nasc
+        self.suspenso = suspenso
+
+class Gol:
+    def __init__(self, tempo_partida, time_fez_nome, time_levou_nome, jogador_fez, jogador_assis, tipo_gol, fora_de_casa, partida):
+        self.tempo_partida = tempo_partida
+        self.time_fez_nome = time_fez_nome
+        self.time_levou_nome = time_levou_nome
+        self.jogador_fez = jogador_fez
+        self.jogador_assis = jogador_assis
+        self.tipo_gol = tipo_gol
+        self.fora_de_casa = fora_de_casa
+        self.partida = partida
+
+class Falta:
+    def __init__(self, tempo_partida, time_faltoso, participante_faltoso, tipo_falta, cartao, partida):
+        self.tempo_partida = tempo_partida
+        self.time_faltoso = time_faltoso
+        self.participante_faltoso = participante_faltoso
+        self.tipo_falta = tipo_falta
+        self.cartao = cartao
+        self.partida = partida
+
+class Joga:
+    def __init__(self, nome_jogador, apelido_jogador, posicao_jogador, num_partida, substituicoes_id):
+        self.nome_jogador = nome_jogador
+        self.apelido_jogador = apelido_jogador
+        self.posicao_jogador = posicao_jogador
+        self.num_partida = num_partida
+        self.substituicoes_id = substituicoes_id
+
+class TimesPass:
+    def __init__(self, nome_jogador, apelido_jogador, nome_time):
+        self.nome_jogador = nome_jogador
+        self.apelido_jogador = apelido_jogador
+        self.nome_time = nome_time
+
+class Substituicoes:
+    def __init__(self, nome_jogador_entra, apelido_jogador_entra, nome_jogador_sai, apelido_jogador_sai, tempo_partida, num_partida):
+        self.nome_jogador_entra = nome_jogador_entra
+        self.apelido_jogador_entra = apelido_jogador_entra
+        self.nome_jogador_sai = nome_jogador_sai
+        self.apelido_jogador_sai = apelido_jogador_sai
+        self.tempo_partida = tempo_partida
+        self.num_partida = num_partida

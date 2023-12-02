@@ -10,10 +10,9 @@ class ExtendedEnum(Enum):
     def list(cls):
         return list(map(lambda c: c.value, cls))
 class UserPrivilege(ExtendedEnum):
-    LNC = "Leitor Não Cadastrado"
-    LER = "Leitor"
-    EDI = "Editor"
-    ADM = "Administrador"
+    LER = 0
+    EDI = 1
+    ADM = 2
 
 
 
@@ -38,32 +37,35 @@ class User(abc.ABC):
     def alterar_senha(self): pass
 
 
-class LeitorNC(User):
-    def __init__(self) -> None:
-        self.privilegio = UserPrivilege.LNC
+# class LeitorNC(User):
+#     def __init__(self) -> None:
+#         self.privilegio = UserPrivilege.LNC
     
-    #Metodos particulares
-    def login(self):
-        pass
+#     #Metodos particulares
+#     def login(self):
+#         pass
 
-    def recuperar_senha(self):
-        pass
+#     def recuperar_senha(self):
+#         pass
 
-    def registrar(self):
-        pass
+#     def registrar(self):
+#         pass
 
-    #sobrescrevendo, para não fazer nada
-    def buscar_info_campeonato():
-        #mostrar a tela de login, se for implementar
-        pass
+#     #sobrescrevendo, para não fazer nada
+#     def buscar_info_campeonato():
+#         #mostrar a tela de login, se for implementar
+#         pass
 
-    def alterar_senha():
-        #deixar vazio
-        pass
+#     def alterar_senha():
+#         #deixar vazio
+#         pass
 
 class Leitor(User):
-    def __init__(self, username, email) -> None:
+    def __init__(self) -> None:
         self.privilegio = UserPrivilege.LER
+
+    
+    def set_infos(self, username, email):
         self.username = username
         self.email = email
    
@@ -88,12 +90,15 @@ class Editor(User):
     #nenhum método precisa ser implementado por enquanto, eu acho
 
 class Administrador(Editor, User):
-    def __init__(self, username, email, db_model) -> None:
+    def __init__(self) -> None:
         self.privilegio = UserPrivilege.ADM
+        
+    
+
+    def set_infos(self,username, email, db_model):
         self.username = username
         self.email = email
         self.database = db_model
-    
 
     #proprios
     def pesquisar_usuario(self, username):
