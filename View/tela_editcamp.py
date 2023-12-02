@@ -9,12 +9,14 @@ from tkinter import ttk
 from .modal_adicionar import Modal_Adicionar
 from .modal_alterar import Modal_Alterar
 
-class Tela_EditCamp(tk.Toplevel):
-    def __init__(self, classificacao_campeonato):
+class Tela_EditCamp(tk.Toplevel): #TODO melhorar o nome da classe
+    def __init__(self, classificacao_campeonato, db_path):
         super().__init__()
         self.geometry("900x600")
         self.resizable(width="TRUE", height="TRUE")
         self.title("Editor - Classificação do Campeonato")
+
+        self.db_path = db_path
 
         # Cria a tabela
         self.construir_tabela_campeonatos(classificacao_campeonato)
@@ -45,16 +47,16 @@ class Tela_EditCamp(tk.Toplevel):
 
         for time in classificacao_campeonato:
             nome = time["nome"]
-            pontos = time["pontos"]
+            #pontos = time["pontos"] sem pontos por enquanto
             vitorias = time["vitorias"]
             derrotas = time["derrotas"]
             empates = time["empates"]
-            self.tabela_campeonatos.insert("", "end", values=(nome, pontos, vitorias, derrotas, empates))
+            self.tabela_campeonatos.insert("", "end", values=(nome, vitorias, derrotas, empates))
 
         self.tabela_campeonatos.pack()
 
     def adicionar(self):
-        modal_adicionar = Modal_Adicionar()  # Crie uma instância da classe Tela_User
+        modal_adicionar = Modal_Adicionar(self.db_path)  # Crie uma instância da classe Tela_User
         modal_adicionar.mainloop()
     
     def alterar(self):
@@ -62,6 +64,7 @@ class Tela_EditCamp(tk.Toplevel):
         modal_alterar.mainloop()
     
     def excluir(self):
+        #TODO ligar ao banco
         pass
     
     def voltar(self):

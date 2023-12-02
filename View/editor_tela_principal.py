@@ -1,16 +1,13 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from .tela_editor_pesquisar import Tela_Editor_Pesquisar
+from Persistencia import leitor_queries
+from Controller import admin_controller, editor_controller
 
-lista_campeonatos = [
-    {"nome": "Campeonato 1", "descricao": "Descrição do Campeonato 1"},
-    {"nome": "Campeonato 2", "descricao": "Descrição do Campeonato 2"},
-    # Adicione mais campeonatos, se necessário
-]
-class Tela_Editor(tk.Toplevel):
-    def __init__(self, controller):
+class EditorTelaPrincipal(tk.Toplevel):
+    def __init__(self, usuario):
         super().__init__()
-        self.controller = controller
+        self.usuario = usuario
         # Geometria básica
         self.title('Home - Editor')
         self.geometry("900x600")
@@ -44,5 +41,8 @@ class Tela_Editor(tk.Toplevel):
         self.destroy()
 
     def vercamp(self):
-        tela_pesquisar = Tela_Editor_Pesquisar(self.controller, lista_campeonatos)
+        #isso é uma função do leitor
+        db_path = "Database/lista_campeonatos.db"
+        editor = editor_controller.EditorController(db_path)
+        tela_pesquisar = Tela_Editor_Pesquisar(editor, editor.recuperar_campeonatos() ) #TODO mudar o nome dessa tela
         tela_pesquisar.mainloop()

@@ -3,13 +3,16 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter.messagebox import showinfo
+from Controller import admin_controller
 
 
 #TODO criar uma classe  Dislpay_Table e fazer herança, para padronizar a visualização
 class Display_Users(tk.Tk):
     def __init__(self, controller, lista_users):
         super().__init__()
-        self.controller = controller
+        self.db_path = "Database/db_usuarios.sqlite"
+
+        self.controller = admin_controller.AdminController(self.db_path)
         #Geometria básica
         self.geometry("900x600")
         self.resizable(width="TRUE", height="TRUE")
@@ -57,7 +60,7 @@ class Display_Users(tk.Tk):
         record = self.tabela_selection()
             
         window = tk.Toplevel(self)
-        window.geometry("200x100")
+        window.geometry("500x300")
         
 
         user_label = tk.Label(window, text="Usuário: ", anchor="center")
@@ -69,28 +72,45 @@ class Display_Users(tk.Tk):
         email_info = tk.Label(window, text=record[1], anchor="center")
         email_info.grid(row=1, column=1)
 
-        #TODO fazer um dropdown com os tipos de informação
         privilege_label = tk.Label(window, text="Privilégio: ", anchor="center")
         privilege_label.grid(row=2, column=0)
         #privilege_var = tk.StringVar()
         privilege_info = tk.Label(window, text = record[2], anchor="center")
         privilege_info.grid(row=2, column=1)
 
-        alterar_button = tk.Button(window, text="Alterar Privilegio", command=self._alterar_privilegio)
+        alterar_button = tk.Button(window, text="Incrementar Privilegio", command=lambda: self._alterar_privilegio(record[0], record[2]))
         alterar_button.grid(row=4, column=0)
 
-        deletar_buttor = tk.Button(window, text="Deletar Usuário", command=self._deletar_usuario, bg="red", fg="white")
+        alterar_button = tk.Button(window, text="Reduzir Privilegio", command=lambda: self._reduzir_privilegio(record[0], record[2]))
+        alterar_button.grid(row=4, column=1)
+
+        deletar_buttor = tk.Button(window, text="Deletar Usuário", command=lambda: self._deletar_usuario(record[0]), bg="red", fg="white")
         deletar_buttor.grid(row=4, column=2)
 
         window.mainloop()
 
-    def _alterar_privilegio(self):
-        self.controller.adm_alterar_privilegio()
-        print("Work in progress")
+    def _alterar_privilegio(self, user_id, privilegio_atual):
+        privilegio_atual = int(privilegio_atual)
+        if privilegio_atual == 0:
+            self.controller.update_privilegio(user_id, 1)
+            print("Privilegio incrementado")
+        if privilegio_atual == 1:
+            self.controller.update_privilegio(user_id, 2)
+            print("Privilegio incrementado")
+    
+    def _reduzir_privilegio(self, user_id, privilegio_atual):
+        privilegio_atual = int(privilegio_atual)
+        if privilegio_atual == 1:
+            self.controller.update_privilegio(user_id, 0)
+            print("Privilegio reduzido")
+        if privilegio_atual == 2:
+            self.controller.update_privilegio(user_id, 1)
+            print("Privilegio reduzido")
 
 
-    def _deletar_usuario(self):
-        print("Work in progress")
+    def _deletar_usuario(self, user_id):
+        self.controller.deletar_usuario(user_id)
+        print("usuario deletado")
         
     def inserir_item(self,tabela, item):
         #está apenas inserindo, não checa se é um usuário válido
@@ -104,7 +124,9 @@ class Display_Users(tk.Tk):
     
     def pesquisar(self, event):
         parametro = self.entry_usuario_pesquisado.get()
-        self.controller.adm_pesquisa_usuario(parametro)
+        print(parametro)
+        resultado = self.controller.pesquisar_usuario(parametro)
+        self.contruir_tabela(resultado)
 
     def contruir_tabela(self, lista_users):
         try:

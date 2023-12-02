@@ -6,7 +6,7 @@ from tkinter import ttk
 import tkinter as tk
 from tkinter import ttk
 
-class Tela_Classificacao(tk.Toplevel):
+class TelaClassificacao(tk.Toplevel): #TODO melhorar o nome da classe
     def __init__(self, classificacao_campeonato):
         super().__init__()
         self.geometry("900x600")

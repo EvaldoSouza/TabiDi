@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter import Toplevel
 
-class Tela_Cadastro(tk.Toplevel):
+class TelaCadastro(tk.Toplevel):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
@@ -46,7 +46,7 @@ class Tela_Cadastro(tk.Toplevel):
         self.entry_password.place(relx=0.5, rely=0.5, anchor="center")
         
         # Botão de voltar
-        self.back_button = tk.Button(self, text="Fazer Login", command=self.fechar_tela_cadastro, bg="green", fg="white", font=("Arial", 14))
+        self.back_button = tk.Button(self, text="Fazer Login", command=self.fechar_tela_cadastro, bg="yellow", fg="white", font=("Arial", 14))
         self.back_button.place(relx=0.40, rely=0.6, anchor="center")
         
         # Botão de registro
@@ -65,11 +65,11 @@ class Tela_Cadastro(tk.Toplevel):
 
         if password == '' or email == '' or username == '':
             self.resultado_label.config(text="Um dos campos está vazio", fg="red")
-        elif self.controller:
-            if self.controller.registrar_novo_usuario(username,email, password):
-                self.resultado_label.config(text="Registro bem-sucedido", fg="green")
+        elif self.controller: #checa o controller ativo
+            if self.controller.registrar_novo_usuario(username,email, password): #tenta registrar um usuario 
+                self.resultado_label.config(text="Registro bem-sucedido", fg="green") #se deu certo, mostra que funcionou
             else:
-                self.resultado_label.config(text="Usuário já existe", fg="red")
+                self.resultado_label.config(text="Usuário já existe", fg="red")#se nao deu, mostra que falhou
 
 
     def cadastro_view(self):
@@ -78,4 +78,4 @@ class Tela_Cadastro(tk.Toplevel):
 
     def fechar_tela_cadastro(self):
         self.destroy()
-        self.controller.show_tela_login()
+        self.controller.chama_tela_login()
