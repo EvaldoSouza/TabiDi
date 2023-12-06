@@ -36,17 +36,20 @@ class EditorMostrarJogadores(tk.Toplevel):
          # Botões
         self.button1 = tk.Button(self, text="Adicionar Jogador", command=self.adicionar_jogador, bg="green", fg="black", font=("Arial", 14))
         self.button1.place(relx=0.45, rely=0.5, anchor="center")
-        self.button1 = tk.Button(self, text="Deletar Jogador", command=self.voltar, bg="red", fg="black", font=("Arial", 14))
-        self.button1.place(relx=0.45, rely=0.6, anchor="center")
+        self.button1 = tk.Button(self, text="Deletar Jogador", command=self.deletar_jogador, bg="red", fg="black", font=("Arial", 14))
+        self.button1.place(relx=0.45, rely=0.7, anchor="center")
 
 
+        self.button1 = tk.Button(self, text="Atualizar", command=self.atualizar, bg="green", fg="black", font=("Arial", 14))
+        self.button1.place(relx=0.1, rely=0.5, anchor="center")
         self.button1 = tk.Button(self, text="Voltar", command=self.voltar, bg="blue", fg="white", font=("Arial", 14))
         self.button1.place(relx=0.1, rely=0.6, anchor="center")
 
         #preciso mostrar uma tabela dinâmica
         #construindo a tabela
-        self.lista_users = self.controller.todos_jogadores_do_time(self.time, self.complemento)
-        self.construir_tabela(self.lista_users)
+        # self.lista_users = self.controller.todos_jogadores_do_time(self.time, self.complemento)
+        # self.construir_tabela(self.lista_users)
+        self.atualizar()
         
     def voltar(self):
         self.destroy()
@@ -63,11 +66,7 @@ class EditorMostrarJogadores(tk.Toplevel):
         seletc_item = self.tabela.selection()[0]
         usuario = self.tabela.item(seletc_item, 'values')
         return usuario
-            
-
-    def _deletar_usuario(self, user_id):
-        self.controller.deletar_usuario(user_id)
-        print("usuario deletado")
+    
         
     def inserir_item(self,tabela, item):
         #está apenas inserindo, não checa se é um usuário válido
@@ -77,7 +76,6 @@ class EditorMostrarJogadores(tk.Toplevel):
     
     def pesquisar(self, event):
         parametro = self.entry_usuario_pesquisado.get()
-        print(parametro)
         resultado = self.controller.pesquisar_qualquer(parametro)
         self.construir_tabela(resultado)
 
@@ -87,11 +85,11 @@ class EditorMostrarJogadores(tk.Toplevel):
         except AttributeError:
             print("Criando nova tabela?")
         
-        self.colunas = ("usuario", "email", "privilegio")
+        self.colunas = ("nome", "apelido", "posição")
         self.tabela = ttk.Treeview(self, columns=self.colunas, show='headings')
-        self.tabela.heading("usuario", text="Usuário")
-        self.tabela.heading("email", text="Email")
-        self.tabela.heading("privilegio", text="Privilégio")
+        self.tabela.heading("nome", text="Nome")
+        self.tabela.heading("apelido", text="Apelido")
+        self.tabela.heading("posição", text="Posição")
         #TODO fazer que seja uma tabela com scroll --Evaldo
 
         for user in lista_users:
@@ -103,26 +101,10 @@ class EditorMostrarJogadores(tk.Toplevel):
         self.tabela.pack()
 
     def jogador_selecionado(self, event):
-        jogador_selecionado = self.ta
-        pass
-    def mostrar_categorias_usuarios(self, enum_categorias):
-        window = tk.Toplevel(self)
-        window.title("Categorias de Usuário")
-
+        jogador_selecionado = self.tabela.selection()
+        if jogador_selecionado:
+            self.jogador_dados = self.tabela.item(jogador_selecionado)["values"]
         
-        radiobuttons = []
-        for categoria in enum_categorias:
-            radiobutton = tk.Radiobutton(window, text=f"Privilegio de {categoria}", value=categoria)
-            radiobutton.pack()
-            radiobuttons.append(radiobutton)
-            
-        selected_option = tk.StringVar(window)
-
-        for radiobutton in radiobuttons:
-            radiobutton.config(variable=selected_option)
-
-        select_button = tk.Button(window, text="Selecionar", command=lambda: self._close_return_button(window, selected_option))
-        select_button.pack()
     
     def _close_return_button(self, window, value):
         #print("valor selecionado: ", value.get())
@@ -134,3 +116,15 @@ class EditorMostrarJogadores(tk.Toplevel):
         novo_jogador = EditorCriarNovoJogador(self.time, self.complemento, self.db_path)
         novo_jogador.mainloop()
     
+    def deletar_jogador(self):
+        if self.jogador_dados:
+            if self.controller.excluir_jogador(self.jogador_dados[0], self.jogador_dados[1]):
+                print("Jogador excluido:", self.jogador_dados[0])
+        
+
+    def editar_jogador(self):
+        pass
+    
+    def atualizar(self):
+        self.lista_users = self.controller.todos_jogadores_do_time(self.time, self.complemento)
+        self.construir_tabela(self.lista_users)
