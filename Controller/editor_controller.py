@@ -93,4 +93,27 @@ class EditorController:
             return True
         else:
             return False
+        
+    #funções de jogador
+    def criar_jogador(self, nome, apelido, posicao, time_atual_nome, time_atual_complemento, times_pass, data_nasc):
+        return self.editor_queries.criar_jogador(nome, apelido, posicao, time_atual_nome, time_atual_complemento, times_pass, data_nasc)
+    
+    def pesquisar_jogador(self, nome, apelido):
+        return self.editor_queries.ler_jogador(nome, apelido)
+    
+    def pesquisar_qualquer(self, valor):
+        return self.editor_queries.get_jogadores_by_partial_key(valor)
+    
+    def atualizar_jogador(self, nome, apelido, new_posicao, new_time_atual_nome):
+        return self.editor_queries.atualizar_jogador(nome, apelido, new_posicao, new_time_atual_nome)
+    
+    def excluir_jogador(self, nome, apelido):
+        return self.editor_queries.excluir_jogador(nome, apelido)
+    
+    def todos_jogadores_do_time(self, time, complemento):
+        return self.editor_queries.todos_jogadores_do_time(time, complemento)
+
+    
+
+
 

@@ -18,43 +18,43 @@ class EditorCriarNovoTime(tk.Toplevel):
 
         # Configuração de estilo para os elementos da interface
         self.label_nome = tk.Label(self, text="Nome:", bg="#F0F0F0", font=("Arial", 12))
-        self.label_pontos = tk.Label(self, text="Pontos:", bg="#F0F0F0", font=("Arial", 12))
-        self.label_vitorias = tk.Label(self, text="Vitórias:", bg="#F0F0F0", font=("Arial", 12))
-        self.label_derrotas = tk.Label(self, text="Derrotas:", bg="#F0F0F0", font=("Arial", 12))
-        self.label_empates = tk.Label(self, text="Empates:", bg="#F0F0F0", font=("Arial", 12))
+        self.label_complemento = tk.Label(self, text="Complemento:", bg="#F0F0F0", font=("Arial", 12))
+        self.label_tecnico = tk.Label(self, text="Tecnico:", bg="#F0F0F0", font=("Arial", 12) )
+        self.label_estadio = tk.Label(self, text="Estadio:", bg="#F0F0F0", font=("Arial", 12) )
+        self.label_cidade = tk.Label(self, text="Cidade:", bg="#F0F0F0", font=("Arial", 12) )
 
         # Usar StringVar é uma forma mais gerenciável e clara de lidar com inputs e objetos desse tipo
         self.nome_var = tk.StringVar()
-        self.pontos_var = tk.StringVar()
-        self.vitorias_var = tk.StringVar()
-        self.derrotas_var = tk.StringVar()
-        self.empates_var = tk.StringVar()
+        self.complemento_var = tk.StringVar()
+        self.tecnico_var = tk.StringVar()
+        self.estadio_var = tk.StringVar()
+        self.cidade_var = tk.StringVar()
 
         self.entry_nome = tk.Entry(self, font=("Arial", 14), textvariable=self.nome_var)
-        self.entry_pontos = tk.Entry(self, font=("Arial", 14), textvariable=self.pontos_var)
-        self.entry_vitorias = tk.Entry(self, font=("Arial", 14), textvariable=self.vitorias_var)
-        self.entry_derrotas = tk.Entry(self, font=("Arial", 14), textvariable=self.derrotas_var)
-        self.entry_empates = tk.Entry(self, font=("Arial", 14), textvariable=self.empates_var)
+        self.entry_complemento = tk.Entry(self, font=("Arial", 14), textvariable=self.complemento_var)
+        self.entry_tecnico = tk.Entry(self, font=("Arial", 14), textvariable=self.tecnico_var)
+        self.entry_estadio = tk.Entry(self, font=("Arial", 14), textvariable=self.estadio_var)
+        self.entry_cidade = tk.Entry(self, font=("Arial", 14), textvariable=self.cidade_var)
 
         # Centralizando as labels
         self.label_nome.place(relx=0.3, rely=0.3, anchor="center")
-        self.label_pontos.place(relx=0.3, rely=0.4, anchor="center")
-        self.label_vitorias.place(relx=0.3, rely=0.5, anchor="center")
-        self.label_derrotas.place(relx=0.3, rely=0.6, anchor="center")
-        self.label_empates.place(relx=0.3, rely=0.7, anchor="center")
+        self.label_complemento.place(relx=0.3, rely=0.4, anchor="center")
+        self.label_tecnico.place(relx=0.3, rely=0.5, anchor="center")
+        self.label_estadio.place(relx=0.3, rely=0.6, anchor="center")
+        self.label_cidade.place(relx=0.3, rely=0.7, anchor="center")
 
         # Posicionamento dos campos de entrada
         self.entry_nome.place(relx=0.5, rely=0.3, anchor="center")
-        self.entry_pontos.place(relx=0.5, rely=0.4, anchor="center")
-        self.entry_vitorias.place(relx=0.5, rely=0.5, anchor="center")
-        self.entry_derrotas.place(relx=0.5, rely=0.6, anchor="center")
-        self.entry_empates.place(relx=0.5, rely=0.7, anchor="center")
+        self.entry_complemento.place(relx=0.5, rely=0.4, anchor="center")
+        self.entry_tecnico.place(relx=0.5, rely=0.5, anchor="center")
+        self.entry_estadio.place(relx=0.5, rely=0.6, anchor="center")
+        self.entry_cidade.place(relx=0.5, rely=0.7, anchor="center")
 
-        # Botão de voltar
+
         self.confirmar_button = tk.Button(self, text="Confirmar", command=self.confirmar, bg="green", fg="white", font=("Arial", 14))
         self.confirmar_button.place(relx=0.40, rely=0.8, anchor="center")
 
-        # Botão de registro
+
         self.voltar_button = tk.Button(self, text="Voltar", command=self.voltar, bg="blue", fg="white", font=("Arial", 14))
         self.voltar_button.place(relx=0.55, rely=0.8, anchor="center")
 
@@ -64,23 +64,20 @@ class EditorCriarNovoTime(tk.Toplevel):
 
     def confirmar(self):
         nome = self.nome_var.get()
-        pontos = self.pontos_var.get()
-        vitorias = self.vitorias_var.get()
-        derrotas = self.derrotas_var.get()
-        empates = self.empates_var.get()
+        complemento = self.complemento_var.get()
+        tecnico = self.tecnico_var.get()
+        estadio = self.estadio_var.get()
+        cidade = self.cidade_var.get()
 
         #conferindo se algum campo está vazio
-        if nome == '' or pontos == '' or vitorias == '' or derrotas == '' or empates == '':
-            self.resultado_label.config(text="Um dos campos está vazio", fg="red")
+        if nome == '' or complemento == '' :
+            self.resultado_label.config(text="Nome ou Complemento está vazio", fg="red")
         else: 
+            #como fazer se um dos outros tres estiver vazio?
              
             controller = editor_controller.EditorController(self.db_path)
-            controller.criar_time(nome, nome, " ", " ", " ")
+            controller.criar_time(nome, nome, tecnico, estadio, cidade)
             self.resultado_label.config(text="Time Cadastrado com sucesso", fg="green")
     
     def voltar(self):
         self.destroy()
-    
-    #TODO falta os campos do que isso está alterando, ou pelo menos uma indicação de como isso funciona
-    #TODO pegar as informações da tela --Moderado
-    #TODO mandar essas informações para o banco

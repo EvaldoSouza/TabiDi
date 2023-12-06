@@ -129,6 +129,79 @@ class EditorQueries:
             print(f"Erro ao excluir campeonato: {e}")
             return False
 
+    #CRUD jogador
+    def criar_jogador(self, nome, apelido, posicao, time_atual_nome, time_atual_complemento, times_pass, data_nasc):
+            try:
+                self.cursor.execute("""
+                    INSERT INTO JOGADOR 
+                    (nome, apelido, posicao, time_atual_nome, time_atual_complemento, times_pass, data_nasc) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, (nome, apelido, posicao, time_atual_nome, time_atual_complemento, times_pass, data_nasc))
+                self.conn.commit()
+                return True
+            except sqlite3.Error as e:
+                print(f"Erro ao criar jogador: {e}")
+                return False
+
+    def ler_jogador(self, nome, apelido):
+        try:
+            self.cursor.execute("""
+                SELECT * FROM JOGADOR 
+                WHERE nome = ? AND apelido = ?
+            """, (nome, apelido))
+            jogador = self.cursor.fetchone()
+            return jogador
+        except sqlite3.Error as e:
+            print(f"Erro ao ler jogador: {e}")
+            return None
+
+    def atualizar_jogador(self, nome, apelido, new_posicao, new_time_atual_nome):
+        try:
+            self.cursor.execute("""
+                UPDATE JOGADOR 
+                SET posicao = ?, time_atual_nome = ? 
+                WHERE nome = ? AND apelido = ?
+            """, (new_posicao, new_time_atual_nome, nome, apelido))
+            self.conn.commit()
+            return True
+        except sqlite3.Error as e:
+            print(f"Erro ao atualizar jogador: {e}")
+            return False
+
+    def excluir_jogador(self, nome, apelido):
+        try:
+            self.cursor.execute("""
+                DELETE FROM JOGADOR 
+                WHERE nome = ? AND apelido = ?
+            """, (nome, apelido))
+            self.conn.commit()
+            return True
+        except sqlite3.Error as e:
+            print(f"Erro ao excluir jogador: {e}")
+            return False
+        
+    def todos_jogadores_do_time(self, time, complemento):
+        try:
+            self.cursor.execute("SELECT * FROM JOGADOR WHERE time_atual_nome = ? and time_atual_complemento = ?", (time, complemento))
+            jogadores = self.cursor.fetchall()
+            return jogadores
+        except sqlite3.Error as e:
+            print(f"Erro ao obter jogadores por time: {e}")
+            return None
+        
+    def get_jogadores_by_partial_key(self, partial_key):
+        try:
+            self.cursor.execute('''
+                SELECT * FROM JOGADOR 
+                WHERE nome LIKE ? OR apelido LIKE ?
+            ''', (f'%{partial_key}%', f'%{partial_key}%'))
+
+            jogadores = self.cursor.fetchall()
+            return jogadores
+        except sqlite3.Error as e:
+            print(f"Erro ao obter jogador por chave primária: {e}")
+            return None
+
     #Fechar banco
     def fechar_conexao(self):
         self.conn.close()

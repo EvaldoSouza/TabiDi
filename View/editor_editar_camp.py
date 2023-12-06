@@ -1,8 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import PhotoImage
 
 from .editor_criar_novo_time import EditorCriarNovoTime
 from .editor_alterar_time import EditorAlterarTime
+from .editor_criar_jogador import EditorCriarNovoJogador
+from .editor_mostrar_jogadores import EditorMostrarJogadores
 from Controller import editor_controller
 
 class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
@@ -11,6 +14,11 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
         self.geometry("900x600")
         self.resizable(width="TRUE", height="TRUE")
         self.title("Editor - Editar Campeonato")
+
+                # Adicionando um logotipo
+        self.logo_image = PhotoImage(file="View/img/logo.png")
+        self.logo_label = tk.Label(self, image=self.logo_image)
+        self.logo_label.place(relx=0.5, rely=0.15, anchor="center")
 
         self.db_path = db_path
 
@@ -39,6 +47,12 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
         self.atualizar_button = tk.Button(self, text="Atualizar", command=self.atualizar, bg="green", fg="white", font=("Arial", 14))
         self.atualizar_button.place(relx=0.9, rely=0.4, anchor="se")
 
+        self.atualizar_button = tk.Button(self, text="Cadastrar Partida", command=self.cadastrar_partida, bg="blue", fg="white", font=("Arial", 14))
+        self.atualizar_button.place(relx=0.9, rely=0.6, anchor="se")
+
+        self.atualizar_button = tk.Button(self, text="Mostrar Jogadores", command=self.mostrar_jogadores, bg="blue", fg="white", font=("Arial", 14))
+        self.atualizar_button.place(relx=0.9, rely=0.7, anchor="se")
+
 
 
     def construir_tabela_times(self, classificacao_campeonato):
@@ -55,15 +69,15 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
             self.tabela_times.heading(coluna, text=coluna.capitalize())
             self.tabela_times.column(coluna, width=70)  # Ajuste a largura conforme necessário
 
-        for time in classificacao_campeonato:
-            nome = time["nome"]
-            complemento = time["complemento"]
-            pontos = time["pontos"]
-            vitorias = time["vitorias"]
-            derrotas = time["derrotas"]
-            empates = time["empates"]
-            self.tabela_times.insert("", "end", values=(nome, complemento, pontos, vitorias, derrotas, empates))
-            #self.tabela_times.insert('', 'end', values=(time["nome"],  time["vitorias"], time["derrotas"], time["empates"]))
+        if classificacao_campeonato:
+            for time in classificacao_campeonato:
+                nome = time["nome"]
+                complemento = time["complemento"]
+                pontos = time["pontos"]
+                vitorias = time["vitorias"]
+                derrotas = time["derrotas"]
+                empates = time["empates"]
+                self.tabela_times.insert("", "end", values=(nome, complemento, pontos, vitorias, derrotas, empates))
 
         self.tabela_times.pack()
         self.tabela_times.bind("<<TreeviewSelect>>", self.on_treeviw_select )
@@ -96,10 +110,21 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
         pass
 
     def atualizar(self):
-        pass
+        self.tabela_times.delete(*self.tabela_times.get_children())
+        self.construir_tabela_times(self.times())
+        
     
     def voltar(self):
         self.destroy()
 
     def times(self):
         return self.controller.recuperar_times()
+    
+    def mostrar_jogadores(self):
+        if self.time_selecionado:
+            jogadores = EditorMostrarJogadores(self.db_path, self, self.dados_time_selecionado[0], self.dados_time_selecionado[1])
+            jogadores.mainloop()
+
+    def cadastrar_partida(self):
+        pass
+        
