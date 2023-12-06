@@ -2,11 +2,11 @@ import tkinter as tk
 from tkinter import PhotoImage
 #from .tela_editor_pesquisar import Tela_Editor_Pesquisar
 from Controller import leitor_controller
-from View import tela_lista_camps
+from View import leitor_lista_camps
 
 class LeitorTelaPrincipal(tk.Toplevel):
-    def __init__(self, usuario):
-        super().__init__()
+    def __init__(self, root, usuario):
+        super().__init__(root)
         self.usuario = usuario
         # Geometria básica
         self.title('Home - Leitor')
@@ -42,7 +42,7 @@ class LeitorTelaPrincipal(tk.Toplevel):
 
     def vercamp(self):
         #isso é uma função do leitor
-        db_path = "Database/lista_campeonatos.db"
+        db_path = "Database/lista_campeonatos.sqlite"
         leitor = leitor_controller.LeitorController(db_path)
-        tela_pesquisar = tela_lista_camps.TelaListaCamps(leitor, leitor.listar_campeonatos() )
+        tela_pesquisar = leitor_lista_camps.LeitorListaCamps(leitor, leitor.listar_campeonatos() )
         tela_pesquisar.mainloop()

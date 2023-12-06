@@ -2,13 +2,12 @@ import tkinter as tk
 from tkinter import PhotoImage
 from Controller import editor_controller
 
-
-class Modal_Alterar(tk.Toplevel):
+class EditorAlterarTime(tk.Toplevel):
     def __init__(self, db_path):
         super().__init__()
         self.geometry("600x300")
         self.resizable(width="TRUE", height="TRUE")
-        self.title("Editor - Adicionar")
+        self.title("Editor - Adicionar Time")
 
         self.db_path = db_path
         # Adicionando um logotipo
@@ -70,7 +69,7 @@ class Modal_Alterar(tk.Toplevel):
         empates = self.empates_var.get()
 
         #conferindo se algum campo está vazio
-        if nome == '' or vitorias == '' or derrotas == '' or empates == '':
+        if nome == '' or vitorias == '' or derrotas == '' or empates == '': #TODO isso não está bom. Tinha que manter os dados antigos, e só alterar os que mudaram
             self.resultado_label.config(text="Um dos campos está vazio", fg="red")
         else: 
              
@@ -82,7 +81,3 @@ class Modal_Alterar(tk.Toplevel):
     
     def voltar(self):
         self.destroy()
-
-    #TODO falta os campos do que isso está alterando, ou pelo menos uma indicação de como isso funciona
-    #TODO pegar as informações da tela --moderado
-    #TODO mandar essas informações para o banco

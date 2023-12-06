@@ -16,13 +16,23 @@ class EditorQueries:
         except sqlite3.Error as e:
             print(f"Erro ao criar time: {e}")
 
-    def recuperar_times(self):
+    def recuperar_todos_dados_times(self):
         try:
             self.cursor.execute("SELECT nome_principal, complemento, tecnico, estadio, cidade, vitorias, empates, derrotas FROM TIME")
             times = self.cursor.fetchall()
             return times
         except sqlite3.Error as e:
             print(f"Erro ao recuperar times: {e}")
+
+    def recuperar_times(self):
+        try:
+    
+            self.cursor.execute(f"SELECT nome_principal, complemento, vitorias, empates, derrotas FROM TIME")
+            times = self.cursor.fetchall()
+            return times
+        except Exception as e:
+            print(f"Erro ao buscar informações dos times: {e}")
+            return None
 
     def atualizar_time(self, nome_principal, complemento, novas_vitorias, novos_empates, novas_derrotas):
         try:

@@ -1,13 +1,16 @@
 import tkinter as tk
 from tkinter import PhotoImage
-from .tela_editor_pesquisar import Tela_Editor_Pesquisar
+from .editor_listar_camps import EditorListarCamps
 from Persistencia import leitor_queries
 from Controller import admin_controller, leitor_controller
-from View import admin_display_users
+from View import admin_listar_usuarios
 
 class AdminTelaPrincipal(tk.Toplevel):
-    def __init__(self, usuario):
-        super().__init__()
+    def __init__(self,root, usuario):
+        super().__init__(root)
+
+        self.root = root
+
         self.usuario = usuario
         # Geometria básica
         self.title('Home - Administrador')
@@ -38,21 +41,20 @@ class AdminTelaPrincipal(tk.Toplevel):
         # self.back_button = tk.Button(self, text="Voltar", command=self.fechar_Tela_Editor, bg="blue", fg="white", font=("Arial", 14))
         # self.back_button.place(relx=0.05, rely=0.05, anchor="center")
         
-    def fechar_Tela_Editor(self):
-        self.destroy()
 
     def ver_usuarios(self):
         #funções de usuarios
-        db_path = "Database/db_usuarios.sqlite"
-        admin = admin_controller.AdminController(db_path)
-        lista_usuarios = admin.consultar_todos_usuario()
-        tela_admin = admin_display_users.Display_Users(admin, lista_usuarios)
+        tela_admin = admin_listar_usuarios.AdminListarUsuarios(self.root)
+        #self.destroy() #Não pode destruir ainda pq o voltar n funciona
         tela_admin.mainloop()
         
     def vercamp(self):
         #isso é uma função do leitor
-        db_path = "Database/lista_campeonatos.db"
+        db_path = "Database/lista_campeonatos.sqlite"
         leitor = leitor_controller.LeitorController(db_path)
-        tela_pesquisar = Tela_Editor_Pesquisar(leitor, leitor.listar_campeonatos() ) #TODO mudar o nome dessa tela
+        tela_pesquisar = EditorListarCamps(self.root, leitor, leitor.listar_campeonatos() )
+        #self.destroy()
         tela_pesquisar.mainloop()
-#TODO falta um botão para chamar a janela que lida com info de usuário --fácil
+
+    def fechar_janela(self):
+        self.destroy()

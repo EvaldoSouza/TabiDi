@@ -46,11 +46,11 @@ class TelaCadastro(tk.Toplevel):
         self.entry_password.place(relx=0.5, rely=0.5, anchor="center")
         
         # Botão de voltar
-        self.back_button = tk.Button(self, text="Fazer Login", command=self.fechar_tela_cadastro, bg="yellow", fg="white", font=("Arial", 14))
+        self.back_button = tk.Button(self, text="Fazer Login", command=self.fechar_tela_cadastro, bg="blue", fg="white", font=("Arial", 14))
         self.back_button.place(relx=0.40, rely=0.6, anchor="center")
         
         # Botão de registro
-        self.register_button = tk.Button(self, text="Registrar", command=self.registrar, bg="blue", fg="white", font=("Arial", 14))
+        self.register_button = tk.Button(self, text="Registrar", command=self.registrar, bg="green", fg="white", font=("Arial", 14))
         self.register_button.place(relx=0.55, rely=0.6, anchor="center")
         
         #Mostrar resultado de Login
@@ -78,4 +78,4 @@ class TelaCadastro(tk.Toplevel):
 
     def fechar_tela_cadastro(self):
         self.destroy()
-        self.controller.chama_tela_login()
+        #self.controller.chama_tela_login()

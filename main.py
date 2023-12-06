@@ -1,14 +1,16 @@
-from Controller import controller_inicial
 from View import tela_login
+import tkinter
 
 
 class Main:
     @staticmethod
-    def run():
+    def run(root):
         #A tela login precisa de um controller
-        controler = controller_inicial.ControllerInicial()
-        tela = tela_login.TelaLogin(controler)
+        tela = tela_login.TelaLogin(root)
         tela.login_view()
 
 if __name__ == '__main__':
-    Main.run()
+    root = tkinter.Tk()
+    root.withdraw()
+    Main.run(root)
+    root.destroy()

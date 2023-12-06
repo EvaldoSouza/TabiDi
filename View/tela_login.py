@@ -2,15 +2,17 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
 from .tela_cadastro import TelaCadastro
-from Controller import user_controller
+from Controller import user_controller, controller_inicial
 from Model import model
 from View import admin_tela_principal, editor_tela_principal, leitor_tela_principal
 from Usuarios import user
 
-class TelaLogin(tk.Tk):
-    def __init__(self, controller):
-        super().__init__()
-        self.controller = controller
+class TelaLogin(tk.Toplevel): 
+    def __init__(self, root):
+        super().__init__(root)
+
+        self.root = root
+        self.controller = controller_inicial.ControllerInicial()
         #Geometria básica
         self.title('Tabedi')
         self.geometry("900x600")
@@ -55,11 +57,6 @@ class TelaLogin(tk.Tk):
         self.resultado_label = tk.Label(self, text="", font=("Arial", 14))
         self.resultado_label.place(relx=0.5, rely=0.7, anchor="center") #Conferir se está no lugar certo --Evaldo
 
-    #exemplo de lógica a ser seguida. Não passar objetos StringVar para o controller, pois são mais apropriados para a interface
-    # def enter_button_clicked(self):
-    #     if self.tela_main.controller:
-    #         self.tela_main.controller.enter_login(self.email_var.get(), self.senha_var())
-
     def login(self):
         #deve chamar o método login do controller, e passar os dados para ele
         #já fazer algum tratamento de dados aqui, principalmente a respeito de campos vazios
@@ -72,6 +69,7 @@ class TelaLogin(tk.Tk):
         elif self.controller:
             if self.controller.checar_credenciais(username, password):
                 #se pode tela chamar tela, que eu acho que pode, chamar a tela principal aqui
+                #self.fechar_tela_login() #aqui n deu certo
                 self.abrir_janela_usuario(username)
             else:
                 self.resultado_label.config(text="Usuario ou Senha Incorretos", fg="red")
@@ -85,38 +83,25 @@ class TelaLogin(tk.Tk):
         #self.withdraw()
     
     def abrir_janela_usuario(self, nome):
-            #temos um problema de design!
-            #há botões diferentes para cada tipo de usuário na janela principal
-            #fazer três janelas diferentes para resolver isso
-            #O user_controller que vai fazer essa lógica
-            #e fechar tmb essa janela
-            #então essa função não chama outra tela, mas sim um controller
             controller = user_controller.UserController()
             email = controller.consultar_email(nome)
             privilegio = controller.consultar_privilegio(nome) #lembrar que vem como uma tupla
             usuario = model.User(nome, '*', email, privilegio)
-            
-            #inicializando a tela com um caso base
-            
-            
 
             match privilegio[0]:
                 case user.UserPrivilege.EDI.value:
-                    tela_usario = editor_tela_principal.EditorTelaPrincipal(usuario)
+                    tela_usario = editor_tela_principal.EditorTelaPrincipal(self.root, usuario)
                 case user.UserPrivilege.ADM.value:
-                    tela_usario = admin_tela_principal.AdminTelaPrincipal(usuario)
+                    tela_usario = admin_tela_principal.AdminTelaPrincipal(self.root, usuario)
                 case user.UserPrivilege.LER.value:
-                    tela_usario = leitor_tela_principal.LeitorTelaPrincipal(usuario)
+                    tela_usario = leitor_tela_principal.LeitorTelaPrincipal(self.root, usuario)
                 case _:
                     print("Algo deu errado --tela_login")
                     self.fechar_tela_login()
                     return
 
-
-                
-            #fazer a logica de chamar telas aqui! Não pode ter nada de tela no controller
-            tela_usario.mainloop()
             self.fechar_tela_login()
+            tela_usario.mainloop()
 
     def login_view(self):
         self.title("TaBedi")

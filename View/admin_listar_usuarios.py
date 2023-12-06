@@ -5,12 +5,11 @@ from tkinter import PhotoImage
 from tkinter.messagebox import showinfo
 from Controller import admin_controller
 
-
-#TODO criar uma classe  Dislpay_Table e fazer herança, para padronizar a visualização
-class Display_Users(tk.Tk):
-    def __init__(self, controller, lista_users):
-        super().__init__()
+class AdminListarUsuarios(tk.Toplevel): 
+    def __init__(self, root):
+        super().__init__(root)
         self.db_path = "Database/db_usuarios.sqlite"
+
 
         self.controller = admin_controller.AdminController(self.db_path)
         #Geometria básica
@@ -31,7 +30,8 @@ class Display_Users(tk.Tk):
 
         #preciso mostrar uma tabela dinâmica
         #construindo a tabela
-        self.contruir_tabela(lista_users)
+        self.lista_users = self.controller.consultar_todos_usuario()
+        self.contruir_tabela(self.lista_users)
         
     def voltar(self):
         self.destroy()

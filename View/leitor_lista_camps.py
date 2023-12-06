@@ -3,13 +3,13 @@ from tkinter import ttk
 from tkinter import PhotoImage
 import os
 
-from View.tela_editcamp import Tela_EditCamp
-from .tela_editor_novocamp import Tela_Editor_NovoCamp
-from Controller import leitor_controller, editor_controller
+from View import leitor_listar_times
+#from .tela_editor_novo_camp import TelaEditorNovoCamp
+from Controller import leitor_controller
 
 
 
-class Tela_Editor_Pesquisar(tk.Toplevel):
+class LeitorListaCamps(tk.Toplevel):
     def __init__(self, controller, lista_campeonatos):
         super().__init__()
         #para trabalhar com o campeonato selecionado
@@ -18,7 +18,8 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         self.controller = controller
         self.geometry("900x600")
         self.resizable(width="TRUE", height="TRUE")
-        self.title("Editor - Lista de Campeonatos")
+        #self.title("Editor - Lista de Campeonatos")
+        self.title("Leitor - Lista de Campeonatos")
         self.tabela_campeonatos = None
 
         self.background_image = PhotoImage(file="View/img/football_background.png")
@@ -28,41 +29,18 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         # Lista de campeonatos
         self.construir_lista_campeonatos(lista_campeonatos)
 
-        self.cadastrar_button = tk.Button(self, text="Cadastrar Campeonato", command=self.cadastrar_campeonato, bg="black", fg="white", font=("Arial", 14))
-        self.cadastrar_button.place(relx=0.1, rely=0.6, anchor="w")
 
         self.selecionar_button = tk.Button(self, text="Selecionar", command=self.ranking, bg="green", fg="white", font=("Arial", 14))
         self.selecionar_button.place(relx=0.9, rely=0.2, anchor="se")
 
-        self.selecionar_button = tk.Button(self, text="Deletar", command=self.deletar, bg="red", fg="white", font=("Arial", 14))
-        self.selecionar_button.place(relx=0.9, rely=0.3, anchor="se")
-
         self.voltar_button = tk.Button(self, text="Voltar", command=self.voltar, bg="yellow", fg="black", font=("Arial", 14))
-        self.voltar_button.place(relx=0.9, rely=0.4, anchor="se")
-
-        self.voltar_button = tk.Button(self, text="Atualizar", command=self.atualizar, bg="gree", fg="white", font=("Arial", 14))
-        self.voltar_button.place(relx=0.1, rely=0.7, anchor="w")
-
-    def cadastrar_campeonato(self):
-        tela_editor_novocamp = Tela_Editor_NovoCamp()
-        tela_editor_novocamp.mainloop()
-        
-
-    def atualizar(self):
-        self.lista_campeonatos_listbox.delete(0, tk.End)
-        db_path = "Database/lista_campeonatos.db"
-        editor = editor_controller.EditorController(db_path)
-        lista_campeonatos = editor.recuperar_campeonatos()
-        self.construir_lista_campeonatos(lista_campeonatos)
+        self.voltar_button.place(relx=0.9, rely=0.3, anchor="se")
 
     def voltar(self):
         self.destroy()
         pass
     
     def construir_lista_campeonatos(self, lista_campeonatos):
-        if not lista_campeonatos:
-            print("Lista vazia")
-            return
         lista_frame = tk.Frame(self)
         lista_frame.place(relx=0.1, rely=0.3, anchor="w")
 
@@ -86,30 +64,17 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         if selected_index:
             self.selected_campeonato = self.lista_campeonatos_listbox.get(selected_index)
 
-    def deletar(self):
-        if self.selected_campeonato:
-            name = self.selected_campeonato.split(":")[0].strip()
-            print(f"Selected campeonato: {name} --tela_editor_pesquisar")
-            db_path = "Database/lista_campeonatos.db"
-            editor = editor_controller.EditorController(db_path)
-            editor.excluir_campeonato(name)
-            #campeonato_db = "Database/"+ name +".db"
-            # if os.path.exists(campeonato_db):
-            #     #tem que deletar em lista_campeonatoss e o banco
-            #     editor = editor_controller.EditorController(campeonato_db)
-            #     leitor.
 
 
-
-
-    def construir_tabela_campeonatos(self, classificacao_campeonato, db_path):
+    def construir_tabela_campeonatos(self, classificacao_campeonato):
         try:
             self.tabela_campeonatos.destroy()
         except AttributeError:
-            print("Criando nova tabela de campeonatos?")
-            print(classificacao_campeonato)
+            print("Criando nova tabela de campeonatos? --tela_lista_camps")
+            
 
-        colunas_campeonatos = ("nome", "pontos", "vitorias", "derrotas", "empates")
+        #colunas_campeonatos = ("nome", "pontos", "vitorias", "derrotas", "empates") sem os pontos por enquanto
+        colunas_campeonatos = ("nome", "vitorias", "derrotas", "empates")
         self.tabela_campeonatos = ttk.Treeview(self, columns=colunas_campeonatos, show='headings')
         
         for coluna in colunas_campeonatos:
@@ -118,8 +83,8 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         for time in classificacao_campeonato:
             self.tabela_campeonatos.insert('', 'end', values=(time["nome"],  time["vitorias"], time["derrotas"], time["empates"]))
 
-        tela_editorcamp = Tela_EditCamp(classificacao_campeonato, db_path)
-        tela_editorcamp.mainloop()
+        tela_leitor_camp = leitor_listar_times.LeitorListarTimes(classificacao_campeonato)
+        tela_leitor_camp.mainloop()
 
 
 
@@ -144,13 +109,13 @@ class Tela_Editor_Pesquisar(tk.Toplevel):
         if self.selected_campeonato:
             name = self.selected_campeonato.split(":")[0].strip()
             print(f"Selected campeonato: {name} --tela_editor_pesquisar")
-            campeonato_db = "Database/"+ name +".db"
+            campeonato_db = "Database/"+ name +".sqlite"
             if os.path.exists(campeonato_db):
                 #self.leitor.set_db_path(campeonato_db)
                 #times= self.leitor.retorna_times()
                 leitor = leitor_controller.LeitorController(campeonato_db)
                 times = leitor.listar_times()
-                self.construir_tabela_campeonatos(times, campeonato_db)
+                self.construir_tabela_campeonatos(times)
                 self.tabela_selection_campeonato()
             else:
                 #TODO Tratar esse erro propriamente

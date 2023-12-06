@@ -1,0 +1,105 @@
+import tkinter as tk
+from tkinter import ttk
+
+from .editor_criar_novo_time import EditorCriarNovoTime
+from .editor_alterar_time import EditorAlterarTime
+from Controller import editor_controller
+
+class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
+    def __init__(self, root, db_path):
+        super().__init__(root)
+        self.geometry("900x600")
+        self.resizable(width="TRUE", height="TRUE")
+        self.title("Editor - Editar Campeonato")
+
+        self.db_path = db_path
+
+        self.controller = editor_controller.EditorController(self.db_path)
+
+        # Cria a tabela
+        self.construir_tabela_times(self.times())
+
+        # Botão de adicionar
+        self.adicionar_button = tk.Button(self, text="Adicionar", command=self.adicionar, bg="green", fg="black", font=("Arial", 14))
+        self.adicionar_button.place(relx=0.9, rely=0.1, anchor="se")
+
+        # Botão de alterar
+        self.alterar_button = tk.Button(self, text="Alterar", command=self.alterar, bg="yellow", fg="black", font=("Arial", 14))
+        self.alterar_button.place(relx=0.9, rely=0.2, anchor="se")
+
+        # Botão de adicionar
+        self.excluir_button = tk.Button(self, text="Excluir", command=self.excluir, bg="red", fg="black", font=("Arial", 14))
+        self.excluir_button.place(relx=0.9, rely=0.3, anchor="se")
+
+        # Botão de voltar
+        self.voltar_button = tk.Button(self, text="Voltar", command=self.voltar, bg="blue", fg="black", font=("Arial", 14))
+        self.voltar_button.place(relx=0.9, rely=0.4, anchor="se")
+
+        #botao de atualizar 
+        self.atualizar_button = tk.Button(self, text="Atualizar", command=self.atualizar, bg="green", fg="white", font=("Arial", 14))
+        self.atualizar_button.place(relx=0.9, rely=0.4, anchor="se")
+
+
+
+    def construir_tabela_times(self, classificacao_campeonato):
+        try:
+            self.tabela_times.destroy()
+        except AttributeError:
+            print("Criando nova tabela de campeonatos?")
+            #print(classificacao_campeonato)
+        
+        colunas_times = ("Nome", "Complemento" "Pontos", "Vitórias", "Derrotas", "Empates")
+        self.tabela_times = ttk.Treeview(self, columns=colunas_times, show='headings')
+
+        for coluna in colunas_times:
+            self.tabela_times.heading(coluna, text=coluna.capitalize())
+            self.tabela_times.column(coluna, width=70)  # Ajuste a largura conforme necessário
+
+        for time in classificacao_campeonato:
+            nome = time["nome"]
+            complemento = time["complemento"]
+            pontos = time["pontos"]
+            vitorias = time["vitorias"]
+            derrotas = time["derrotas"]
+            empates = time["empates"]
+            self.tabela_times.insert("", "end", values=(nome, complemento, pontos, vitorias, derrotas, empates))
+            #self.tabela_times.insert('', 'end', values=(time["nome"],  time["vitorias"], time["derrotas"], time["empates"]))
+
+        self.tabela_times.pack()
+        self.tabela_times.bind("<<TreeviewSelect>>", self.on_treeviw_select )
+
+    def on_treeviw_select(self, event):
+        time_selecionado = self.tabela_times.selection() #retorna apenas o nome do time (primeiro elemento). Tem que usar .item para pegar os valores
+        if time_selecionado:
+            #self.time_selecionado = time_selecionado[0] #por algum motivo ta tundo vindo no values
+            self.dados_time_selecionado = self.tabela_times.item(time_selecionado)["values"] #os dados do time
+            self.time_selecionado = self.dados_time_selecionado[0]
+
+    def adicionar(self):
+        modal_adicionar = EditorCriarNovoTime(self.db_path)  # Crie uma instância da classe Tela_User
+        modal_adicionar.mainloop()
+    
+    def alterar(self):
+        modal_alterar = EditorAlterarTime(self.db_path)  # Crie uma instância da classe Tela_User
+        modal_alterar.mainloop()
+        #mandar os dados atuais?
+    
+    def excluir(self):
+        #TODO ligar ao banco
+        #como fazer com o complemento?
+        if self.controller.excluir_time(self.time_selecionado, self.dados_time_selecionado[1]):
+            print("Time {} com complemento {} foi exlcluido corretamente", self.time_selecionado, self.dados_time_selecionado[0])
+
+        else:
+            print("Time {} com complemento {} não foi exlcluido corretamente", self.time_selecionado, self.dados_time_selecionado[0])
+
+        pass
+
+    def atualizar(self):
+        pass
+    
+    def voltar(self):
+        self.destroy()
+
+    def times(self):
+        return self.controller.recuperar_times()

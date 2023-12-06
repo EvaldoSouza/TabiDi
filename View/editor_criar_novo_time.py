@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from Controller import editor_controller
-class Modal_Adicionar(tk.Toplevel):
+
+class EditorCriarNovoTime(tk.Toplevel):
     def __init__(self, db_path):
         super().__init__()
         self.db_path = db_path
