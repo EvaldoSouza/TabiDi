@@ -26,9 +26,9 @@ class EditorMostrarPartidas(tk.Toplevel):
         # self.button1 = tk.Button(self, text="Adicionar Gol", command=self.adicionar_gol, bg="green", fg="black", font=("Arial", 14))
         # self.button1.pack(side=tk.RIGHT, padx=10)
         self.button1 = tk.Button(self, text="Mostrar Gols", command=self.mostrar_gols, bg="green", fg="black", font=("Arial", 14))
-        self.button1.pack(side=tk.RIGHT, padx=10)
+        self.button1.pack(side=tk.BOTTOM, padx=10)
         self.button1 = tk.Button(self, text="Deletar Partida", command=self.deletar_partida, bg="red", fg="black", font=("Arial", 14))
-        self.button1.pack(side=tk.RIGHT, padx=10)
+        self.button1.pack(side=tk.BOTTOM, padx=10)
 
         self.tabela_partidas = self.construir_tabela_partidas(self.lista_partidas())
         self.tabela_partidas.pack(side=tk.LEFT, padx=10)
@@ -37,16 +37,16 @@ class EditorMostrarPartidas(tk.Toplevel):
     
     def construir_tabela_partidas(self, lista_partidas):
 
-        colunas = ("mandante", "complemento", "visitante", "complemento")
+        colunas = ("mandante", "complemento", "visitante", "complemento_v")
         tabela = ttk.Treeview(self, columns=colunas, show='headings')
-        tabela.heading("nome", text="Nome")
+        tabela.heading("mandante", text="Nome")
         tabela.heading("complemento", text="Complemento")
         tabela.heading("visitante", text="Visitante")
-        tabela.heading("complemento", text="Complemento")
+        tabela.heading("complemento_v", text="Complemento")
 
         for partida in lista_partidas:
             # Insert a new item with the "nome" and "complemento" values
-            tabela.insert("", "end", values=(partida))
+            tabela.insert("", "end", values=partida[1:])
         
         tabela.bind('<<TreeviewSelect>>', self.partida_selecionada)
         #self.tabela.bind("<ButtonPress>", self.exemplo_item_selecionado_evento)

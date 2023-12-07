@@ -26,7 +26,7 @@ class EditorMostrarGols(tk.Toplevel):
         self.button1 = tk.Button(self, text="Adicionar Gol", command=self.adicionar_gol, bg="green", fg="black", font=("Arial", 14))
         self.button1.pack(side=tk.RIGHT, padx=10)
 
-        self.button1 = tk.Button(self, text="Deletar Partida", command=self.deletar_gol, bg="red", fg="black", font=("Arial", 14))
+        self.button1 = tk.Button(self, text="Deletar Gol", command=self.deletar_gol, bg="red", fg="black", font=("Arial", 14))
         self.button1.pack(side=tk.RIGHT, padx=10)
 
         self.tabela_gols = self.construir_tabela_gols(self.lista_gols())
@@ -53,17 +53,17 @@ class EditorMostrarGols(tk.Toplevel):
         #self.entry_cidade = tk.Entry(self, font=("Arial", 14), textvariable=self.cidade_var)
 
         # Centralizando as labels
-        self.label_tempo.place(relx=0.3, rely=0.3, anchor="center")
-        self.label_time_fez.place(relx=0.3, rely=0.4, anchor="center")
-        self.label_time_levou.place(relx=0.3, rely=0.5, anchor="center")
-        self.label_jogador.place(relx=0.3, rely=0.6, anchor="center")
+        self.label_tempo.place(relx=0.1, rely=0.7, anchor="center")
+        self.label_time_fez.place(relx=0.1, rely=0.8, anchor="center")
+        self.label_time_levou.place(relx=0.1, rely=0.9, anchor="center")
+        self.label_jogador.place(relx=0.1, rely=0.95, anchor="center")
         #self.label_cidade.place(relx=0.3, rely=0.7, anchor="center")
 
         # Posicionamento dos campos de entrada
-        self.entry_tempo.place(relx=0.5, rely=0.3, anchor="center")
-        self.entry_time_fez.place(relx=0.5, rely=0.4, anchor="center")
-        self.entry_time_levou.place(relx=0.5, rely=0.5, anchor="center")
-        self.entry_jogador.place(relx=0.5, rely=0.6, anchor="center")
+        self.entry_tempo.place(relx=0.2, rely=0.7, anchor="center")
+        self.entry_time_fez.place(relx=0.2, rely=0.8, anchor="center")
+        self.entry_time_levou.place(relx=0.2, rely=0.9, anchor="center")
+        self.entry_jogador.place(relx=0.2, rely=0.95, anchor="center")
         #self.entry_cidade.place(relx=0.5, rely=0.7, anchor="center")
     
 
@@ -105,7 +105,8 @@ class EditorMostrarGols(tk.Toplevel):
         time_levou = self.entry_time_levou.get()
         jogador = self.entry_jogador.get()
 
-        self.controller.criar_gol(tempo, time_fez, time_levou, jogador, "", "", "", self.partida_num)
+        if self.controller.criar_gol(tempo, time_fez, time_levou, jogador, "", "", "", self.partida_num):
+            print("Gol inserido com sucesso")
 
     def deletar_gol(self):
         self.controller.excluir_partida(self.gol[0])
