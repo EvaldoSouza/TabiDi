@@ -50,7 +50,7 @@ class EditorMostrarJogadores(tk.Toplevel):
         # self.lista_users = self.controller.todos_jogadores_do_time(self.time, self.complemento)
         # self.construir_tabela(self.lista_users)
         self.atualizar()
-        
+
     def voltar(self):
         self.destroy()
     
@@ -76,14 +76,15 @@ class EditorMostrarJogadores(tk.Toplevel):
     
     def pesquisar(self, event):
         parametro = self.entry_usuario_pesquisado.get()
-        resultado = self.controller.pesquisar_qualquer(parametro)
+        resultado = self.controller.todos_jogadores_do_time(parametro)
         self.construir_tabela(resultado)
 
     def construir_tabela(self, lista_users):
         try:
             self.tabela.destroy()
         except AttributeError:
-            print("Criando nova tabela?")
+            #print("Criando nova tabela?")
+            pass
         
         self.colunas = ("nome", "apelido", "posição")
         self.tabela = ttk.Treeview(self, columns=self.colunas, show='headings')

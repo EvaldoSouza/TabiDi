@@ -57,7 +57,9 @@ class TelaLogin(tk.Toplevel):
         self.resultado_label = tk.Label(self, text="", font=("Arial", 14))
         self.resultado_label.place(relx=0.5, rely=0.7, anchor="center") #Conferir se está no lugar certo --Evaldo
 
-    def login(self):
+        self.entry_password.bind('<Return>', self.login)
+
+    def login(self, *kwargs):
         #deve chamar o método login do controller, e passar os dados para ele
         #já fazer algum tratamento de dados aqui, principalmente a respeito de campos vazios
         username = self.username_var.get()

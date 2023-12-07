@@ -1,6 +1,5 @@
 --Sera que da pra fazer a DDL em um arquivo, e as consultas em outros? SIM!!! Eh o mais certo!!!!
 --E isso eh uma boa ideia?
-
 -- Create TIME table
 CREATE TABLE IF NOT EXISTS TIME (
     nome_principal TEXT NOT NULL,
@@ -25,10 +24,8 @@ CREATE TABLE IF NOT EXISTS PARTIDA (
     data_hora INTEGER, -- Using unix timestamp. You need to use an SQLite function to convert
     arbitros TEXT,
     local TEXT,
-    FOREIGN KEY (mandante_nome) REFERENCES TIME (nome_principal),
-    FOREIGN KEY (mandante_complemento) REFERENCES TIME (complemento),
-    FOREIGN KEY (visitante_nome) REFERENCES TIME (nome_principal),
-    FOREIGN KEY (visitante_complemento) REFERENCES TIME (complemento)
+    FOREIGN KEY (mandante_nome, mandante_complemento) REFERENCES TIME (nome_principal, complemento),
+    FOREIGN KEY (visitante_nome, visitante_complemento) REFERENCES TIME (nome_principal, complemento )
 );
 
 -- Create JOGADOR table

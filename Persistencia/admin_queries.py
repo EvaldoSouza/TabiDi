@@ -5,6 +5,8 @@ class AdminModel:
         self.db_path = db_path
         self.conn = sqlite3.connect(db_path)  # Connect to the database
         self.cursor = self.conn.cursor()
+        self.cursor.execute("PRAGMA foreign_keys = ON")
+
 
     def consultar_todos_usuario(self):
         self.cursor.execute("SELECT nome, email, privilegio FROM usuario")
