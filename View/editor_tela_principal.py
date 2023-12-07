@@ -7,6 +7,7 @@ from Controller import editor_controller
 class EditorTelaPrincipal(tk.Toplevel):
     def __init__(self, root, usuario):
         super().__init__(root)
+        self.root = root
         self.usuario = usuario
         # Geometria básica
         self.title('Home - Editor')
@@ -44,5 +45,5 @@ class EditorTelaPrincipal(tk.Toplevel):
         #isso é uma função do leitor
         db_path = "Database/lista_campeonatos.sqlite"
         editor = editor_controller.EditorController(db_path)
-        tela_pesquisar = EditorListarCamps(editor, editor.recuperar_campeonatos() ) #TODO mudar o nome dessa tela
+        tela_pesquisar = EditorListarCamps(self.root, editor, editor.recuperar_campeonatos() ) #TODO mudar o nome dessa tela
         tela_pesquisar.mainloop()

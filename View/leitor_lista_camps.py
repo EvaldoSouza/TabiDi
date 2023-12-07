@@ -109,7 +109,7 @@ class LeitorListaCamps(tk.Toplevel):
         if self.selected_campeonato:
             name = self.selected_campeonato.split(":")[0].strip()
             print(f"Selected campeonato: {name} --tela_editor_pesquisar")
-            campeonato_db = "Database/"+ name +".sqlite"
+            campeonato_db = "Database/Campeonatos/"+ name +".sqlite"
             if os.path.exists(campeonato_db):
                 #self.leitor.set_db_path(campeonato_db)
                 #times= self.leitor.retorna_times()
@@ -119,5 +119,5 @@ class LeitorListaCamps(tk.Toplevel):
                 self.tabela_selection_campeonato()
             else:
                 #TODO Tratar esse erro propriamente
-                print("Campeonato não existe em tela_editor_pesquisar")
+                print("Campeonato não existe em tela_editor_leitor")
 
