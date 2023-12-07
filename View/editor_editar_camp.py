@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import PhotoImage
-
+import os
+from .editor_mostrar_jogadores_campeonato import EditorMostrarJogadoresCampeonato
 from .editor_criar_novo_time import EditorCriarNovoTime
 from .editor_alterar_time import EditorAlterarTime
 from .editor_criar_jogador import EditorCriarNovoJogador
@@ -57,6 +58,9 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
 
         self.atualizar_button = tk.Button(self, text="Mostrar Jogadores", command=self.mostrar_jogadores, bg="blue", fg="white", font=("Arial", 14))
         self.atualizar_button.place(relx=0.9, rely=0.7, anchor="se")
+
+        self.mostrar_jogadores_campeonato_button = tk.Button(self, text="Mostrar Jogadores Campeonato", command=self.mostrar_jogadores_campeonato, bg="blue", fg="white", font=("Arial", 14))
+        self.mostrar_jogadores_campeonato_button.place(relx=0.9, rely=0.8, anchor="se")
 
 
 
@@ -136,3 +140,15 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
     def mostrar_partidas(self):
         mostrar_partidas = EditorMostrarPartidas(self, self.db_path)
         mostrar_partidas.mainloop()
+
+    def mostrar_jogadores_campeonato(self):
+      # Chame construir_tabela_campeonatos para criar a tabela antes de acessá-la
+      
+      #seguindo a ideia de que o editor vai criar um campeonato,e que o nome dele sera o msm do arquivo
+      if os.path.exists(self.db_path):
+          tela_jogador_campeonato = EditorMostrarJogadoresCampeonato(self.db_path, self)
+          #TODO destruir essa janela aqui quando tiver funcionando
+          tela_jogador_campeonato.mainloop()
+      else:
+          #TODO Tratar esse erro propriamente
+          print("Campeonato não existe em tela_editor_pesquisar")
