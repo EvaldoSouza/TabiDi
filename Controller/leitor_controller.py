@@ -4,7 +4,9 @@ from Model import model
 class LeitorController:
     def __init__(self, db_path):
         self.leitor = leitor_queries.LeitorQueries(db_path)
-
+        self.leitor1 = leitor_queries.LeitorQueries(db_path)
+        print(self.leitor == self.leitor1)
+    
     def buscar_informacoes_campeonato(self):
         campeonato = self.leitor.search_league_info()
         if campeonato:

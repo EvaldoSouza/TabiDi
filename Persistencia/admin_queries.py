@@ -1,12 +1,19 @@
 import sqlite3  # If you're using SQLite
 
 class AdminModel:
+
+    _instance = None
+    
     def __init__(self, db_path):
         self.db_path = db_path
         self.conn = sqlite3.connect(db_path)  # Connect to the database
         self.cursor = self.conn.cursor()
         self.cursor.execute("PRAGMA foreign_keys = ON")
 
+    def __new__(cls, db_path):
+      if cls._instance is None:
+          cls._instance = super().__new__(cls)
+      return cls._instance
 
     def consultar_todos_usuario(self):
         self.cursor.execute("SELECT nome, email, privilegio FROM usuario")

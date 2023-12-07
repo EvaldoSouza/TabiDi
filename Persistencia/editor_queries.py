@@ -1,11 +1,19 @@
 import sqlite3
 
 class EditorQueries:
+    
+    _instance = None
+    
     def __init__(self, db_file):
         self.conn = sqlite3.connect(db_file)
         self.cursor = self.conn.cursor()
         #self.cursor.execute("PRAGMA foreign_keys = ON") #ta dando erro nas chaves estrangeiras da partida
-    
+
+    def __new__(cls, db_path):
+      if cls._instance is None:
+          cls._instance = super().__new__(cls)
+      return cls._instance
+
     #CRUD time
     def criar_time(self, nome_principal, complemento, tecnico, estadio, cidade):
         try:

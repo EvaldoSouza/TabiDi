@@ -4,7 +4,9 @@ import os
 class EditorController:
     def __init__(self, db_file):
         self.editor_queries = editor_queries.EditorQueries(db_file)
-
+        self.editor_queries1 = editor_queries.EditorQueries(db_file)
+        print(self.editor_queries1 == self.editor_queries)
+        
     # CRUD para Time
     def criar_time(self, nome_principal, complemento, tecnico, estadio, cidade):
         return self.editor_queries.criar_time(nome_principal, complemento, tecnico, estadio, cidade)

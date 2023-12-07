@@ -3,7 +3,9 @@ from Persistencia import admin_queries
 class AdminController:
     def __init__(self, db_path):
         self.admin_model = admin_queries.AdminModel(db_path)
-
+        self.admin_model1 = admin_queries.AdminModel(db_path)
+        print(self.admin_model == self.admin_model1)
+        
     def consultar_todos_usuario(self):
         return self.admin_model.consultar_todos_usuario()
 
