@@ -189,6 +189,15 @@ class EditorQueries:
             print(f"Erro ao obter jogadores por time: {e}")
             return None
         
+    def todos_jogadores_do_campeonato(self):
+      try:
+          self.cursor.execute("SELECT * FROM JOGADOR")
+          jogadores = self.cursor.fetchall()
+          return jogadores
+      except sqlite3.Error as e:
+          print(f"Erro ao obter jogadores por time: {e}")
+          return None
+        
     def get_jogadores_by_partial_key(self, partial_key):
         try:
             self.cursor.execute('''

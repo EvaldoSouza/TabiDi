@@ -44,5 +44,5 @@ class EditorTelaPrincipal(tk.Toplevel):
         #isso é uma função do leitor
         db_path = "Database/lista_campeonatos.sqlite"
         editor = editor_controller.EditorController(db_path)
-        tela_pesquisar = EditorListarCamps(editor, editor.recuperar_campeonatos() ) #TODO mudar o nome dessa tela
+        tela_pesquisar = EditorListarCamps(self, editor_controller, editor.recuperar_campeonatos()) #TODO mudar o nome dessa tela
         tela_pesquisar.mainloop()

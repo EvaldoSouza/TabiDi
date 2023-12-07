@@ -112,7 +112,9 @@ class EditorController:
     
     def todos_jogadores_do_time(self, time, complemento):
         return self.editor_queries.todos_jogadores_do_time(time, complemento)
-
+    
+    def todos_jogadores_do_campeonato(self):
+        return self.editor_queries.todos_jogadores_do_campeonato()
     
 
 
