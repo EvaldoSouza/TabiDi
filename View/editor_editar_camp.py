@@ -6,6 +6,7 @@ from .editor_criar_novo_time import EditorCriarNovoTime
 from .editor_alterar_time import EditorAlterarTime
 from .editor_criar_jogador import EditorCriarNovoJogador
 from .editor_mostrar_jogadores import EditorMostrarJogadores
+from .editor_cadastrar_partida import EditorCadastrarPartida
 from Controller import editor_controller
 
 class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
@@ -28,15 +29,15 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
         self.construir_tabela_times(self.times())
 
         # Botão de adicionar
-        self.adicionar_button = tk.Button(self, text="Adicionar", command=self.adicionar, bg="green", fg="black", font=("Arial", 14))
+        self.adicionar_button = tk.Button(self, text="Adicionar Time", command=self.adicionar, bg="green", fg="black", font=("Arial", 14))
         self.adicionar_button.place(relx=0.9, rely=0.1, anchor="se")
 
         # Botão de alterar
-        self.alterar_button = tk.Button(self, text="Alterar", command=self.alterar, bg="yellow", fg="black", font=("Arial", 14))
+        self.alterar_button = tk.Button(self, text="Alterar Time", command=self.alterar, bg="yellow", fg="black", font=("Arial", 14))
         self.alterar_button.place(relx=0.9, rely=0.2, anchor="se")
 
         # Botão de adicionar
-        self.excluir_button = tk.Button(self, text="Excluir", command=self.excluir, bg="red", fg="black", font=("Arial", 14))
+        self.excluir_button = tk.Button(self, text="Excluir Time", command=self.excluir, bg="red", fg="black", font=("Arial", 14))
         self.excluir_button.place(relx=0.9, rely=0.3, anchor="se")
 
         # Botão de voltar
@@ -47,7 +48,7 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
         self.atualizar_button = tk.Button(self, text="Atualizar", command=self.atualizar, bg="green", fg="white", font=("Arial", 14))
         self.atualizar_button.place(relx=0.9, rely=0.4, anchor="se")
 
-        self.atualizar_button = tk.Button(self, text="Cadastrar Partida", command=self.cadastrar_partida, bg="blue", fg="white", font=("Arial", 14))
+        self.atualizar_button = tk.Button(self, text="Cadastrar Partida", command=self.cadastrar_partida, bg="green", fg="black", font=("Arial", 14))
         self.atualizar_button.place(relx=0.9, rely=0.6, anchor="se")
 
         self.atualizar_button = tk.Button(self, text="Mostrar Jogadores", command=self.mostrar_jogadores, bg="blue", fg="white", font=("Arial", 14))
@@ -93,14 +94,13 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
         modal_adicionar = EditorCriarNovoTime(self.db_path)  # Crie uma instância da classe Tela_User
         modal_adicionar.mainloop()
     
+    #TODO Fazer isso funcionar
     def alterar(self):
         modal_alterar = EditorAlterarTime(self.db_path)  # Crie uma instância da classe Tela_User
         modal_alterar.mainloop()
         #mandar os dados atuais?
     
     def excluir(self):
-        #TODO ligar ao banco
-        #como fazer com o complemento?
         if self.controller.excluir_time(self.time_selecionado, self.dados_time_selecionado[1]):
             print("Time {} com complemento {} foi exlcluido corretamente", self.time_selecionado, self.dados_time_selecionado[0])
 
@@ -126,5 +126,7 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
             jogadores.mainloop()
 
     def cadastrar_partida(self):
-        pass
+        partida = EditorCadastrarPartida(self, self.db_path)
+        partida.mainloop()
+        
         

@@ -1,6 +1,6 @@
 --Sera que da pra fazer a DDL em um arquivo, e as consultas em outros? SIM!!! Eh o mais certo!!!!
 --E isso eh uma boa ideia?
-
+PRAGMA foreign_keys = ON
 -- Create TIME table
 CREATE TABLE IF NOT EXISTS TIME (
     nome_principal TEXT NOT NULL,
