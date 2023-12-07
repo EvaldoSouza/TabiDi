@@ -1,10 +1,17 @@
 import sqlite3
 
 class EditorQueries:
+    _instance = None
+    
     def __init__(self, db_file):
         self.conn = sqlite3.connect(db_file)
         self.cursor = self.conn.cursor()
         #self.cursor.execute("PRAGMA foreign_keys = ON") #ta dando erro nas chaves estrangeiras da partida
+    
+    def __new__(cls, db_path):
+      if cls._instance is None:
+          cls._instance = super().__new__(cls)
+      return cls._instance
     
     #CRUD time
     def criar_time(self, nome_principal, complemento, tecnico, estadio, cidade):
@@ -202,6 +209,60 @@ class EditorQueries:
         except sqlite3.Error as e:
             print(f"Erro ao obter jogador por chave primária: {e}")
             return None
+
+    #CRUD do Gol
+    def inserir_gol(self, tempo_partida, time_fez_nome, time_levou_nome, jogador_fez, jogador_assis, tipo_gol, fora_de_casa, partida):
+        try:
+            self.cursor.execute('''
+                INSERT INTO GOL 
+                (tempo_partida, time_fez_nome, time_levou_nome, jogador_fez, jogador_assis, tipo_gol, fora_de_casa, partida) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (tempo_partida, time_fez_nome, time_levou_nome, jogador_fez, jogador_assis, tipo_gol, fora_de_casa, partida))
+            
+            return True
+        except sqlite3.Error as e:
+            print(f"Erro ao inserir gol: {e}")
+            return False
+        
+    def obter_gols_partida(self, num_partida):
+        try:
+            self.cursor.execute('''
+                SELECT * FROM GOL 
+                WHERE partida = ?
+            ''', (num_partida,))
+
+            gols = self.cursor.fetchall()
+            return gols
+        except sqlite3.Error as e:
+            print(f"Erro ao obter gols da partida: {e}")
+            return None
+        
+    def atualizar_gol(self, tempo_partida, time_fez_nome, time_levou_nome, jogador_fez, jogador_assis, tipo_gol, fora_de_casa, partida):
+        try:
+            self.cursor.execute('''
+                UPDATE GOL 
+                SET jogador_fez=?, jogador_assis=?, tipo_gol=?, fora_de_casa=?
+                WHERE tempo_partida=? AND time_fez_nome=? AND time_levou_nome=? AND partida=?
+            ''', (jogador_fez, jogador_assis, tipo_gol, fora_de_casa, tempo_partida, time_fez_nome, time_levou_nome, partida))
+            
+            return True
+        except sqlite3.Error as e:
+            print(f"Erro ao atualizar gol: {e}")
+            return False
+
+    def excluir_gol(self, tempo_partida, time_fez_nome, time_levou_nome, partida):
+        try:
+            self.cursor.execute('''
+                DELETE FROM GOL 
+                WHERE tempo_partida=? AND time_fez_nome=? AND time_levou_nome=? AND partida=?
+            ''', (tempo_partida, time_fez_nome, time_levou_nome, partida))
+            
+            return True
+        except sqlite3.Error as e:
+            print(f"Erro ao excluir gol: {e}")
+            return False
+
+
 
     #Fechar banco
     def fechar_conexao(self):

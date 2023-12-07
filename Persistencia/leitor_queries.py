@@ -1,10 +1,15 @@
 import sqlite3
 
 class LeitorQueries:
-    #TODO consertar as consultas SQL
+    _instance = None
+
     def __init__(self, db_path) -> None:
         self.db_path = db_path
 
+    def __new__(cls, db_path):
+      if cls._instance is None:
+          cls._instance = super().__new__(cls)
+      return cls._instance
         
     def search_league_info(self):
         try:

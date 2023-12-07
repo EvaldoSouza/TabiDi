@@ -98,8 +98,6 @@ class EditorCadastrarPartida(tk.Toplevel):
         rodada = self.rodada_entry.get()
         arbitros = self.arbitros_entry.get()
 
-        print(mandante[0])
-
         if mandante and visitante and data_hora and rodada:
             self.controller.criar_partida(mandante[0], mandante[1], visitante[0], visitante[1], rodada, data_hora, arbitros, "")
         else:

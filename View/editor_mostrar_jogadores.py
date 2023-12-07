@@ -76,7 +76,7 @@ class EditorMostrarJogadores(tk.Toplevel):
     
     def pesquisar(self, event):
         parametro = self.entry_usuario_pesquisado.get()
-        resultado = self.controller.todos_jogadores_do_time(parametro)
+        resultado = self.controller.pesquisar_qualquer(parametro)
         self.construir_tabela(resultado)
 
     def construir_tabela(self, lista_users):

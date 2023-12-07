@@ -7,6 +7,7 @@ from .editor_alterar_time import EditorAlterarTime
 from .editor_criar_jogador import EditorCriarNovoJogador
 from .editor_mostrar_jogadores import EditorMostrarJogadores
 from .editor_cadastrar_partida import EditorCadastrarPartida
+from .editor_mostrar_partidas import EditorMostrarPartidas
 from Controller import editor_controller
 
 class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
@@ -48,8 +49,11 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
         self.atualizar_button = tk.Button(self, text="Atualizar", command=self.atualizar, bg="green", fg="white", font=("Arial", 14))
         self.atualizar_button.place(relx=0.9, rely=0.4, anchor="se")
 
-        self.atualizar_button = tk.Button(self, text="Cadastrar Partida", command=self.cadastrar_partida, bg="green", fg="black", font=("Arial", 14))
+        self.atualizar_button = tk.Button(self, text="Cadastrar Partida", command=self.cadastrar_partida, bg="yellow", fg="black", font=("Arial", 14))
         self.atualizar_button.place(relx=0.9, rely=0.6, anchor="se")
+
+        self.atualizar_button = tk.Button(self, text="Motrar Partidas", command=self.mostrar_partidas, bg="green", fg="black", font=("Arial", 14))
+        self.atualizar_button.place(relx=0.9, rely=0.5, anchor="se")
 
         self.atualizar_button = tk.Button(self, text="Mostrar Jogadores", command=self.mostrar_jogadores, bg="blue", fg="white", font=("Arial", 14))
         self.atualizar_button.place(relx=0.9, rely=0.7, anchor="se")
@@ -129,4 +133,6 @@ class EditorEditarCamp(tk.Toplevel): #TODO melhorar o nome da classe
         partida = EditorCadastrarPartida(self, self.db_path)
         partida.mainloop()
         
-        
+    def mostrar_partidas(self):
+        mostrar_partidas = EditorMostrarPartidas(self, self.db_path)
+        mostrar_partidas.mainloop()

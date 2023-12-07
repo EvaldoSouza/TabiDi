@@ -113,7 +113,15 @@ class EditorController:
     def todos_jogadores_do_time(self, time, complemento):
         return self.editor_queries.todos_jogadores_do_time(time, complemento)
 
+    #funções do gol
+    def criar_gol(self, tempo_partida, time_fez_nome, time_levou_nome, jogador_fez, jogador_assis, tipo_gol, fora_de_casa, partida):
+        return self.editor_queries.inserir_gol(tempo_partida, time_fez_nome, time_levou_nome, jogador_fez, jogador_assis, tipo_gol, fora_de_casa, partida)
     
+    def listar_gols(self, partida):
+        return self.editor_queries.obter_gols_partida(partida)
+    
+    def excluir_gol(self, tempo_partida, time_fez_nome, time_levou_nome, partida):
+        return self.editor_queries.excluir_gol(tempo_partida, time_fez_nome, time_levou_nome, partida)
 
 
 
